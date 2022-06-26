@@ -76,4 +76,10 @@ func _on_FailureTimer_timeout():
 	Server.resetNetworkPeer();
 
 func _on_SuccessTimer_timeout():
-	get_node(".").visible = false;
+	get_tree().change_scene("res://scenes/Test.tscn");
+
+
+
+func _on_LineEdit_text_changed(playerName):
+	Server.playerName = playerName;
+	print(Server.playerName);
