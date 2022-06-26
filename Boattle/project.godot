@@ -11,8 +11,13 @@ config_version=4
 [application]
 
 config/name="Boattle"
-run/main_scene="res://scenes/Test.tscn"
+run/main_scene="res://scenes/UI/MainMenu.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/size/width=1920
+window/size/height=1080
 
 [input]
 
