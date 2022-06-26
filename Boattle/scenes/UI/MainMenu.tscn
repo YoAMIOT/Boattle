@@ -1,0 +1,149 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ressources/font/TiwipiFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="Menu"]
+color = Color( 0.713726, 0.886275, 0.627451, 1 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
+
+[node name="PlayButton" type="Button" parent="Menu"]
+anchor_top = 0.415
+anchor_right = 0.133
+anchor_bottom = 0.474
+margin_top = -0.200012
+margin_right = 0.639999
+margin_bottom = 0.0799561
+custom_fonts/font = ExtResource( 1 )
+text = "Play"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="Menu"]
+anchor_top = 0.533
+anchor_right = 0.133
+anchor_bottom = 0.593
+margin_top = 0.359924
+margin_right = 0.639999
+margin_bottom = -0.440063
+custom_fonts/font = ExtResource( 1 )
+text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ServerMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="ServerMenu"]
+color = Color( 0.713726, 0.886275, 0.627451, 1 )
+polygon = PoolVector2Array( 448, 64, 1472, 64, 1472, 1016, 448, 1016 )
+
+[node name="Error" type="Control" parent="ServerMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="ServerMenu/Error"]
+color = Color( 0.768627, 0.231373, 0.203922, 1 )
+polygon = PoolVector2Array( 512, 128, 1408, 128, 1408, 320, 512, 320 )
+
+[node name="EmptyAddress" type="Label" parent="ServerMenu/Error"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 520.0
+margin_top = 136.0
+margin_right = -520.0
+margin_bottom = -768.0
+custom_fonts/font = ExtResource( 1 )
+text = "ERROR: The Server Address is empty,
+please enter an Adress to access a game server"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InvalidAddress" type="Label" parent="ServerMenu/Error"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 520.0
+margin_top = 136.0
+margin_right = -520.0
+margin_bottom = -768.0
+custom_fonts/font = ExtResource( 1 )
+text = "ERROR: The entered Address is wrong
+Please enter a valid address"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="JoinButton" type="Button" parent="ServerMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1216.0
+margin_top = 832.0
+margin_right = -512.0
+margin_bottom = -120.0
+custom_fonts/font = ExtResource( 1 )
+text = "Join =>"
+
+[node name="BackButton" type="Button" parent="ServerMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 512.0
+margin_top = 832.0
+margin_right = -1216.0
+margin_bottom = -120.0
+custom_fonts/font = ExtResource( 1 )
+text = "<= Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IpAddress" type="LineEdit" parent="ServerMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 640.0
+margin_top = 384.0
+margin_right = -640.0
+margin_bottom = -568.0
+custom_fonts/font = ExtResource( 1 )
+text = "127.0.0.1"
+align = 1
+max_length = 15
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Menu/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="Menu/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="ServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="ServerMenu/BackButton" to="." method="_on_BackButton_pressed"]

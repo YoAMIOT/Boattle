@@ -1,0 +1,89 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://ressources/font/TiwipiFont.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scripts/Log.gd" type="Script" id=2]
+[ext_resource path="res://ressources/font/TiwipiFontSmall.tres" type="DynamicFont" id=3]
+[ext_resource path="res://scripts/Server.gd" type="Script" id=4]
+
+[node name="Server" type="Node"]
+script = ExtResource( 4 )
+
+[node name="Ui" type="Control" parent="."]
+anchor_right = 0.533
+anchor_bottom = 0.556
+margin_right = 0.639893
+margin_bottom = -0.480042
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IpBannerBg" type="Polygon2D" parent="Ui"]
+position = Vector2( -57.6, 0 )
+scale = Vector2( 1.3, 0.9375 )
+color = Color( 0.380392, 0.545098, 0.286275, 1 )
+polygon = PoolVector2Array( 192, 546.133, 832, 546.133, 832, 640, 192, 640 )
+
+[node name="ActionBg" type="Polygon2D" parent="Ui"]
+scale = Vector2( 1, 0.9375 )
+color = Color( 0.682353, 0.439216, 0.439216, 1 )
+polygon = PoolVector2Array( 192, 0, 192, 640, 0, 640, 0, 0 )
+
+[node name="IpLabel" type="Label" parent="Ui"]
+anchor_left = 0.351
+anchor_top = 1.537
+anchor_right = 1.874
+anchor_bottom = 1.801
+margin_left = 64.2024
+margin_top = 15.9946
+margin_right = -64.0135
+margin_bottom = -15.9492
+custom_fonts/font = ExtResource( 1 )
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartServer" type="Button" parent="Ui"]
+anchor_top = 1.345
+anchor_right = 0.351
+anchor_bottom = 1.537
+margin_top = -0.0464172
+margin_right = 0.202377
+margin_bottom = -0.00543213
+custom_fonts/font = ExtResource( 1 )
+text = "Start Server"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Close" type="Button" parent="Ui"]
+anchor_top = 1.561
+anchor_right = 0.351
+anchor_bottom = 1.753
+margin_top = -0.000366211
+margin_right = 0.202377
+margin_bottom = 0.0405884
+custom_fonts/font = ExtResource( 1 )
+text = "Close"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Log" type="RichTextLabel" parent="Ui"]
+anchor_left = 0.351
+anchor_right = 1.874
+anchor_bottom = 1.537
+margin_left = 0.202377
+margin_right = -0.0135498
+margin_bottom = -0.00543213
+custom_fonts/normal_font = ExtResource( 3 )
+bbcode_enabled = true
+scroll_following = true
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
+[connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
