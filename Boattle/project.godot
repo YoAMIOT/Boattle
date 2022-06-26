@@ -14,6 +14,10 @@ config/name="Boattle"
 run/main_scene="res://scenes/UI/MainMenu.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+Server="*res://scripts/singletons/Server.gd"
+
 [display]
 
 window/size/width=1920

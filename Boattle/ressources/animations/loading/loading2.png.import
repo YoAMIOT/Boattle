@@ -1,0 +1,37 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path.s3tc="res://.import/loading2.png-3899ed0960279875bd5aa0f5dac2748c.s3tc.stex"
+path.etc2="res://.import/loading2.png-3899ed0960279875bd5aa0f5dac2748c.etc2.stex"
+metadata={
+"imported_formats": [ "s3tc", "etc2" ],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://ressources/animations/loading/loading2.png"
+dest_files=[ "res://.import/loading2.png-3899ed0960279875bd5aa0f5dac2748c.s3tc.stex", "res://.import/loading2.png-3899ed0960279875bd5aa0f5dac2748c.etc2.stex" ]
+
+[params]
+
+compress/mode=2
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=true
+flags/filter=false
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=1
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+process/normal_map_invert_y=false
+stream=false
+size_limit=0
+detect_3d=false
+svg/scale=1.0
