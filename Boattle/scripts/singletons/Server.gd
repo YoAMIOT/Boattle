@@ -3,7 +3,6 @@ extends Node
 var network = null;
 var ip : String = "";
 var port : int = 4180;
-var playerName : String = "";
 
 signal successfullyConnected;
 signal failedToConnect;

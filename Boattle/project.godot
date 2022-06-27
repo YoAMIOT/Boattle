@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 Server="*res://scripts/singletons/Server.gd"
+DataManager="*res://scripts/singletons/DataManager.gd"
 
 [display]
 
