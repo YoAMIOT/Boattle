@@ -28,6 +28,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -89,7 +90,6 @@ __meta__ = {
 }
 
 [node name="ServerMenu" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -281,7 +281,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 6
+frame = 2
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]
