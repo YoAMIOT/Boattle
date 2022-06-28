@@ -32,5 +32,4 @@ func addToDictionnary(key : String, address : String):
 	var file : File = File.new();
 	file.open(serversFile, File.WRITE);
 	file.store_var(ipDictionnary);
-	print(ipDictionnary);
 	file.close();

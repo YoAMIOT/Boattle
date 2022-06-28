@@ -28,6 +28,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -89,7 +90,6 @@ __meta__ = {
 }
 
 [node name="ServerMenu" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -205,11 +205,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ServerList" type="ItemList" parent="ServerMenu"]
+[node name="HistoryLabel" type="Label" parent="ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1248.0
 margin_top = 64.0
+margin_right = -160.0
+margin_bottom = -888.0
+custom_fonts/font = ExtResource( 1 )
+text = "Server History"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ServerList" type="ItemList" parent="ServerMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1248.0
+margin_top = 192.0
 margin_right = -160.0
 margin_bottom = -64.0
 custom_fonts/font = ExtResource( 1 )
@@ -281,7 +296,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 7
+frame = 3
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]
@@ -303,6 +318,7 @@ one_shot = true
 [connection signal="pressed" from="ServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="text_changed" from="ServerMenu/IpAddress" to="." method="_on_IpAddress_text_changed"]
 [connection signal="text_changed" from="ServerMenu/ServerName" to="." method="_on_ServerName_text_changed"]
+[connection signal="item_selected" from="ServerMenu/ServerList" to="." method="_on_ServerList_item_selected"]
 [connection signal="timeout" from="Connecting/SuccessTimer" to="." method="_on_SuccessTimer_timeout"]
 [connection signal="timeout" from="Connecting/FailureTimer" to="." method="_on_FailureTimer_timeout"]
 [connection signal="timeout" from="Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]

@@ -123,3 +123,8 @@ func fillServerList():
 func refreshServerList():
 	get_node("ServerMenu/ServerList").clear();
 	fillServerList();
+
+func _on_ServerList_item_selected(index):
+	var selectedServer : String = get_node("ServerMenu/ServerList").get_item_text(index);
+	get_node("ServerMenu/ServerName").text = selectedServer;
+	get_node("ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
