@@ -26,6 +26,9 @@ func _on_BackButton_pressed():
 	get_node("ServerMenu").visible = false;
 	get_node("Menu").visible = true;
 
+func _on_CancelButton_pressed():
+	_on_FailureTimer_timeout()
+
 
 
 func _on_JoinButton_pressed():
@@ -48,12 +51,14 @@ func _on_JoinButton_pressed():
 func onConnectionFailed():
 	get_node("Connecting/ConnectingLabel").visible = false;
 	get_node("Connecting/LoadingAnim").visible = false;
+	get_node("Connecting/CancelButton").visible = false;
 	get_node("Connecting/ConnectionFailedLabel").visible = true;
 	get_node("Connecting/FailureTimer").start();
 
 func onConnectionSuccess():
 	get_node("Connecting/ConnectingLabel").visible = false;
 	get_node("Connecting/LoadingAnim").visible = false;
+	get_node("Connecting/CancelButton").visible = false;
 	get_node("Connecting/ConnectedLabel").visible = true;
 	connectionSuccess = true;
 	get_node("Connecting/SuccessTimer").start();
@@ -63,11 +68,13 @@ func _on_TimeOutTimer_timeout():
 		get_node("Connecting/ConnectingLabel").visible = false;
 		get_node("Connecting/LoadingAnim").visible = false;
 		get_node("Connecting/ConnectionFailedLabel").visible = true;
+		get_node("Connecting/CancelButton").visible = false;
 		get_node("Connecting/FailureTimer").start();
 
 func _on_FailureTimer_timeout():
 	get_node("Connecting/ConnectingLabel").visible = true;
 	get_node("Connecting/LoadingAnim").visible = true;
+	get_node("Connecting/CancelButton").visible = true;
 	get_node("Connecting/ConnectedLabel").visible = false;
 	get_node("Connecting/ConnectionFailedLabel").visible = false;
 	get_node("Connecting").visible = false;
@@ -128,3 +135,4 @@ func _on_ServerList_item_selected(index):
 	var selectedServer : String = get_node("ServerMenu/ServerList").get_item_text(index);
 	get_node("ServerMenu/ServerName").text = selectedServer;
 	get_node("ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
+	manageJoinButtonDisability();

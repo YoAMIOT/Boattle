@@ -28,7 +28,6 @@ __meta__ = {
 }
 
 [node name="Menu" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -90,6 +89,7 @@ __meta__ = {
 }
 
 [node name="ServerMenu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -224,9 +224,9 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1248.0
-margin_top = 192.0
+margin_top = 193.0
 margin_right = -160.0
-margin_bottom = -64.0
+margin_bottom = -63.0
 custom_fonts/font = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -296,7 +296,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 3
+frame = 4
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]
@@ -311,6 +311,19 @@ one_shot = true
 wait_time = 30.0
 one_shot = true
 
+[node name="CancelButton" type="Button" parent="Connecting"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 864.0
+margin_top = 752.0
+margin_right = -864.0
+margin_bottom = -200.0
+custom_fonts/font = ExtResource( 1 )
+text = "Cancel"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="text_changed" from="Menu/PlayerName" to="." method="_on_PlayerName_text_changed"]
 [connection signal="pressed" from="Menu/PlayButton" to="." method="_on_PlayButton_pressed"]
 [connection signal="pressed" from="Menu/QuitButton" to="." method="_on_QuitButton_pressed"]
@@ -322,3 +335,4 @@ one_shot = true
 [connection signal="timeout" from="Connecting/SuccessTimer" to="." method="_on_SuccessTimer_timeout"]
 [connection signal="timeout" from="Connecting/FailureTimer" to="." method="_on_FailureTimer_timeout"]
 [connection signal="timeout" from="Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]
+[connection signal="pressed" from="Connecting/CancelButton" to="." method="_on_CancelButton_pressed"]
