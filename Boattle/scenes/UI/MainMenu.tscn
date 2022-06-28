@@ -28,7 +28,6 @@ __meta__ = {
 }
 
 [node name="Menu" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -90,6 +89,7 @@ __meta__ = {
 }
 
 [node name="ServerMenu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -205,7 +205,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Server List" type="ItemList" parent="ServerMenu"]
+[node name="ServerList" type="ItemList" parent="ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1248.0
@@ -281,7 +281,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 2
+frame = 7
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]

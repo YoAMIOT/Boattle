@@ -8,6 +8,7 @@ var connectionSuccess : bool = false;
 
 func _ready():
 	get_node("Menu/PlayerName").text = DataManager.playerName;
+	fillServerList();
 	regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
 	var _signalFailedConnect = Server.connect("failedToConnect", self, "onConnectionFailed");
 	var _signalSuccessConnect = Server.connect("successfullyConnected", self, "onConnectionSuccess");
@@ -39,6 +40,7 @@ func _on_JoinButton_pressed():
 			get_node("ServerMenu").visible = false;
 			get_node("Connecting").visible = true;
 			get_node("Connecting/TimeOutTimer").start();
+			refreshServerList();
 
 
 
@@ -111,3 +113,13 @@ func manageJoinButtonDisability():
 			get_node("ServerMenu/JoinButton").disabled = false;
 		else:
 			get_node("ServerMenu/JoinButton").disabled = true;
+
+
+
+func fillServerList():
+	for s in DataManager.ipDictionnary:
+		get_node("ServerMenu/ServerList").add_item(s);
+
+func refreshServerList():
+	get_node("ServerMenu/ServerList").clear();
+	fillServerList();
