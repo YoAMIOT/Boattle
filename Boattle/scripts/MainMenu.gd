@@ -7,10 +7,7 @@ var connectionSuccess : bool = false;
 
 
 func _ready():
-	get_node("Menu/PlayerName").text = DataManager.datas["playerName"];
-	fillServerList();
-	get_node("OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
-	get_node("OptionsMenu/VSyncSwitch").pressed = DataManager.datas["vSync"];
+	fetchDataFromManager();
 	regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
 	var _signalFailedConnect = Server.connect("failedToConnect", self, "onConnectionFailed");
 	var _signalSuccessConnect = Server.connect("successfullyConnected", self, "onConnectionSuccess");
@@ -38,6 +35,13 @@ func _on_BackOptionsButton_pressed():
 
 func _on_CancelButton_pressed():
 	_on_FailureTimer_timeout()
+
+func _on_FullscreenSwitch_toggled(state):
+	OptionManager.setFullscreen(state);
+
+func _on_VSyncSwitch_toggled(state):
+	OptionManager.setVsync(state);
+
 
 
 
@@ -99,8 +103,6 @@ func _on_SuccessTimer_timeout():
 func _on_PlayerName_text_changed(newName):
 	DataManager.savePlayerName(newName);
 
-
-
 func _on_IpAddress_text_changed(enteredIpAddress):
 	get_node("ServerMenu/Error").visible = false;
 	get_node("ServerMenu/Error/EmptyAddress").visible = false;
@@ -132,6 +134,12 @@ func manageJoinButtonDisability():
 
 
 
+func fetchDataFromManager():
+	get_node("Menu/PlayerName").text = DataManager.datas["playerName"];
+	get_node("OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
+	get_node("OptionsMenu/VSyncSwitch").pressed = DataManager.datas["vSync"];
+	fillServerList();
+
 func fillServerList():
 	for s in DataManager.ipDictionnary:
 		get_node("ServerMenu/ServerList").add_item(s);
@@ -145,11 +153,3 @@ func _on_ServerList_item_selected(index):
 	get_node("ServerMenu/ServerName").text = selectedServer;
 	get_node("ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
 	manageJoinButtonDisability();
-
-
-
-func _on_FullscreenSwitch_toggled(state):
-	OptionManager.setFullscreen(state);
-
-func _on_VSyncSwitch_toggled(state):
-	OptionManager.setVsync(state);

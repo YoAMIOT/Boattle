@@ -369,7 +369,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 3
+frame = 2
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]
