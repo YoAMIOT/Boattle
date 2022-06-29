@@ -28,6 +28,7 @@ __meta__ = {
 }
 
 [node name="Menu" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -63,27 +64,67 @@ __meta__ = {
 }
 
 [node name="PlayButton" type="Button" parent="Menu"]
-anchor_top = 0.415
+anchor_top = 0.356
 anchor_right = 0.133
-anchor_bottom = 0.474
-margin_top = -0.200012
+anchor_bottom = 0.415
+margin_top = -0.47998
 margin_right = 0.639999
-margin_bottom = 0.0799561
+margin_bottom = -0.199982
 custom_fonts/font = ExtResource( 1 )
 text = "Play"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="QuitButton" type="Button" parent="Menu"]
-anchor_top = 0.533
+[node name="OptionsButton" type="Button" parent="Menu"]
+anchor_top = 0.474
 anchor_right = 0.133
-anchor_bottom = 0.593
-margin_top = 0.359924
+anchor_bottom = 0.533
+margin_top = 0.0799561
 margin_right = 0.639999
-margin_bottom = -0.440063
+margin_bottom = 0.359924
+custom_fonts/font = ExtResource( 1 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="QuitButton" type="Button" parent="Menu"]
+anchor_top = 0.593
+anchor_right = 0.133
+anchor_bottom = 0.652
+margin_top = -0.440125
+margin_right = 0.639999
+margin_bottom = -0.160095
 custom_fonts/font = ExtResource( 1 )
 text = "Quit"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="OptionsMenu"]
+position = Vector2( 3996, 296 )
+scale = Vector2( 5.5, 0.762963 )
+color = Color( 0.713726, 0.886275, 0.627451, 1 )
+offset = Vector2( -680, -224 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
+
+[node name="BackOptionsButton" type="Button" parent="OptionsMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 320.0
+margin_top = 760.0
+margin_right = -1408.0
+margin_bottom = -192.0
+custom_fonts/font = ExtResource( 1 )
+text = "<= Back"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -296,7 +337,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 4
+frame = 2
 playing = true
 
 [node name="SuccessTimer" type="Timer" parent="Connecting"]
@@ -326,7 +367,9 @@ __meta__ = {
 
 [connection signal="text_changed" from="Menu/PlayerName" to="." method="_on_PlayerName_text_changed"]
 [connection signal="pressed" from="Menu/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="Menu/OptionsButton" to="." method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="Menu/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="OptionsMenu/BackOptionsButton" to="." method="_on_BackOptionsButton_pressed"]
 [connection signal="pressed" from="ServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
 [connection signal="pressed" from="ServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
 [connection signal="text_changed" from="ServerMenu/IpAddress" to="." method="_on_IpAddress_text_changed"]

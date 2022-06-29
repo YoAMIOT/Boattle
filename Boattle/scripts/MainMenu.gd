@@ -26,6 +26,14 @@ func _on_BackButton_pressed():
 	get_node("ServerMenu").visible = false;
 	get_node("Menu").visible = true;
 
+func _on_OptionsButton_pressed():
+	get_node("Menu").visible = false;
+	get_node("OptionsMenu").visible = true;
+
+func _on_BackOptionsButton_pressed():
+	get_node("OptionsMenu").visible = false;
+	get_node("Menu").visible = true;
+
 func _on_CancelButton_pressed():
 	_on_FailureTimer_timeout()
 
