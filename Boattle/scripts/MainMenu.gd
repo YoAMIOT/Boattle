@@ -7,9 +7,9 @@ var connectionSuccess : bool = false;
 
 
 func _ready():
-	get_node("Menu/PlayerName").text = DataManager.playerName;
+	get_node("Menu/PlayerName").text = DataManager.datas["playerName"];
 	fillServerList();
-	get_node("OptionsMenu/FullscreenSwitch").pressed = DataManager.fullscreen;
+	get_node("OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
 	regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
 	var _signalFailedConnect = Server.connect("failedToConnect", self, "onConnectionFailed");
 	var _signalSuccessConnect = Server.connect("successfullyConnected", self, "onConnectionSuccess");
@@ -96,8 +96,7 @@ func _on_SuccessTimer_timeout():
 
 
 func _on_PlayerName_text_changed(newName):
-	DataManager.playerName = newName;
-	DataManager.savePlayerName();
+	DataManager.savePlayerName(newName);
 
 
 
