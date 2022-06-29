@@ -10,6 +10,7 @@ func _ready():
 	get_node("Menu/PlayerName").text = DataManager.datas["playerName"];
 	fillServerList();
 	get_node("OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
+	get_node("OptionsMenu/VSyncSwitch").pressed = DataManager.datas["vSync"];
 	regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
 	var _signalFailedConnect = Server.connect("failedToConnect", self, "onConnectionFailed");
 	var _signalSuccessConnect = Server.connect("successfullyConnected", self, "onConnectionSuccess");
@@ -149,3 +150,6 @@ func _on_ServerList_item_selected(index):
 
 func _on_FullscreenSwitch_toggled(state):
 	OptionManager.setFullscreen(state);
+
+func _on_VSyncSwitch_toggled(state):
+	OptionManager.setVsync(state);

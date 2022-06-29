@@ -7,6 +7,7 @@ var ipDictionnary : Dictionary;
 var datas : Dictionary = {
 	"playerName" : "",
 	"fullscreen" : true,
+	"vSync" : true,
 };
 
 
@@ -33,11 +34,16 @@ func saveFullscreen(fullscreenState : bool):
 	datas["fullscreen"] = fullscreenState;
 	saveSettings();
 
+func saveVsync(state : bool):
+	datas["vSync"] = state;
+	saveSettings();
+
 func saveSettings():
 	var file : File = File.new();
 	file.open(settingsFile, File.WRITE);
 	file.store_var(datas);
 	file.close();
+
 
 
 func addToDictionnary(key : String, address : String):
