@@ -1,18 +1,16 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://ressources/font/TiwipiFont.tres" type="DynamicFont" id=1]
 [ext_resource path="res://scripts/Log.gd" type="Script" id=2]
 [ext_resource path="res://ressources/font/TiwipiFontSmall.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scripts/Server.gd" type="Script" id=4]
+[ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=5]
 
 [node name="Server" type="Node"]
 script = ExtResource( 4 )
 
 [node name="Ui" type="Control" parent="."]
-anchor_right = 0.533
-anchor_bottom = 0.556
-margin_right = 0.639893
-margin_bottom = -0.480042
+anchor_right = 1.0
+anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -29,15 +27,15 @@ color = Color( 0.682353, 0.439216, 0.439216, 1 )
 polygon = PoolVector2Array( 192, 0, 192, 640, 0, 640, 0, 0 )
 
 [node name="IpLabel" type="Label" parent="Ui"]
-anchor_left = 0.351
-anchor_top = 1.537
-anchor_right = 1.874
-anchor_bottom = 1.801
-margin_left = 64.2024
-margin_top = 15.9946
-margin_right = -64.0135
-margin_bottom = -15.9492
-custom_fonts/font = ExtResource( 1 )
+anchor_left = 0.312
+anchor_top = 0.88
+anchor_right = 0.875
+anchor_bottom = 0.973
+margin_left = 0.511993
+margin_top = -6.10352e-05
+margin_right = -6.10352e-05
+margin_bottom = 0.199951
+theme = ExtResource( 5 )
 align = 1
 valign = 1
 __meta__ = {
@@ -45,38 +43,38 @@ __meta__ = {
 }
 
 [node name="StartServer" type="Button" parent="Ui"]
-anchor_top = 1.345
-anchor_right = 0.351
-anchor_bottom = 1.537
-margin_top = -0.0464172
-margin_right = 0.202377
-margin_bottom = -0.00543213
-custom_fonts/font = ExtResource( 1 )
+anchor_top = 0.747
+anchor_right = 0.187
+anchor_bottom = 0.853
+margin_top = -0.200012
+margin_right = 0.511993
+margin_bottom = 0.199982
+theme = ExtResource( 5 )
+disabled = true
 text = "Start Server"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Close" type="Button" parent="Ui"]
-anchor_top = 1.561
-anchor_right = 0.351
-anchor_bottom = 1.753
-margin_top = -0.000366211
-margin_right = 0.202377
-margin_bottom = 0.0405884
-custom_fonts/font = ExtResource( 1 )
+anchor_top = 0.867
+anchor_right = 0.187
+anchor_bottom = 0.973
+margin_top = -0.200012
+margin_right = 0.511993
+margin_bottom = 0.199951
+theme = ExtResource( 5 )
 text = "Close"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Log" type="RichTextLabel" parent="Ui"]
-anchor_left = 0.351
-anchor_right = 1.874
-anchor_bottom = 1.537
-margin_left = 0.202377
-margin_right = -0.0135498
-margin_bottom = -0.00543213
+anchor_left = 0.187
+anchor_right = 1.0
+anchor_bottom = 0.853
+margin_left = 0.511993
+margin_bottom = 0.199982
 custom_fonts/normal_font = ExtResource( 3 )
 bbcode_enabled = true
 scroll_following = true
@@ -85,5 +83,69 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="MaxPlayerMenu" type="Control" parent="Ui"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="Ui/MaxPlayerMenu"]
+position = Vector2( -307.2, -3490.9 )
+scale = Vector2( 1.6, 6.39203 )
+color = Color( 0.466667, 0.529412, 0.431373, 1 )
+polygon = PoolVector2Array( 192, 546.133, 832, 546.133, 832, 640, 192, 640 )
+
+[node name="MaxPlayerLabel" type="Label" parent="Ui/MaxPlayerMenu"]
+anchor_left = 0.211
+anchor_top = 0.213
+anchor_right = 0.789
+anchor_bottom = 0.32
+margin_left = -0.0640106
+margin_top = 0.199989
+margin_right = 0.0639648
+margin_bottom = -1.52588e-05
+theme = ExtResource( 5 )
+text = "Please, enter the max number of players:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Selector" type="SpinBox" parent="Ui/MaxPlayerMenu"]
+anchor_left = 0.359
+anchor_top = 0.427
+anchor_right = 0.641
+anchor_bottom = 0.533
+margin_left = 0.383972
+margin_top = -0.200012
+margin_right = -0.384033
+margin_bottom = 0.199982
+theme = ExtResource( 5 )
+min_value = 2.0
+max_value = 200.0
+value = 2.0
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValidateButton" type="Button" parent="Ui/MaxPlayerMenu"]
+anchor_left = 0.437
+anchor_top = 0.64
+anchor_right = 0.562
+anchor_bottom = 0.747
+margin_left = 0.511993
+margin_top = -3.05176e-05
+margin_right = 0.511963
+margin_bottom = -0.200012
+theme = ExtResource( 5 )
+text = "Validate"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
+[connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]

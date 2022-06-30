@@ -20,6 +20,11 @@ func _ready():
 	get_node("Ui/IpLabel").text = ip;
 
 
+func _on_ValidateButton_pressed():
+	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value;
+	get_node("Ui/MaxPlayerMenu").visible = false;
+	get_node("Ui/StartServer").disabled = false;
+
 
 func _on_StartServer_pressed():
 	serverStarted = true;
