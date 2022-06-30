@@ -19,11 +19,9 @@ func connectToServer():
 	DataManager.printError(error);
 
 func connectionFailed():
-	print("! Failed to connect !");
 	emit_signal("failedToConnect");
 
 func connectionSucceeded():
-	print("===Sucessfully connected===");
 	emit_signal("successfullyConnected");
 
 func resetNetworkPeer():
@@ -31,3 +29,16 @@ func resetNetworkPeer():
 		network.disconnect("connection_failed", self, "connectionFailed");
 		network.disconnect("connection_succeeded", self, "connectionSucceeded");
 		get_tree().network_peer = null
+
+
+
+remote func spawnPuppet(playerId, puppetPosition):
+	get_node("/root/MainMenu/Main").spawnPuppet(playerId, puppetPosition);
+
+remote func killPuppet(playerId):
+	get_node("/root/MainMenu/Main").killPuppet(playerId);
+
+
+
+func sendPosToServer(position : Vector2):
+	rpc_id(1, "receivePos", position, DataManager.datas["playerName"], get_tree().get_network_unique_id());

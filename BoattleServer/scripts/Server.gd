@@ -33,16 +33,22 @@ func _on_StartServer_pressed():
 	get_tree().set_network_peer(network);
 	Log.logPrint("===Server Started===");
 	Log.logPrint("=Currently running on " + ip + "=");
-	var _singalPeerConnect = network.connect("peer_connected", self, "peerConnected");
-	var _singalPeerDisconnect = network.connect("peer_disconnected", self, "peerDisconnected");
+	var error =network.connect("peer_connected", self, "peerConnected");
+	printError(error);
+	error = network.connect("peer_disconnected", self, "peerDisconnected");
+	printError(error);
 
 
 
 func peerConnected(playerId):
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
+	#TODO Load last known pos
+	var puppetPosition : Vector2 = Vector2(0,0);
+	rpc_id(0, "spawnPuppet", playerId, puppetPosition);
 
 func peerDisconnected(playerId):
 	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
+	rpc_id(0, "killPuppet", playerId);
 
 
 
@@ -52,3 +58,14 @@ func _notification(what):
 
 func _on_Close_pressed():
 	_notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST);
+
+
+
+func printError(error):
+	if error != 0:
+		print("ERROR: ", error);
+
+
+
+remote func receivePos(position : Vector2, playerName : String, playerId : int):
+	Log.logPrint(str(position) + " ;"+ playerName+ " ;"+ str(playerId));

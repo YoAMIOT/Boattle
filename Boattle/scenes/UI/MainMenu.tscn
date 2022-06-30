@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
+[ext_resource path="res://scenes/Main.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
 [ext_resource path="res://ressources/animations/loading/loading1.png" type="Texture" id=3]
 [ext_resource path="res://ressources/animations/loading/loading4.png" type="Texture" id=4]
@@ -27,28 +28,38 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Menu" type="Control" parent="."]
-visible = false
+[node name="Menus" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Bg" type="Polygon2D" parent="Menu"]
+[node name="Polygon2D" type="Polygon2D" parent="Menus"]
+color = Color( 0.372549, 0.341176, 0.341176, 1 )
+polygon = PoolVector2Array( 0, 0, 1920, 0, 1920, 1080, 0, 1080 )
+
+[node name="Menu" type="Control" parent="Menus"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="Menus/Menu"]
 position = Vector2( 680, 224 )
 color = Color( 0.713726, 0.886275, 0.627451, 1 )
 offset = Vector2( -680, -224 )
 polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
 
-[node name="BgName" type="Polygon2D" parent="Menu"]
+[node name="BgName" type="Polygon2D" parent="Menus/Menu"]
 position = Vector2( 3020, 450.294 )
 scale = Vector2( 3.5, 0.295957 )
 color = Color( 0.713726, 0.886275, 0.627451, 1 )
 offset = Vector2( -680, -224 )
 polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
 
-[node name="PlayerName" type="LineEdit" parent="Menu"]
+[node name="PlayerName" type="LineEdit" parent="Menus/Menu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 704.0
@@ -63,7 +74,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayButton" type="Button" parent="Menu"]
+[node name="PlayButton" type="Button" parent="Menus/Menu"]
 anchor_top = 0.356
 anchor_right = 0.133
 anchor_bottom = 0.415
@@ -76,7 +87,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OptionsButton" type="Button" parent="Menu"]
+[node name="OptionsButton" type="Button" parent="Menus/Menu"]
 anchor_top = 0.474
 anchor_right = 0.133
 anchor_bottom = 0.533
@@ -89,7 +100,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="QuitButton" type="Button" parent="Menu"]
+[node name="QuitButton" type="Button" parent="Menus/Menu"]
 anchor_top = 0.593
 anchor_right = 0.133
 anchor_bottom = 0.652
@@ -102,21 +113,22 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OptionsMenu" type="Control" parent="."]
+[node name="OptionsMenu" type="Control" parent="Menus"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Bg" type="Polygon2D" parent="OptionsMenu"]
+[node name="Bg" type="Polygon2D" parent="Menus/OptionsMenu"]
 position = Vector2( 3996, 296 )
 scale = Vector2( 5.5, 0.762963 )
 color = Color( 0.713726, 0.886275, 0.627451, 1 )
 offset = Vector2( -680, -224 )
 polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
 
-[node name="BackOptionsButton" type="Button" parent="OptionsMenu"]
+[node name="BackOptionsButton" type="Button" parent="Menus/OptionsMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 320.0
@@ -129,7 +141,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FullscreenSwitch" type="CheckButton" parent="OptionsMenu"]
+[node name="FullscreenSwitch" type="CheckButton" parent="Menus/OptionsMenu"]
 anchor_left = 0.433
 anchor_top = 0.178
 anchor_right = 0.567
@@ -145,7 +157,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VSyncSwitch" type="CheckButton" parent="OptionsMenu"]
+[node name="VSyncSwitch" type="CheckButton" parent="Menus/OptionsMenu"]
 anchor_left = 0.433
 anchor_top = 0.178
 anchor_right = 0.567
@@ -161,7 +173,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WindowSizeOption" type="OptionButton" parent="OptionsMenu"]
+[node name="WindowSizeOption" type="OptionButton" parent="Menus/OptionsMenu"]
 anchor_left = 0.5
 anchor_top = 0.296
 anchor_right = 0.608
@@ -178,7 +190,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="WindowSizeLabel" type="Label" parent="OptionsMenu/WindowSizeOption"]
+[node name="WindowSizeLabel" type="Label" parent="Menus/OptionsMenu/WindowSizeOption"]
 anchor_left = -0.962
 anchor_right = -0.163
 anchor_bottom = 1.0
@@ -191,7 +203,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ServerMenu" type="Control" parent="."]
+[node name="ServerMenu" type="Control" parent="Menus"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -199,12 +211,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Bg" type="Polygon2D" parent="ServerMenu"]
+[node name="Bg" type="Polygon2D" parent="Menus/ServerMenu"]
 color = Color( 0.713726, 0.886275, 0.627451, 1 )
 offset = Vector2( -288, 0 )
 polygon = PoolVector2Array( 448, 64, 1472, 64, 1472, 1016, 448, 1016 )
 
-[node name="Error" type="Control" parent="ServerMenu"]
+[node name="Error" type="Control" parent="Menus/ServerMenu"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -212,12 +224,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Bg" type="Polygon2D" parent="ServerMenu/Error"]
+[node name="Bg" type="Polygon2D" parent="Menus/ServerMenu/Error"]
 color = Color( 0.768627, 0.231373, 0.203922, 1 )
 offset = Vector2( -288, 0 )
 polygon = PoolVector2Array( 512, 128, 1408, 128, 1408, 320, 512, 320 )
 
-[node name="EmptyAddress" type="Label" parent="ServerMenu/Error"]
+[node name="EmptyAddress" type="Label" parent="Menus/ServerMenu/Error"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -234,7 +246,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="InvalidAddress" type="Label" parent="ServerMenu/Error"]
+[node name="InvalidAddress" type="Label" parent="Menus/ServerMenu/Error"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -251,7 +263,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="JoinButton" type="Button" parent="ServerMenu"]
+[node name="JoinButton" type="Button" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 928.0
@@ -265,7 +277,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BackButton" type="Button" parent="ServerMenu"]
+[node name="BackButton" type="Button" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 224.0
@@ -278,7 +290,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="IpAddress" type="LineEdit" parent="ServerMenu"]
+[node name="IpAddress" type="LineEdit" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 352.0
@@ -293,7 +305,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ServerName" type="LineEdit" parent="ServerMenu"]
+[node name="ServerName" type="LineEdit" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 352.0
@@ -308,7 +320,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HistoryLabel" type="Label" parent="ServerMenu"]
+[node name="HistoryLabel" type="Label" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1248.0
@@ -323,7 +335,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ServerList" type="ItemList" parent="ServerMenu"]
+[node name="ServerList" type="ItemList" parent="Menus/ServerMenu"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1248.0
@@ -335,7 +347,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Connecting" type="Control" parent="."]
+[node name="Connecting" type="Control" parent="Menus"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -343,11 +355,11 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Bg" type="Polygon2D" parent="Connecting"]
+[node name="Bg" type="Polygon2D" parent="Menus/Connecting"]
 color = Color( 0.713726, 0.886275, 0.627451, 1 )
 polygon = PoolVector2Array( 640, 192, 1280, 192, 1280, 896, 640, 896 )
 
-[node name="ConnectingLabel" type="Label" parent="Connecting"]
+[node name="ConnectingLabel" type="Label" parent="Menus/Connecting"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 704.0
@@ -362,7 +374,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConnectedLabel" type="Label" parent="Connecting"]
+[node name="ConnectedLabel" type="Label" parent="Menus/Connecting"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -378,7 +390,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ConnectionFailedLabel" type="Label" parent="Connecting"]
+[node name="ConnectionFailedLabel" type="Label" parent="Menus/Connecting"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -395,25 +407,25 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LoadingAnim" type="AnimatedSprite" parent="Connecting"]
+[node name="LoadingAnim" type="AnimatedSprite" parent="Menus/Connecting"]
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
 playing = true
 
-[node name="SuccessTimer" type="Timer" parent="Connecting"]
+[node name="SuccessTimer" type="Timer" parent="Menus/Connecting"]
 wait_time = 3.0
 one_shot = true
 
-[node name="FailureTimer" type="Timer" parent="Connecting"]
+[node name="FailureTimer" type="Timer" parent="Menus/Connecting"]
 wait_time = 5.0
 one_shot = true
 
-[node name="TimeOutTimer" type="Timer" parent="Connecting"]
+[node name="TimeOutTimer" type="Timer" parent="Menus/Connecting"]
 wait_time = 30.0
 one_shot = true
 
-[node name="CancelButton" type="Button" parent="Connecting"]
+[node name="CancelButton" type="Button" parent="Menus/Connecting"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 864.0
@@ -426,20 +438,23 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[connection signal="text_changed" from="Menu/PlayerName" to="." method="_on_PlayerName_text_changed"]
-[connection signal="pressed" from="Menu/PlayButton" to="." method="_on_PlayButton_pressed"]
-[connection signal="pressed" from="Menu/OptionsButton" to="." method="_on_OptionsButton_pressed"]
-[connection signal="pressed" from="Menu/QuitButton" to="." method="_on_QuitButton_pressed"]
-[connection signal="pressed" from="OptionsMenu/BackOptionsButton" to="." method="_on_BackOptionsButton_pressed"]
-[connection signal="toggled" from="OptionsMenu/FullscreenSwitch" to="." method="_on_FullscreenSwitch_toggled"]
-[connection signal="toggled" from="OptionsMenu/VSyncSwitch" to="." method="_on_VSyncSwitch_toggled"]
-[connection signal="item_selected" from="OptionsMenu/WindowSizeOption" to="." method="_on_WindowSizeOption_item_selected"]
-[connection signal="pressed" from="ServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
-[connection signal="pressed" from="ServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
-[connection signal="text_changed" from="ServerMenu/IpAddress" to="." method="_on_IpAddress_text_changed"]
-[connection signal="text_changed" from="ServerMenu/ServerName" to="." method="_on_ServerName_text_changed"]
-[connection signal="item_selected" from="ServerMenu/ServerList" to="." method="_on_ServerList_item_selected"]
-[connection signal="timeout" from="Connecting/SuccessTimer" to="." method="_on_SuccessTimer_timeout"]
-[connection signal="timeout" from="Connecting/FailureTimer" to="." method="_on_FailureTimer_timeout"]
-[connection signal="timeout" from="Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]
-[connection signal="pressed" from="Connecting/CancelButton" to="." method="_on_CancelButton_pressed"]
+[node name="Main" parent="." instance=ExtResource( 1 )]
+visible = false
+
+[connection signal="text_changed" from="Menus/Menu/PlayerName" to="." method="_on_PlayerName_text_changed"]
+[connection signal="pressed" from="Menus/Menu/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="Menus/Menu/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="Menus/Menu/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="Menus/OptionsMenu/BackOptionsButton" to="." method="_on_BackOptionsButton_pressed"]
+[connection signal="toggled" from="Menus/OptionsMenu/FullscreenSwitch" to="." method="_on_FullscreenSwitch_toggled"]
+[connection signal="toggled" from="Menus/OptionsMenu/VSyncSwitch" to="." method="_on_VSyncSwitch_toggled"]
+[connection signal="item_selected" from="Menus/OptionsMenu/WindowSizeOption" to="." method="_on_WindowSizeOption_item_selected"]
+[connection signal="pressed" from="Menus/ServerMenu/JoinButton" to="." method="_on_JoinButton_pressed"]
+[connection signal="pressed" from="Menus/ServerMenu/BackButton" to="." method="_on_BackButton_pressed"]
+[connection signal="text_changed" from="Menus/ServerMenu/IpAddress" to="." method="_on_IpAddress_text_changed"]
+[connection signal="text_changed" from="Menus/ServerMenu/ServerName" to="." method="_on_ServerName_text_changed"]
+[connection signal="item_selected" from="Menus/ServerMenu/ServerList" to="." method="_on_ServerList_item_selected"]
+[connection signal="timeout" from="Menus/Connecting/SuccessTimer" to="." method="_on_SuccessTimer_timeout"]
+[connection signal="timeout" from="Menus/Connecting/FailureTimer" to="." method="_on_FailureTimer_timeout"]
+[connection signal="timeout" from="Menus/Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]
+[connection signal="pressed" from="Menus/Connecting/CancelButton" to="." method="_on_CancelButton_pressed"]
