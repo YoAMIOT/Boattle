@@ -8,9 +8,14 @@ var connectionSuccess : bool = false;
 
 func _ready():
 	fetchDataFromManager();
-	regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
-	var _signalFailedConnect = Server.connect("failedToConnect", self, "onConnectionFailed");
-	var _signalSuccessConnect = Server.connect("successfullyConnected", self, "onConnectionSuccess");
+	var error = regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
+	DataManager.printError(error);
+	error = Server.connect("failedToConnect", self, "onConnectionFailed");
+	DataManager.printError(error);
+	error = Server.connect("successfullyConnected", self, "onConnectionSuccess");
+	DataManager.printError(error);
+	get_node("OptionsMenu/WindowSizeOption").disabled = DataManager.datas["fullscreen"];
+	manageWindowSizeSelection();
 
 
 
@@ -36,12 +41,27 @@ func _on_BackOptionsButton_pressed():
 func _on_CancelButton_pressed():
 	_on_FailureTimer_timeout()
 
-func _on_FullscreenSwitch_toggled(state):
+func _on_FullscreenSwitch_toggled(state : bool):
 	OptionManager.setFullscreen(state);
+	get_node("OptionsMenu/WindowSizeOption").disabled = state;
 
-func _on_VSyncSwitch_toggled(state):
+func _on_VSyncSwitch_toggled(state : bool):
 	OptionManager.setVsync(state);
 
+func _on_WindowSizeOption_item_selected(index):
+	var selectedSize : String = get_node("OptionsMenu/WindowSizeOption").get_item_text(index);
+	var firstInt : String = "";
+	var secondInt : String = "";
+	var size : Vector2;
+	var i : int = 0;
+	for c in selectedSize:
+		i += 1;
+		if i < 5:
+			firstInt += c;
+		elif i > 7:
+			secondInt += c;
+	size = Vector2(float(firstInt), float(secondInt));
+	OptionManager.setWindowSize(size)
 
 
 
@@ -58,7 +78,6 @@ func _on_JoinButton_pressed():
 			get_node("Connecting").visible = true;
 			get_node("Connecting/TimeOutTimer").start();
 			refreshServerList();
-
 
 
 
@@ -96,7 +115,8 @@ func _on_FailureTimer_timeout():
 	Server.resetNetworkPeer();
 
 func _on_SuccessTimer_timeout():
-	get_tree().change_scene("res://scenes/Test.tscn");
+	var error = get_tree().change_scene("res://scenes/Test.tscn");
+	DataManager.printError(error);
 
 
 
@@ -119,7 +139,7 @@ func _on_IpAddress_text_changed(enteredIpAddress):
 		get_node("ServerMenu/Error").visible = true;
 		get_node("ServerMenu/Error/EmptyAddress").visible = true;
 
-func _on_ServerName_text_changed(new_text):
+func _on_ServerName_text_changed(_new_text):
 	manageJoinButtonDisability();
 
 func manageJoinButtonDisability():
@@ -153,3 +173,13 @@ func _on_ServerList_item_selected(index):
 	get_node("ServerMenu/ServerName").text = selectedServer;
 	get_node("ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
 	manageJoinButtonDisability();
+
+
+
+func manageWindowSizeSelection():
+	var size : Vector2 = DataManager.datas["windowSize"];
+	var sizeStr : String = String(size.x) + " x " + String(size.y);
+	var i : int = 0;
+	for o in get_node("OptionsMenu/WindowSizeOption").get_item_count():
+		if sizeStr == get_node("OptionsMenu/WindowSizeOption").get_item_text(o):
+			get_node("OptionsMenu/WindowSizeOption").selected = o;

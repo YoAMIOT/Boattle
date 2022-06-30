@@ -13,8 +13,10 @@ func connectToServer():
 	network = NetworkedMultiplayerENet.new();
 	network.create_client(ip, port);
 	get_tree().set_network_peer(network);
-	var _signalFailedConnect = network.connect("connection_failed", self, "connectionFailed");
-	var _signalSuccessConnect = network.connect("connection_succeeded", self, "connectionSucceeded");
+	var error = network.connect("connection_failed", self, "connectionFailed");
+	DataManager.printError(error);
+	error = network.connect("connection_succeeded", self, "connectionSucceeded");
+	DataManager.printError(error);
 
 func connectionFailed():
 	print("! Failed to connect !");
