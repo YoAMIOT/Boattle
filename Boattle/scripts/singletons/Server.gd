@@ -23,6 +23,7 @@ func connectionFailed():
 
 func connectionSucceeded():
 	emit_signal("successfullyConnected");
+	rpc_id(1, "getPlayerName", DataManager.datas["playerName"],get_tree().get_network_unique_id());
 
 func resetNetworkPeer():
 	if get_tree().has_network_peer():

@@ -1,7 +1,7 @@
 extends Node
 
 var network : NetworkedMultiplayerENet = NetworkedMultiplayerENet.new();
-var ip : String;
+var ip : String = "Unknow Address";
 var port : int = 4180;
 var maxPlayers : int = 20;
 var upnp : UPNP = UPNP.new();
@@ -13,10 +13,13 @@ onready var Log = get_node("Ui/Log");
 func _ready():
 	OS.set_window_fullscreen(false);
 	get_tree().set_auto_accept_quit(false)
-	upnp.discover(2000, 2, "InternetGatewayDevice");
+	var error = upnp.discover(2000, 2, "InternetGatewayDevice");
+	DataManager.printError(error);
 	ip = upnp.query_external_address();
-	upnp.add_port_mapping(port, port, "BoattleServer", "UDP");
-	upnp.add_port_mapping(port, port, "BoattleServer", "TCP");
+	error = upnp.add_port_mapping(port, port, "BoattleServer", "UDP");
+	DataManager.printError(error);
+	error = upnp.add_port_mapping(port, port, "BoattleServer", "TCP");
+	DataManager.printError(error);
 	get_node("Ui/IpLabel").text = ip;
 
 
@@ -29,22 +32,20 @@ func _on_ValidateButton_pressed():
 func _on_StartServer_pressed():
 	serverStarted = true;
 	get_node("Ui/StartServer").disabled = true;
-	network.create_server(port, maxPlayers);
+	var error = network.create_server(port, maxPlayers);
+	DataManager.printError(error);
 	get_tree().set_network_peer(network);
 	Log.logPrint("===Server Started===");
 	Log.logPrint("=Currently running on " + ip + "=");
-	var error =network.connect("peer_connected", self, "peerConnected");
-	printError(error);
+	error = network.connect("peer_connected", self, "peerConnected");
+	DataManager.printError(error);
 	error = network.connect("peer_disconnected", self, "peerDisconnected");
-	printError(error);
+	DataManager.printError(error);
 
 
 
 func peerConnected(playerId):
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
-	#TODO Load last known pos
-	var puppetPosition : Vector2 = Vector2(0,0);
-	rpc_id(0, "spawnPuppet", playerId, puppetPosition);
 
 func peerDisconnected(playerId):
 	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
@@ -60,10 +61,10 @@ func _on_Close_pressed():
 	_notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST);
 
 
-
-func printError(error):
-	if error != 0:
-		print("ERROR: ", error);
+remote func getPlayerName(playerName : String, playerId : int):
+	DataManager.checkIfPlayerExists(playerName);
+	var puppetPosition : Vector2 = Vector2(0,0);
+	rpc_id(0, "spawnPuppet", playerId, puppetPosition);
 
 
 
