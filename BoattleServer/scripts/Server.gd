@@ -53,6 +53,10 @@ func peerDisconnected(playerId : int):
 	DataManager.playerDisconnected(playerId);
 	rpc_id(0, "killPuppet", playerId);
 
+func kickPlayer(playerId):
+	rpc_id(playerId, "kick");
+	network.disconnect_peer(playerId);
+
 
 
 func _notification(what : int):
@@ -68,10 +72,13 @@ remote func newConnectionEstablished(playerName : String, playerId : int):
 	if not DataManager.playersDatas.has(playerName):
 		var position : Vector2 = Vector2(0 ,0);
 		DataManager.saveDatasOfAPlayer(playerName, position);
-	var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
-	DataManager.playerConnected(playerId, playerName);
-	rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
-	rpc_id(playerId, "spawnClientPlayer", playerPosition);
+	if not DataManager.connectedPlayersDictionnary.has(playerName):
+		var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+		DataManager.playerConnected(playerId, playerName);
+		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
+		rpc_id(playerId, "spawnClientPlayer", playerPosition);
+	else:
+		kickPlayer(playerId);
 
 
 
