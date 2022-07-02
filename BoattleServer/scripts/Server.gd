@@ -75,12 +75,17 @@ remote func newConnectionEstablished(playerName : String, playerId : int):
 
 
 
-remote func receivePos(position : Vector2, playerName : String, playerId : int):
+remote func receivePos(position : Vector2, playerName : String):
 	DataManager.saveDatasOfAPlayer(playerName, position);
 
 
 
 func _on_TurnCooldown_timeout() -> void:
+	var worldState : Dictionary = {};
 	for p in DataManager.connectedPlayersDictionnary:
-		print(p)
-		#rpc_id(0, "receivePlayerState", p);
+		worldState[p] = {
+			"playerName" : DataManager.connectedPlayersDictionnary[p],
+			"posX" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posX,
+			"posY" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posY
+		};
+	rpc_id(0, "receiveWorldState", worldState);

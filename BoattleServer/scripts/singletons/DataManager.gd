@@ -12,7 +12,7 @@ func _ready():
 func savePlayersDatas():
 	var file : File = File.new();
 	var error = file.open(playersDataFile, File.WRITE);
-	DataManager.printError(error);
+	printError(error);
 	file.store_line(to_json(playersDatas));
 	file.close()
 
@@ -22,7 +22,7 @@ func loadPlayersDatas():
 		savePlayersDatas();
 		return;
 	var error = file.open(playersDataFile, File.READ);
-	DataManager.printError(error);
+	printError(error);
 	playersDatas = JSON.parse(file.get_as_text()).result;
 	file.close();
 

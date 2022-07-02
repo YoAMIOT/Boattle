@@ -45,4 +45,12 @@ remote func killPuppet(playerId : int):
 
 
 func sendPosToServer(position : Vector2):
-	rpc_id(1, "receivePos", position, DataManager.datas["playerName"], get_tree().get_network_unique_id());
+	rpc_id(1, "receivePos", position, DataManager.datas["playerName"]);
+
+remote func receiveWorldState(worldState : Dictionary):
+	for p in worldState:
+		if get_tree().get_network_unique_id() != p:
+			var newPosition : Vector2 = Vector2(worldState[p].posX, worldState[p].posY);
+			if !get_node("/root/MainMenu/Main/Players/").has_node(str(p)):
+				spawnPuppet(p, worldState[p].playerName, newPosition);
+			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
