@@ -41,19 +41,21 @@ func _on_StartServer_pressed():
 	DataManager.printError(error);
 	error = network.connect("peer_disconnected", self, "peerDisconnected");
 	DataManager.printError(error);
+	get_node("TurnCooldown").start()
 
 
 
-func peerConnected(playerId):
+func peerConnected(playerId : int):
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
 
-func peerDisconnected(playerId):
+func peerDisconnected(playerId : int):
 	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
+	DataManager.playerDisconnected(playerId);
 	rpc_id(0, "killPuppet", playerId);
 
 
 
-func _notification(what):
+func _notification(what : int):
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		get_tree().quit();
 
@@ -61,12 +63,24 @@ func _on_Close_pressed():
 	_notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST);
 
 
-remote func getPlayerName(playerName : String, playerId : int):
-	DataManager.checkIfPlayerExists(playerName);
-	var puppetPosition : Vector2 = Vector2(0,0);
-	rpc_id(0, "spawnPuppet", playerId, puppetPosition);
+
+remote func newConnectionEstablished(playerName : String, playerId : int):
+	if not DataManager.playersDatas.has(playerName):
+		var position : Vector2 = Vector2(0 ,0);
+		DataManager.saveDatasOfAPlayer(playerName, position);
+	var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+	DataManager.playerConnected(playerId, playerName);
+	rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
+	rpc_id(playerId, "spawnClientPlayer", playerPosition);
 
 
 
 remote func receivePos(position : Vector2, playerName : String, playerId : int):
-	Log.logPrint(str(position) + " ;"+ playerName+ " ;"+ str(playerId));
+	DataManager.saveDatasOfAPlayer(playerName, position);
+
+
+
+func _on_TurnCooldown_timeout() -> void:
+	for p in DataManager.connectedPlayersDictionnary:
+		print(p)
+		#rpc_id(0, "receivePlayerState", p);

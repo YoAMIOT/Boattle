@@ -2,6 +2,7 @@ extends Node
 
 var playersDataFile : String = "res://data/playersData.json";
 var playersDatas;
+var connectedPlayersDictionnary : Dictionary;
 
 func _ready():
 	loadPlayersDatas();
@@ -25,14 +26,17 @@ func loadPlayersDatas():
 	playersDatas = JSON.parse(file.get_as_text()).result;
 	file.close();
 
-func checkIfPlayerExists(playerName : String)
-	if not playersDatas.has(playerName):
-		var position : Vector2 = Vector2(0 ,0);
-		saveDatasOfAPlayer(playerName, position);
-
 func saveDatasOfAPlayer(playerName : String, position : Vector2):
 	playersDatas[playerName] = {"posX" : position.x, "posY" : position.y}
 	savePlayersDatas();
+
+
+
+func playerConnected(playerId : int, playerName : String):
+	connectedPlayersDictionnary[playerId] = playerName;
+
+func playerDisconnected(playerId : int):
+	connectedPlayersDictionnary.erase(playerId);
 
 
 

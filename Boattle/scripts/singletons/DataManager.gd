@@ -65,6 +65,6 @@ func addToDictionnary(key : String, address : String):
 
 
 
-func printError(error):
+func printError(error : int):
 	if error != 0:
 		print("ERROR: ", error);

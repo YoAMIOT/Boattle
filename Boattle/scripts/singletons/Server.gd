@@ -23,7 +23,7 @@ func connectionFailed():
 
 func connectionSucceeded():
 	emit_signal("successfullyConnected");
-	rpc_id(1, "getPlayerName", DataManager.datas["playerName"],get_tree().get_network_unique_id());
+	rpc_id(1, "newConnectionEstablished", DataManager.datas["playerName"], get_tree().get_network_unique_id());
 
 func resetNetworkPeer():
 	if get_tree().has_network_peer():
@@ -33,10 +33,13 @@ func resetNetworkPeer():
 
 
 
-remote func spawnPuppet(playerId, puppetPosition):
-	get_node("/root/MainMenu/Main").spawnPuppet(playerId, puppetPosition);
+remote func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2):
+	get_node("/root/MainMenu/Main").spawnPuppet(playerId, playerName, puppetPosition);
 
-remote func killPuppet(playerId):
+remote func spawnClientPlayer(position : Vector2):
+	get_node("/root/MainMenu/Main").spawnClientPlayer(position);
+
+remote func killPuppet(playerId : int):
 	get_node("/root/MainMenu/Main").killPuppet(playerId);
 
 

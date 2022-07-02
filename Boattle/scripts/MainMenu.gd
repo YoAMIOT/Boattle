@@ -48,7 +48,7 @@ func _on_FullscreenSwitch_toggled(state : bool):
 func _on_VSyncSwitch_toggled(state : bool):
 	OptionManager.setVsync(state);
 
-func _on_WindowSizeOption_item_selected(index):
+func _on_WindowSizeOption_item_selected(index : int):
 	var selectedSize : String = get_node("Menus/OptionsMenu/WindowSizeOption").get_item_text(index);
 	var firstInt : String = "";
 	var secondInt : String = "";
@@ -117,14 +117,13 @@ func _on_FailureTimer_timeout():
 func _on_SuccessTimer_timeout():
 	get_node("Menus").visible = false;
 	get_node("Main").visible = true;
-	get_node("Main").instantiateClientBoat();
 
 
 
-func _on_PlayerName_text_changed(newName):
+func _on_PlayerName_text_changed(newName : String):
 	DataManager.savePlayerName(newName);
 
-func _on_IpAddress_text_changed(enteredIpAddress):
+func _on_IpAddress_text_changed(enteredIpAddress : String):
 	get_node("Menus/ServerMenu/Error").visible = false;
 	get_node("Menus/ServerMenu/Error/EmptyAddress").visible = false;
 	get_node("Menus/ServerMenu/Error/InvalidAddress").visible = false;
@@ -140,7 +139,7 @@ func _on_IpAddress_text_changed(enteredIpAddress):
 		get_node("Menus/ServerMenu/Error").visible = true;
 		get_node("Menus/ServerMenu/Error/EmptyAddress").visible = true;
 
-func _on_ServerName_text_changed(_new_text):
+func _on_ServerName_text_changed(_new_text : String):
 	manageJoinButtonDisability();
 
 func manageJoinButtonDisability():
@@ -169,7 +168,7 @@ func refreshServerList():
 	get_node("Menus/ServerMenu/ServerList").clear();
 	fillServerList();
 
-func _on_ServerList_item_selected(index):
+func _on_ServerList_item_selected(index : int):
 	var selectedServer : String = get_node("Menus/ServerMenu/ServerList").get_item_text(index);
 	get_node("Menus/ServerMenu/ServerName").text = selectedServer;
 	get_node("Menus/ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);

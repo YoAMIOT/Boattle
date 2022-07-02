@@ -146,6 +146,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TurnCooldown" type="Timer" parent="."]
+
 [connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]
+[connection signal="timeout" from="TurnCooldown" to="." method="_on_TurnCooldown_timeout"]
