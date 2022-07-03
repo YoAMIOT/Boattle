@@ -31,8 +31,8 @@ func resetNetworkPeer():
 		network.disconnect("connection_succeeded", self, "connectionSucceeded");
 		get_tree().network_peer = null
 
-remote func kick():
-	resetNetworkPeer();
+remote func disconnectFromServer():
+	get_node("/root/MainMenu").resetMenus();
 
 
 

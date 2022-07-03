@@ -19,6 +19,15 @@ func _ready():
 
 
 
+func resetMenus():
+	connectionSuccess = false;
+	_on_FailureTimer_timeout();
+	get_node("Menus/ServerMenu").visible = false;
+	get_node("Menus/OptionsMenu").visible = false;
+	get_node("Menus/Menu").visible = true;
+
+
+
 func _on_PlayButton_pressed():
 	get_node("Menus/Menu").visible = false;
 	get_node("Menus/ServerMenu").visible = true;

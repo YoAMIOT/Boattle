@@ -54,7 +54,7 @@ func peerDisconnected(playerId : int):
 	rpc_id(0, "killPuppet", playerId);
 
 func kickPlayer(playerId):
-	rpc_id(playerId, "kick");
+	rpc_id(playerId, "disconnectFromServer");
 	network.disconnect_peer(playerId);
 
 
