@@ -10,7 +10,7 @@ onready var Log = get_node("Ui/Log");
 
 
 
-func _ready():
+func _ready() -> void:
 	OS.set_window_fullscreen(false);
 	get_tree().set_auto_accept_quit(false)
 	var error = upnp.discover(2000, 2, "InternetGatewayDevice");
@@ -23,13 +23,13 @@ func _ready():
 	get_node("Ui/IpLabel").text = ip;
 
 
-func _on_ValidateButton_pressed():
+func _on_ValidateButton_pressed() -> void:
 	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value;
 	get_node("Ui/MaxPlayerMenu").visible = false;
 	get_node("Ui/StartServer").disabled = false;
 
 
-func _on_StartServer_pressed():
+func _on_StartServer_pressed() -> void:
 	serverStarted = true;
 	get_node("Ui/StartServer").disabled = true;
 	var error = network.create_server(port, maxPlayers);
@@ -45,44 +45,48 @@ func _on_StartServer_pressed():
 
 
 
-func peerConnected(playerId : int):
+func peerConnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
 
-func peerDisconnected(playerId : int):
+func peerDisconnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
 	rpc_id(0, "killPuppet", playerId);
 
-func kickPlayer(playerId):
-	rpc_id(playerId, "disconnectFromServer");
+func kickPlayer(playerId : int, reason : String) -> void:
+	rpc_id(playerId, "kickedFromServer", reason);
 	network.disconnect_peer(playerId);
 
 
 
-func _notification(what : int):
+func _notification(what : int) -> void:
 	if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
 		get_tree().quit();
 
-func _on_Close_pressed():
+func _on_Close_pressed() -> void:
 	_notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST);
 
 
 
-remote func newConnectionEstablished(playerName : String, playerId : int):
+remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
 	if not DataManager.playersDatas.has(playerName):
 		var position : Vector2 = Vector2(0 ,0);
 		DataManager.saveDatasOfAPlayer(playerName, position);
-	if not DataManager.connectedPlayersDictionnary.has(playerName):
+	var hasPlayerConnected : bool = false;
+	for p in DataManager.connectedPlayersDictionnary:
+		if DataManager.connectedPlayersDictionnary[p] == playerName:
+			hasPlayerConnected = true;
+	if hasPlayerConnected:
+		kickPlayer(playerId, "Player already connected");
+	elif not hasPlayerConnected:
 		var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
 		DataManager.playerConnected(playerId, playerName);
 		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
 		rpc_id(playerId, "spawnClientPlayer", playerPosition);
-	else:
-		kickPlayer(playerId);
 
 
 
-remote func receivePos(position : Vector2, playerName : String):
+remote func receivePos(position : Vector2, playerName : String) -> void:
 	DataManager.saveDatasOfAPlayer(playerName, position);
 
 

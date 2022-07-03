@@ -414,10 +414,6 @@ frames = SubResource( 1 )
 frame = 2
 playing = true
 
-[node name="SuccessTimer" type="Timer" parent="Menus/Connecting"]
-wait_time = 3.0
-one_shot = true
-
 [node name="FailureTimer" type="Timer" parent="Menus/Connecting"]
 wait_time = 5.0
 one_shot = true
@@ -439,6 +435,27 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="KickedPopup" type="WindowDialog" parent="Menus"]
+anchor_left = 0.3
+anchor_top = 0.237
+anchor_right = 0.7
+anchor_bottom = 0.77
+margin_top = 0.039978
+margin_right = -0.00012207
+margin_bottom = 0.399963
+theme = ExtResource( 11 )
+window_title = "Kicked from server"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Menus/KickedPopup"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 11 )
+align = 1
+valign = 1
+
 [node name="Main" parent="." instance=ExtResource( 1 )]
 visible = false
 
@@ -455,7 +472,7 @@ visible = false
 [connection signal="text_changed" from="Menus/ServerMenu/IpAddress" to="." method="_on_IpAddress_text_changed"]
 [connection signal="text_changed" from="Menus/ServerMenu/ServerName" to="." method="_on_ServerName_text_changed"]
 [connection signal="item_selected" from="Menus/ServerMenu/ServerList" to="." method="_on_ServerList_item_selected"]
-[connection signal="timeout" from="Menus/Connecting/SuccessTimer" to="." method="_on_SuccessTimer_timeout"]
 [connection signal="timeout" from="Menus/Connecting/FailureTimer" to="." method="_on_FailureTimer_timeout"]
 [connection signal="timeout" from="Menus/Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]
 [connection signal="pressed" from="Menus/Connecting/CancelButton" to="." method="_on_CancelButton_pressed"]
+[connection signal="popup_hide" from="Menus/KickedPopup" to="." method="_on_KickedPopup_popup_hide"]

@@ -6,14 +6,14 @@ var lastWorldState : int = 0;
 var worldStateBuffer : Array;
 const INTERPOLATION_OFFSET : int = 100;
 
-func spawnClientPlayer(spawnPosition : Vector2):
+func spawnClientPlayer(spawnPosition : Vector2) -> void:
 	var instance = ClientBoat.instance();
 	get_node(".").add_child(instance);
 	instance.position = spawnPosition;
 
 
 
-func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2):
+func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2) -> void:
 	if get_tree().get_network_unique_id() == playerId:
 		pass;
 	else:
@@ -24,6 +24,6 @@ func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2):
 			instance.get_node("NameLabel").text = playerName;
 			get_node("Players").add_child(instance);
 
-func killPuppet(playerId : int):
+func killPuppet(playerId : int) -> void:
 	yield(get_tree().create_timer(0.2), "timeout");
 	get_node("Players/" + str(playerId)).queue_free();

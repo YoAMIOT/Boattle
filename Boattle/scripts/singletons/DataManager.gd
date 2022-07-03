@@ -12,7 +12,7 @@ var datas : Dictionary = {
 };
 
 
-func _ready():
+func _ready() -> void:
 	var file : File = File.new();
 	if file.file_exists(settingsFile):
 		var error = file.open(settingsFile, File.READ);
@@ -30,23 +30,23 @@ func _ready():
 
 
 
-func savePlayerName(newName : String):
+func savePlayerName(newName : String) -> void:
 	datas["playerName"] = newName;
 	saveSettings();
 
-func saveFullscreen(fullscreenState : bool):
+func saveFullscreen(fullscreenState : bool) -> void:
 	datas["fullscreen"] = fullscreenState;
 	saveSettings();
 
-func saveVsync(state : bool):
+func saveVsync(state : bool) -> void:
 	datas["vSync"] = state;
 	saveSettings();
 
-func saveWindowSize(size : Vector2):
+func saveWindowSize(size : Vector2) -> void:
 	datas["windowSize"] = size;
 	saveSettings();
 
-func saveSettings():
+func saveSettings() -> void:
 	var file : File = File.new();
 	var error = file.open(settingsFile, File.WRITE);
 	printError(error);
@@ -55,7 +55,7 @@ func saveSettings():
 
 
 
-func addToDictionnary(key : String, address : String):
+func addToDictionnary(key : String, address : String) -> void:
 	ipDictionnary[key] = address;
 	var file : File = File.new();
 	var error = file.open(serversFile, File.WRITE);
@@ -65,6 +65,6 @@ func addToDictionnary(key : String, address : String):
 
 
 
-func printError(error : int):
+func printError(error : int) -> void:
 	if error != 0:
 		print("ERROR: ", error);

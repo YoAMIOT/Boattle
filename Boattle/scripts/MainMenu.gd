@@ -6,7 +6,7 @@ var connectionSuccess : bool = false;
 
 
 
-func _ready():
+func _ready() -> void:
 	fetchDataFromManager();
 	var error = regex.compile("\\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\b");
 	DataManager.printError(error);
@@ -19,7 +19,7 @@ func _ready():
 
 
 
-func resetMenus():
+func resetMenus() -> void:
 	connectionSuccess = false;
 	_on_FailureTimer_timeout();
 	get_node("Menus/ServerMenu").visible = false;
@@ -28,36 +28,36 @@ func resetMenus():
 
 
 
-func _on_PlayButton_pressed():
+func _on_PlayButton_pressed() -> void:
 	get_node("Menus/Menu").visible = false;
 	get_node("Menus/ServerMenu").visible = true;
 
-func _on_QuitButton_pressed():
+func _on_QuitButton_pressed() -> void:
 	get_tree().quit();
 
-func _on_BackButton_pressed():
+func _on_BackButton_pressed() -> void:
 	get_node("Menus/ServerMenu").visible = false;
 	get_node("Menus/Menu").visible = true;
 
-func _on_OptionsButton_pressed():
+func _on_OptionsButton_pressed() -> void:
 	get_node("Menus/Menu").visible = false;
 	get_node("Menus/OptionsMenu").visible = true;
 
-func _on_BackOptionsButton_pressed():
+func _on_BackOptionsButton_pressed() -> void:
 	get_node("Menus/OptionsMenu").visible = false;
 	get_node("Menus/Menu").visible = true;
 
-func _on_CancelButton_pressed():
+func _on_CancelButton_pressed() -> void:
 	_on_FailureTimer_timeout()
 
-func _on_FullscreenSwitch_toggled(state : bool):
+func _on_FullscreenSwitch_toggled(state : bool) -> void:
 	OptionManager.setFullscreen(state);
 	get_node("Menus/OptionsMenu/WindowSizeOption").disabled = state;
 
-func _on_VSyncSwitch_toggled(state : bool):
+func _on_VSyncSwitch_toggled(state : bool) -> void:
 	OptionManager.setVsync(state);
 
-func _on_WindowSizeOption_item_selected(index : int):
+func _on_WindowSizeOption_item_selected(index : int) -> void:
 	var selectedSize : String = get_node("Menus/OptionsMenu/WindowSizeOption").get_item_text(index);
 	var firstInt : String = "";
 	var secondInt : String = "";
@@ -74,7 +74,7 @@ func _on_WindowSizeOption_item_selected(index : int):
 
 
 
-func _on_JoinButton_pressed():
+func _on_JoinButton_pressed() -> void:
 	if get_node("Menus/ServerMenu/IpAddress").text.empty() == false:
 		var result = regex.search(get_node("Menus/ServerMenu/IpAddress").text);
 		if result:
@@ -90,22 +90,21 @@ func _on_JoinButton_pressed():
 
 
 
-func onConnectionFailed():
+func onConnectionFailed() -> void:
 	get_node("Menus/Connecting/ConnectingLabel").visible = false;
 	get_node("Menus/Connecting/LoadingAnim").visible = false;
 	get_node("Menus/Connecting/CancelButton").visible = false;
 	get_node("Menus/Connecting/ConnectionFailedLabel").visible = true;
 	get_node("Menus/Connecting/FailureTimer").start();
 
-func onConnectionSuccess():
+func onConnectionSuccess() -> void:
 	get_node("Menus/Connecting/ConnectingLabel").visible = false;
 	get_node("Menus/Connecting/LoadingAnim").visible = false;
 	get_node("Menus/Connecting/CancelButton").visible = false;
 	get_node("Menus/Connecting/ConnectedLabel").visible = true;
 	connectionSuccess = true;
-	get_node("Menus/Connecting/SuccessTimer").start();
 
-func _on_TimeOutTimer_timeout():
+func _on_TimeOutTimer_timeout() -> void:
 	if connectionSuccess == false:
 		get_node("Menus/Connecting/ConnectingLabel").visible = false;
 		get_node("Menus/Connecting/LoadingAnim").visible = false;
@@ -113,7 +112,7 @@ func _on_TimeOutTimer_timeout():
 		get_node("Menus/Connecting/CancelButton").visible = false;
 		get_node("Menus/Connecting/FailureTimer").start();
 
-func _on_FailureTimer_timeout():
+func _on_FailureTimer_timeout() -> void:
 	get_node("Menus/Connecting/ConnectingLabel").visible = true;
 	get_node("Menus/Connecting/LoadingAnim").visible = true;
 	get_node("Menus/Connecting/CancelButton").visible = true;
@@ -123,16 +122,16 @@ func _on_FailureTimer_timeout():
 	get_node("Menus/ServerMenu").visible = true;
 	Server.resetNetworkPeer();
 
-func _on_SuccessTimer_timeout():
+func enterGame() -> void:
 	get_node("Menus").visible = false;
 	get_node("Main").visible = true;
 
 
 
-func _on_PlayerName_text_changed(newName : String):
+func _on_PlayerName_text_changed(newName : String) -> void:
 	DataManager.savePlayerName(newName);
 
-func _on_IpAddress_text_changed(enteredIpAddress : String):
+func _on_IpAddress_text_changed(enteredIpAddress : String) -> void:
 	get_node("Menus/ServerMenu/Error").visible = false;
 	get_node("Menus/ServerMenu/Error/EmptyAddress").visible = false;
 	get_node("Menus/ServerMenu/Error/InvalidAddress").visible = false;
@@ -148,10 +147,10 @@ func _on_IpAddress_text_changed(enteredIpAddress : String):
 		get_node("Menus/ServerMenu/Error").visible = true;
 		get_node("Menus/ServerMenu/Error/EmptyAddress").visible = true;
 
-func _on_ServerName_text_changed(_new_text : String):
+func _on_ServerName_text_changed(_new_text : String) -> void:
 	manageJoinButtonDisability();
 
-func manageJoinButtonDisability():
+func manageJoinButtonDisability() -> void:
 	if get_node("Menus/ServerMenu/ServerName").text.empty() or get_node("Menus/ServerMenu/IpAddress").text.empty():
 		get_node("Menus/ServerMenu/JoinButton").disabled = true;
 	elif get_node("Menus/ServerMenu/ServerName").text.empty() == false and get_node("Menus/ServerMenu/IpAddress").text.empty() == false:
@@ -163,21 +162,21 @@ func manageJoinButtonDisability():
 
 
 
-func fetchDataFromManager():
+func fetchDataFromManager() -> void:
 	get_node("Menus/Menu/PlayerName").text = DataManager.datas["playerName"];
 	get_node("Menus/OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
 	get_node("Menus/OptionsMenu/VSyncSwitch").pressed = DataManager.datas["vSync"];
 	fillServerList();
 
-func fillServerList():
+func fillServerList() -> void:
 	for s in DataManager.ipDictionnary:
 		get_node("Menus/ServerMenu/ServerList").add_item(s);
 
-func refreshServerList():
+func refreshServerList() -> void:
 	get_node("Menus/ServerMenu/ServerList").clear();
 	fillServerList();
 
-func _on_ServerList_item_selected(index : int):
+func _on_ServerList_item_selected(index : int) -> void:
 	var selectedServer : String = get_node("Menus/ServerMenu/ServerList").get_item_text(index);
 	get_node("Menus/ServerMenu/ServerName").text = selectedServer;
 	get_node("Menus/ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
@@ -185,9 +184,19 @@ func _on_ServerList_item_selected(index : int):
 
 
 
-func manageWindowSizeSelection():
+func manageWindowSizeSelection() -> void:
 	var size : Vector2 = DataManager.datas["windowSize"];
 	var sizeStr : String = String(size.x) + " x " + String(size.y);
 	for o in get_node("Menus/OptionsMenu/WindowSizeOption").get_item_count():
 		if sizeStr == get_node("Menus/OptionsMenu/WindowSizeOption").get_item_text(o):
 			get_node("Menus/OptionsMenu/WindowSizeOption").selected = o;
+
+
+
+func showKickMessage(reason : String) -> void:
+	get_node("Menus/KickedPopup/Label").text = reason;
+	get_node("Menus/KickedPopup").popup();
+
+
+func _on_KickedPopup_popup_hide() -> void:
+	get_node("Menus/KickedPopup/Label").text = "";
