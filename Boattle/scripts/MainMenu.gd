@@ -22,11 +22,11 @@ func _ready() -> void:
 func resetMenus() -> void:
 	connectionSuccess = false;
 	_on_FailureTimer_timeout();
+	get_node("Menus/Connecting/TimeOutTimer").stop();
+	get_node("Menus/Connecting/TimeOutTimer").wait_time = 30;
 	get_node("Menus/ServerMenu").visible = false;
 	get_node("Menus/OptionsMenu").visible = false;
 	get_node("Menus/Menu").visible = true;
-
-
 
 func _on_PlayButton_pressed() -> void:
 	get_node("Menus/Menu").visible = false;

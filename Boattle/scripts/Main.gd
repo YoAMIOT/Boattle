@@ -26,4 +26,5 @@ func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2) 
 
 func killPuppet(playerId : int) -> void:
 	yield(get_tree().create_timer(0.2), "timeout");
-	get_node("Players/" + str(playerId)).queue_free();
+	if get_node("Players").has_node(str(playerId)):
+		get_node("Players/" + str(playerId)).queue_free();

@@ -24,7 +24,7 @@ func _ready() -> void:
 
 
 func _on_ValidateButton_pressed() -> void:
-	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value;
+	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value + 1;
 	get_node("Ui/MaxPlayerMenu").visible = false;
 	get_node("Ui/StartServer").disabled = false;
 
@@ -47,6 +47,8 @@ func _on_StartServer_pressed() -> void:
 
 func peerConnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
+	if DataManager.connectedPlayersDictionnary.size() == maxPlayers - 1:
+		kickPlayer(playerId, "Server full");
 
 func peerDisconnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
