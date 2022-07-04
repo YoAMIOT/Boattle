@@ -30,7 +30,6 @@ __meta__ = {
 }
 
 [node name="Menus" type="Control" parent="."]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
@@ -597,13 +596,13 @@ __meta__ = {
 
 [node name="NewPassword" type="LineEdit" parent="PasswordPage/Registration"]
 anchor_left = 0.367
-anchor_top = 0.356
+anchor_top = 0.415
 anchor_right = 0.633
-anchor_bottom = 0.415
+anchor_bottom = 0.474
 margin_left = -0.640015
-margin_top = -0.480011
+margin_top = -0.200012
 margin_right = 0.640015
-margin_bottom = -0.200012
+margin_bottom = 0.0799255
 theme = ExtResource( 11 )
 align = 1
 max_length = 20
@@ -615,13 +614,13 @@ __meta__ = {
 
 [node name="ConfirmPassword" type="LineEdit" parent="PasswordPage/Registration"]
 anchor_left = 0.367
-anchor_top = 0.593
+anchor_top = 0.533
 anchor_right = 0.633
-anchor_bottom = 0.652
+anchor_bottom = 0.593
 margin_left = -0.640015
-margin_top = -0.440063
+margin_top = 0.359985
 margin_right = 0.640015
-margin_bottom = -0.160034
+margin_bottom = -0.439941
 theme = ExtResource( 11 )
 align = 1
 max_length = 20

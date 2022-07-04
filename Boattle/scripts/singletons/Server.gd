@@ -37,12 +37,32 @@ remote func kickedFromServer(reason : String) -> void:
 
 
 
+func sendPasswordValidationRequest(registration : bool, password : String) -> void:
+	rpc_id(1, "receivePasswordValidationRequest", registration, password, DataManager.datas["playerName"]);
+
+remote func authentication(registration : bool) -> void:
+	get_node("/root/MainMenu/PasswordPage").visible = true;
+	if registration == true:
+		get_node("/root/MainMenu/PasswordPage/Registration").visible = true;
+	elif registration == false:
+		get_node("/root/MainMenu/PasswordPage/AlreadyRegistered").visible = true;
+
+remote func logIn(playerPosition : Vector2) -> void:
+	spawnClientPlayer(playerPosition);
+	get_node("/root/MainMenu").enterGame();
+	get_node("/root/MainMenu/PasswordPage").reset();
+	get_node("/root/MainMenu/PasswordPage").visible = false;
+
+remote func wrongPassword() -> void:
+	get_node("/root/MainMenu/PasswordPage").wrongPassword();
+
+
+
 remote func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2) -> void:
 	get_node("/root/MainMenu/Main").spawnPuppet(playerId, playerName, puppetPosition);
 
 remote func spawnClientPlayer(position : Vector2) -> void:
 	get_node("/root/MainMenu/Main").spawnClientPlayer(position);
-	get_node("/root/MainMenu").enterGame();
 
 remote func killPuppet(playerId : int) -> void:
 	get_node("/root/MainMenu/Main").killPuppet(playerId);

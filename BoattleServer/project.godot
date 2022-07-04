@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 [autoload]
 
 DataManager="*res://scripts/singletons/DataManager.gd"
+PasswordManager="*res://scripts/singletons/PasswordManager.gd"
 
 [display]
 

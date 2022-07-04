@@ -22,12 +22,10 @@ func _ready() -> void:
 	DataManager.printError(error);
 	get_node("Ui/IpLabel").text = ip;
 
-
 func _on_ValidateButton_pressed() -> void:
 	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value + 1;
 	get_node("Ui/MaxPlayerMenu").visible = false;
 	get_node("Ui/StartServer").disabled = false;
-
 
 func _on_StartServer_pressed() -> void:
 	serverStarted = true;
@@ -55,6 +53,34 @@ func peerDisconnected(playerId : int) -> void:
 	DataManager.playerDisconnected(playerId);
 	rpc_id(0, "killPuppet", playerId);
 
+remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
+	var registration : bool = false;
+	if not DataManager.playersDatas.has(playerName):
+		var position : Vector2 = Vector2(0 ,0);
+		DataManager.saveDatasOfAPlayer(playerName, position);
+		registration = true
+	var hasPlayerConnected : bool = false;
+	for p in DataManager.connectedPlayersDictionnary:
+		if DataManager.connectedPlayersDictionnary[p] == playerName:
+			hasPlayerConnected = true;
+	if hasPlayerConnected:
+		kickPlayer(playerId, "Player already connected");
+	elif not hasPlayerConnected:
+		var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+		DataManager.playerConnected(playerId, playerName);
+		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
+		rpc_id(playerId, "authentication", registration);
+
+remote func receivePasswordValidationRequest(registration : bool, password : String, playerName : String) -> void:
+	PasswordManager.validatePassword(registration, password, playerName);
+
+func logIn(playerId : int, playerName : String) -> void:
+	var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+	rpc_id(playerId, "logIn", playerPosition);
+
+func wrongPasswordEntered(playerId : int) -> void:
+	rpc_id(playerId, "wrongPassword");
+
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
 	network.disconnect_peer(playerId);
@@ -67,24 +93,6 @@ func _notification(what : int) -> void:
 
 func _on_Close_pressed() -> void:
 	_notification(MainLoop.NOTIFICATION_WM_QUIT_REQUEST);
-
-
-
-remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
-	if not DataManager.playersDatas.has(playerName):
-		var position : Vector2 = Vector2(0 ,0);
-		DataManager.saveDatasOfAPlayer(playerName, position);
-	var hasPlayerConnected : bool = false;
-	for p in DataManager.connectedPlayersDictionnary:
-		if DataManager.connectedPlayersDictionnary[p] == playerName:
-			hasPlayerConnected = true;
-	if hasPlayerConnected:
-		kickPlayer(playerId, "Player already connected");
-	elif not hasPlayerConnected:
-		var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
-		DataManager.playerConnected(playerId, playerName);
-		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
-		rpc_id(playerId, "spawnClientPlayer", playerPosition);
 
 
 
