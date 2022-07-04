@@ -6,6 +6,7 @@ var port : int = 4180;
 var maxPlayers : int = 20;
 var upnp : UPNP = UPNP.new();
 var serverStarted : bool = false;
+var turn : bool = true;
 onready var Log = get_node("Ui/Log");
 
 
@@ -102,6 +103,7 @@ remote func receivePos(position : Vector2, playerName : String) -> void:
 
 
 func _on_TurnCooldown_timeout() -> void:
+	turn = !turn;
 	var worldState : Dictionary = {};
 	for p in DataManager.connectedPlayersDictionnary:
 		worldState[p] = {
