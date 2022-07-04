@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/Main.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/MainMenu.gd" type="Script" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://ressources/animations/loading/loading3.png" type="Texture" id=9]
 [ext_resource path="res://ressources/animations/loading/loading5.png" type="Texture" id=10]
 [ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=11]
+[ext_resource path="res://scripts/PasswordPage.gd" type="Script" id=12]
 
 [sub_resource type="SpriteFrames" id=1]
 animations = [ {
@@ -29,13 +30,14 @@ __meta__ = {
 }
 
 [node name="Menus" type="Control" parent="."]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Polygon2D" type="Polygon2D" parent="Menus"]
+[node name="Bg" type="Polygon2D" parent="Menus"]
 color = Color( 0.372549, 0.341176, 0.341176, 1 )
 polygon = PoolVector2Array( 0, 0, 1920, 0, 1920, 1080, 0, 1080 )
 
@@ -411,7 +413,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 3
+frame = 6
 playing = true
 
 [node name="FailureTimer" type="Timer" parent="Menus/Connecting"]
@@ -456,6 +458,217 @@ theme = ExtResource( 11 )
 align = 1
 valign = 1
 
+[node name="PasswordPage" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="PasswordPage"]
+color = Color( 0.372549, 0.341176, 0.341176, 1 )
+polygon = PoolVector2Array( 0, 0, 1920, 0, 1920, 1080, 0, 1080 )
+
+[node name="Bg" type="Polygon2D" parent="PasswordPage/Bg"]
+position = Vector2( 3996, 296 )
+scale = Vector2( 5.5, 0.762963 )
+color = Color( 0.713726, 0.886275, 0.627451, 1 )
+offset = Vector2( -680, -224 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
+
+[node name="AlreadyRegistered" type="Control" parent="PasswordPage"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PasswordPage/AlreadyRegistered"]
+anchor_left = 0.2
+anchor_top = 0.119
+anchor_right = 0.8
+anchor_bottom = 0.238
+margin_top = 0.479996
+margin_right = -576.0
+margin_bottom = -64.04
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 11 )
+text = "Welcome Back!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="PasswordPage/AlreadyRegistered"]
+anchor_left = 0.401
+anchor_top = 0.237
+anchor_right = 0.599
+anchor_bottom = 0.296
+margin_left = -0.920044
+margin_top = 0.039978
+margin_right = 0.919922
+margin_bottom = 0.320007
+theme = ExtResource( 11 )
+text = "Please enter your password"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Password" type="LineEdit" parent="PasswordPage/AlreadyRegistered"]
+anchor_left = 0.367
+anchor_top = 0.47
+anchor_right = 0.633
+anchor_bottom = 0.53
+margin_left = -0.640015
+margin_top = 0.399963
+margin_right = 0.640015
+margin_bottom = -0.400024
+theme = ExtResource( 11 )
+align = 1
+max_length = 20
+placeholder_text = "Password"
+placeholder_alpha = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValidatePassword" type="Button" parent="PasswordPage/AlreadyRegistered"]
+anchor_left = 0.433
+anchor_top = 0.704
+anchor_right = 0.567
+anchor_bottom = 0.763
+margin_left = 0.639954
+margin_top = -0.320068
+margin_right = -0.640015
+margin_bottom = -0.0400391
+theme = ExtResource( 11 )
+text = "Validate"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Registration" type="Control" parent="PasswordPage"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="PasswordPage/Registration"]
+anchor_left = 0.2
+anchor_top = 0.119
+anchor_right = 0.8
+anchor_bottom = 0.238
+margin_top = 0.479996
+margin_right = -576.0
+margin_bottom = -64.04
+rect_scale = Vector2( 2, 2 )
+theme = ExtResource( 11 )
+text = "Welcome! You are new to this server!"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="PasswordPage/Registration"]
+anchor_left = 0.352
+anchor_top = 0.237
+anchor_right = 0.648
+anchor_bottom = 0.296
+margin_left = -3.84003
+margin_top = 0.039978
+margin_right = 3.83997
+margin_bottom = 0.320007
+theme = ExtResource( 11 )
+text = "Please create a password for this server"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NewPassword" type="LineEdit" parent="PasswordPage/Registration"]
+anchor_left = 0.367
+anchor_top = 0.356
+anchor_right = 0.633
+anchor_bottom = 0.415
+margin_left = -0.640015
+margin_top = -0.480011
+margin_right = 0.640015
+margin_bottom = -0.200012
+theme = ExtResource( 11 )
+align = 1
+max_length = 20
+placeholder_text = "New password"
+placeholder_alpha = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ConfirmPassword" type="LineEdit" parent="PasswordPage/Registration"]
+anchor_left = 0.367
+anchor_top = 0.593
+anchor_right = 0.633
+anchor_bottom = 0.652
+margin_left = -0.640015
+margin_top = -0.440063
+margin_right = 0.640015
+margin_bottom = -0.160034
+theme = ExtResource( 11 )
+align = 1
+max_length = 20
+placeholder_text = "Confirm password"
+placeholder_alpha = 0.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ValidateNewPassword" type="Button" parent="PasswordPage/Registration"]
+anchor_left = 0.433
+anchor_top = 0.704
+anchor_right = 0.567
+anchor_bottom = 0.763
+margin_left = 0.639954
+margin_top = -0.320068
+margin_right = -0.640015
+margin_bottom = -0.0400391
+theme = ExtResource( 11 )
+text = "Validate"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Error" type="WindowDialog" parent="PasswordPage"]
+anchor_left = 0.367
+anchor_top = 0.237
+anchor_right = 0.634
+anchor_bottom = 0.763
+margin_left = -0.640015
+margin_top = 0.039978
+margin_right = -0.280029
+margin_bottom = -0.0400391
+theme = ExtResource( 11 )
+window_title = "Error"
+
+[node name="Label" type="Label" parent="PasswordPage/Error"]
+anchor_right = 0.998
+anchor_bottom = 1.0
+margin_right = 0.026001
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Main" parent="." instance=ExtResource( 1 )]
 visible = false
 
@@ -476,3 +689,6 @@ visible = false
 [connection signal="timeout" from="Menus/Connecting/TimeOutTimer" to="." method="_on_TimeOutTimer_timeout"]
 [connection signal="pressed" from="Menus/Connecting/CancelButton" to="." method="_on_CancelButton_pressed"]
 [connection signal="popup_hide" from="Menus/KickedPopup" to="." method="_on_KickedPopup_popup_hide"]
+[connection signal="pressed" from="PasswordPage/AlreadyRegistered/ValidatePassword" to="PasswordPage" method="_on_ValidatePassword_pressed"]
+[connection signal="pressed" from="PasswordPage/Registration/ValidateNewPassword" to="PasswordPage" method="_on_ValidateNewPassword_pressed"]
+[connection signal="popup_hide" from="PasswordPage/Error" to="PasswordPage" method="_on_Error_popup_hide"]
