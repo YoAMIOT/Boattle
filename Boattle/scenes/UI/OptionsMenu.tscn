@@ -1,0 +1,99 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/OptionsMenu.gd" type="Script" id=2]
+
+[node name="OptionsMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="."]
+position = Vector2( 3996, 296 )
+scale = Vector2( 5.5, 0.762963 )
+color = Color( 0.466667, 0.529412, 0.431373, 1 )
+offset = Vector2( -680, -224 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
+
+[node name="BackOptionsButton" type="Button" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 320.0
+margin_top = 760.0
+margin_right = -1408.0
+margin_bottom = -192.0
+theme = ExtResource( 1 )
+text = "<= Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullscreenSwitch" type="CheckButton" parent="."]
+anchor_left = 0.433
+anchor_top = 0.178
+anchor_right = 0.567
+anchor_bottom = 0.237
+margin_left = 0.639954
+margin_top = -0.240005
+margin_right = -0.640015
+margin_bottom = 0.039978
+theme = ExtResource( 1 )
+pressed = true
+text = "Fullscreen:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VSyncSwitch" type="CheckButton" parent="."]
+anchor_left = 0.433
+anchor_top = 0.178
+anchor_right = 0.567
+anchor_bottom = 0.237
+margin_left = 28.64
+margin_top = 63.76
+margin_right = -28.6399
+margin_bottom = 64.04
+theme = ExtResource( 1 )
+pressed = true
+text = "Vsync:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindowSizeOption" type="OptionButton" parent="."]
+anchor_left = 0.5
+anchor_top = 0.296
+anchor_right = 0.608
+anchor_bottom = 0.348
+margin_top = 0.320007
+margin_right = 0.639893
+margin_bottom = 0.159973
+theme = ExtResource( 1 )
+text = "1920 x 1080"
+align = 1
+items = [ "1920 x 1080", null, false, 0, null, "1600 x 900", null, false, 1, null, "1536 x 864", null, false, 2, null, "1440 x 900", null, false, 3, null, "1366 x 768", null, false, 4, null, "1280 x 720", null, false, 5, null ]
+selected = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="WindowSizeLabel" type="Label" parent="WindowSizeOption"]
+anchor_left = -0.962
+anchor_right = -0.163
+anchor_bottom = 1.0
+margin_left = 0.0960083
+margin_right = -0.0960007
+theme = ExtResource( 1 )
+text = "Window Size:"
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="BackOptionsButton" to="." method="_on_BackOptionsButton_pressed"]
+[connection signal="toggled" from="FullscreenSwitch" to="." method="_on_FullscreenSwitch_toggled"]
+[connection signal="toggled" from="VSyncSwitch" to="." method="_on_VSyncSwitch_toggled"]
+[connection signal="item_selected" from="WindowSizeOption" to="." method="_on_WindowSizeOption_item_selected"]

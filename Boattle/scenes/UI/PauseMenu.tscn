@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=1]
+[ext_resource path="res://scripts/UI/PauseMenu.gd" type="Script" id=2]
+[ext_resource path="res://scenes/UI/OptionsMenu.tscn" type="PackedScene" id=3]
+
+[node name="PauseMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MainPauseMenu" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="MainPauseMenu"]
+color = Color( 0.372549, 0.341176, 0.341176, 0.584314 )
+polygon = PoolVector2Array( 0, 0, 1920, 0, 1920, 1080, 0, 1080 )
+
+[node name="Bg2" type="Polygon2D" parent="MainPauseMenu"]
+position = Vector2( 680, 224 )
+color = Color( 0.466667, 0.529412, 0.431373, 1 )
+offset = Vector2( -680, -224 )
+polygon = PoolVector2Array( 0, 0, 256, 0, 256, 1080, 0, 1080 )
+
+[node name="ResumeButton" type="Button" parent="MainPauseMenu"]
+anchor_top = 0.356
+anchor_right = 0.133
+anchor_bottom = 0.415
+margin_top = -0.480011
+margin_right = 0.639999
+margin_bottom = -0.199982
+theme = ExtResource( 1 )
+text = "Resume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsButton" type="Button" parent="MainPauseMenu"]
+anchor_top = 0.474
+anchor_right = 0.133
+anchor_bottom = 0.533
+margin_top = 0.0799866
+margin_right = 0.639999
+margin_bottom = 0.359985
+theme = ExtResource( 1 )
+text = "Options"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeaveButton" type="Button" parent="MainPauseMenu"]
+anchor_top = 0.593
+anchor_right = 0.133
+anchor_bottom = 0.652
+margin_top = -0.440002
+margin_right = 0.639999
+margin_bottom = -0.160034
+theme = ExtResource( 1 )
+text = "Leave Server"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OptionsMenu" parent="." instance=ExtResource( 3 )]
+visible = false
+
+[connection signal="pressed" from="MainPauseMenu/ResumeButton" to="." method="_on_ResumeButton_pressed"]
+[connection signal="pressed" from="MainPauseMenu/OptionsButton" to="." method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="MainPauseMenu/LeaveButton" to="." method="_on_LeaveButton_pressed"]

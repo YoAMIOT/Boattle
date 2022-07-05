@@ -14,8 +14,6 @@ func _ready() -> void:
 	DataManager.printError(error);
 	error = Server.connect("successfullyConnected", self, "onConnectionSuccess");
 	DataManager.printError(error);
-	get_node("Menus/OptionsMenu/WindowSizeOption").disabled = DataManager.datas["fullscreen"];
-	manageWindowSizeSelection();
 
 
 
@@ -26,6 +24,10 @@ func resetMenus() -> void:
 	get_node("Menus/Connecting/TimeOutTimer").wait_time = 30;
 	get_node("Menus/ServerMenu").visible = false;
 	get_node("Menus/OptionsMenu").visible = false;
+	get_node("PasswordPage/AlreadyRegistered/Password").text = "";
+	get_node("PasswordPage/Registration/NewPassword").text = "";
+	get_node("PasswordPage/Registration/ConfirmPassword").text = "";
+	get_node("Menus").visible = true;
 	get_node("Menus/Menu").visible = true;
 
 func _on_PlayButton_pressed() -> void:
@@ -41,36 +43,15 @@ func _on_BackButton_pressed() -> void:
 
 func _on_OptionsButton_pressed() -> void:
 	get_node("Menus/Menu").visible = false;
+	get_node("Menus/OptionsMenu").refresh();
 	get_node("Menus/OptionsMenu").visible = true;
 
-func _on_BackOptionsButton_pressed() -> void:
+func backOptions() -> void:
 	get_node("Menus/OptionsMenu").visible = false;
 	get_node("Menus/Menu").visible = true;
 
 func _on_CancelButton_pressed() -> void:
 	_on_FailureTimer_timeout()
-
-func _on_FullscreenSwitch_toggled(state : bool) -> void:
-	OptionManager.setFullscreen(state);
-	get_node("Menus/OptionsMenu/WindowSizeOption").disabled = state;
-
-func _on_VSyncSwitch_toggled(state : bool) -> void:
-	OptionManager.setVsync(state);
-
-func _on_WindowSizeOption_item_selected(index : int) -> void:
-	var selectedSize : String = get_node("Menus/OptionsMenu/WindowSizeOption").get_item_text(index);
-	var firstInt : String = "";
-	var secondInt : String = "";
-	var size : Vector2;
-	var i : int = 0;
-	for c in selectedSize:
-		i += 1;
-		if i < 5:
-			firstInt += c;
-		elif i > 7:
-			secondInt += c;
-	size = Vector2(float(firstInt), float(secondInt));
-	OptionManager.setWindowSize(size)
 
 
 
@@ -129,6 +110,10 @@ func enterGame() -> void:
 
 
 func _on_PlayerName_text_changed(newName : String) -> void:
+	if get_node("Menus/Menu/PlayerName").text == "":
+		get_node("Menus/Menu/PlayButton").disabled = true;
+	else:
+		get_node("Menus/Menu/PlayButton").disabled = false;
 	DataManager.savePlayerName(newName);
 
 func _on_IpAddress_text_changed(enteredIpAddress : String) -> void:
@@ -164,8 +149,6 @@ func manageJoinButtonDisability() -> void:
 
 func fetchDataFromManager() -> void:
 	get_node("Menus/Menu/PlayerName").text = DataManager.datas["playerName"];
-	get_node("Menus/OptionsMenu/FullscreenSwitch").pressed = DataManager.datas["fullscreen"];
-	get_node("Menus/OptionsMenu/VSyncSwitch").pressed = DataManager.datas["vSync"];
 	fillServerList();
 
 func fillServerList() -> void:
@@ -185,19 +168,9 @@ func _on_ServerList_item_selected(index : int) -> void:
 
 
 
-func manageWindowSizeSelection() -> void:
-	var size : Vector2 = DataManager.datas["windowSize"];
-	var sizeStr : String = String(size.x) + " x " + String(size.y);
-	for o in get_node("Menus/OptionsMenu/WindowSizeOption").get_item_count():
-		if sizeStr == get_node("Menus/OptionsMenu/WindowSizeOption").get_item_text(o):
-			get_node("Menus/OptionsMenu/WindowSizeOption").selected = o;
-
-
-
 func showKickMessage(reason : String) -> void:
 	get_node("Menus/KickedPopup/Label").text = reason;
 	get_node("Menus/KickedPopup").popup();
-
 
 func _on_KickedPopup_popup_hide() -> void:
 	get_node("Menus/KickedPopup/Label").text = "";

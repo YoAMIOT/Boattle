@@ -3,6 +3,7 @@ extends Node
 var network = null;
 var ip : String = "";
 var port : int = 4180;
+var MainInstance : PackedScene = load("res://scenes/Main.tscn");
 
 signal successfullyConnected;
 signal failedToConnect;
@@ -31,8 +32,18 @@ func resetNetworkPeer() -> void:
 		network.disconnect("connection_succeeded", self, "connectionSucceeded");
 		get_tree().network_peer = null
 
-remote func kickedFromServer(reason : String) -> void:
+func disconnectFromServer() -> void:
+	resetNetworkPeer();
 	get_node("/root/MainMenu").resetMenus();
+	get_node("/root/MainMenu/Main").queue_free();
+	var mainInstance = MainInstance.instance();
+	get_node("/root/MainMenu").add_child(mainInstance);
+	mainInstance.visible = false
+	yield(get_tree().create_timer(0.1), "timeout");
+	mainInstance.name = "Main";
+
+remote func kickedFromServer(reason : String) -> void:
+	disconnectFromServer();
 	get_node("/root/MainMenu").showKickMessage(reason);
 
 

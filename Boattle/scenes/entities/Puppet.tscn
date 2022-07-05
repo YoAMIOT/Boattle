@@ -1,20 +1,20 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
-[ext_resource path="res://scripts/Puppet.gd" type="Script" id=2]
-[ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=3]
+[ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://scripts/entities/Puppet.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 16 )
 
 [node name="Puppet" type="KinematicBody2D"]
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="Icon" type="Sprite" parent="."]
 modulate = Color( 1, 0, 0, 1 )
 position = Vector2( 4.76837e-07, 4.76837e-07 )
 scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 1 )
+texture = ExtResource( 2 )
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -25,7 +25,7 @@ margin_top = -40.0
 margin_right = 192.0
 margin_bottom = -4.0
 rect_scale = Vector2( 0.5, 0.5 )
-theme = ExtResource( 3 )
+theme = ExtResource( 1 )
 align = 1
 valign = 1
 __meta__ = {
