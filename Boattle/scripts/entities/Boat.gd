@@ -19,3 +19,13 @@ func _physics_process(_delta) -> void:
 
 func moveClientBoat(newPosition : Vector2) -> void:
 	self.position = newPosition;
+
+
+
+func _on_MoveButton_toggled(pressed: bool) -> void:
+	get_node("UI/GameUI/MoveButton").pressed = pressed;
+	get_node("UI/GameUI/ShootButton").pressed = !pressed;
+
+func _on_ShootButton_toggled(pressed: bool) -> void:
+	get_node("UI/GameUI/ShootButton").pressed = pressed;
+	get_node("UI/GameUI/MoveButton").pressed = !pressed;
