@@ -75,7 +75,7 @@ func _on_WindowSizeOption_item_selected(index : int) -> void:
 
 
 func _on_JoinButton_pressed() -> void:
-	if get_node("Menus/ServerMenu/IpAddress").text.empty() == false:
+	if not get_node("Menus/ServerMenu/IpAddress").text.empty():
 		var result = regex.search(get_node("Menus/ServerMenu/IpAddress").text);
 		if result:
 			Server.ip = get_node("Menus/ServerMenu/IpAddress").text;
@@ -105,7 +105,7 @@ func onConnectionSuccess() -> void:
 	connectionSuccess = true;
 
 func _on_TimeOutTimer_timeout() -> void:
-	if connectionSuccess == false:
+	if not connectionSuccess:
 		get_node("Menus/Connecting/ConnectingLabel").visible = false;
 		get_node("Menus/Connecting/LoadingAnim").visible = false;
 		get_node("Menus/Connecting/ConnectionFailedLabel").visible = true;
@@ -153,7 +153,7 @@ func _on_ServerName_text_changed(_new_text : String) -> void:
 func manageJoinButtonDisability() -> void:
 	if get_node("Menus/ServerMenu/ServerName").text.empty() or get_node("Menus/ServerMenu/IpAddress").text.empty():
 		get_node("Menus/ServerMenu/JoinButton").disabled = true;
-	elif get_node("Menus/ServerMenu/ServerName").text.empty() == false and get_node("Menus/ServerMenu/IpAddress").text.empty() == false:
+	elif not get_node("Menus/ServerMenu/ServerName").text.empty() and not get_node("Menus/ServerMenu/IpAddress").text.empty():
 		var result = regex.search(get_node("Menus/ServerMenu/IpAddress").text);
 		if result:
 			get_node("Menus/ServerMenu/JoinButton").disabled = false;
@@ -179,7 +179,8 @@ func refreshServerList() -> void:
 func _on_ServerList_item_selected(index : int) -> void:
 	var selectedServer : String = get_node("Menus/ServerMenu/ServerList").get_item_text(index);
 	get_node("Menus/ServerMenu/ServerName").text = selectedServer;
-	get_node("Menus/ServerMenu/IpAddress").text= DataManager.ipDictionnary.get(selectedServer);
+	get_node("Menus/ServerMenu/IpAddress").text = DataManager.ipDictionnary.get(selectedServer);
+	_on_IpAddress_text_changed(DataManager.ipDictionnary.get(selectedServer));
 	manageJoinButtonDisability();
 
 

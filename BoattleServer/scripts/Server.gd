@@ -6,7 +6,7 @@ var port : int = 4180;
 var maxPlayers : int = 20;
 var upnp : UPNP = UPNP.new();
 var serverStarted : bool = false;
-var turn : bool = true;
+var turn : bool = false;
 onready var Log = get_node("Ui/Log");
 
 
@@ -104,11 +104,14 @@ remote func receivePos(position : Vector2, playerName : String) -> void:
 
 func _on_TurnCooldown_timeout() -> void:
 	turn = !turn;
-	var worldState : Dictionary = {};
-	for p in DataManager.connectedPlayersDictionnary:
-		worldState[p] = {
-			"playerName" : DataManager.connectedPlayersDictionnary[p],
-			"posX" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posX,
-			"posY" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posY
-		};
-	rpc_id(0, "receiveWorldState", worldState);
+	rpc_id(0, "turnSwitch", turn);
+	if turn == false:
+		var worldState : Dictionary = {};
+		for p in DataManager.connectedPlayersDictionnary:
+			worldState[p] = {
+				"playerName" : DataManager.connectedPlayersDictionnary[p],
+				"posX" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posX,
+				"posY" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posY
+			};
+		rpc_id(0, "receiveWorldState", worldState);
+

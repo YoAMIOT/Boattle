@@ -2,13 +2,10 @@ extends Node2D
 
 export var ClientBoat : PackedScene;
 export var PuppetBoat : PackedScene;
-var lastWorldState : int = 0;
-var worldStateBuffer : Array;
-const INTERPOLATION_OFFSET : int = 100;
 
 func spawnClientPlayer(spawnPosition : Vector2) -> void:
 	var instance = ClientBoat.instance();
-	get_node(".").add_child(instance);
+	self.add_child(instance);
 	instance.position = spawnPosition;
 
 

@@ -42,9 +42,9 @@ func sendPasswordValidationRequest(registration : bool, password : String) -> vo
 
 remote func authentication(registration : bool) -> void:
 	get_node("/root/MainMenu/PasswordPage").visible = true;
-	if registration == true:
+	if registration:
 		get_node("/root/MainMenu/PasswordPage/Registration").visible = true;
-	elif registration == false:
+	elif not registration:
 		get_node("/root/MainMenu/PasswordPage/AlreadyRegistered").visible = true;
 
 remote func logIn(playerPosition : Vector2) -> void:
@@ -74,8 +74,18 @@ func sendPosToServer(position : Vector2) -> void:
 
 remote func receiveWorldState(worldState : Dictionary) -> void:
 	for p in worldState:
-		if get_tree().get_network_unique_id() != p:
+		if get_tree().get_network_unique_id() == p:
+			if get_node("/root/MainMenu/Main").has_node("Boat"):
+				var newPosition : Vector2 = Vector2(worldState[p].posX, worldState[p].posY);
+				get_node("/root/MainMenu/Main/Boat").moveClientBoat(newPosition);
+		elif get_tree().get_network_unique_id() != p:
 			var newPosition : Vector2 = Vector2(worldState[p].posX, worldState[p].posY);
 			if !get_node("/root/MainMenu/Main/Players/").has_node(str(p)):
 				spawnPuppet(p, worldState[p].playerName, newPosition);
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
+
+
+
+remote func turnSwitch(turnState : bool) -> void:
+	if get_node("/root/MainMenu/Main").has_node("Boat"):
+		get_node("/root/MainMenu/Main/Boat").turn = turnState;
