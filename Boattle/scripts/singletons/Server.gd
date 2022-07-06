@@ -99,4 +99,4 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 
 remote func turnSwitch(turnState : bool) -> void:
 	if get_node("/root/MainMenu/Main").has_node("Boat"):
-		get_node("/root/MainMenu/Main/Boat").turn = turnState;
+		get_node("/root/MainMenu/Main/Boat").setTurn(turnState);

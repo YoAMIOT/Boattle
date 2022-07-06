@@ -2,6 +2,7 @@ extends Control
 
 func _on_ResumeButton_pressed() -> void:
 	self.visible = false;
+	get_parent().get_node("GameUI").visible = true;
 
 func _on_OptionsButton_pressed() -> void:
 	get_node("MainPauseMenu").visible = false;

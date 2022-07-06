@@ -28,11 +28,17 @@ func _on_WindowSizeOption_item_selected(index : int) -> void:
 	var secondInt : String = "";
 	var size : Vector2;
 	var i : int = 0;
+	var splitter : int;
 	for c in selectedSize:
 		i += 1;
-		if i < 5:
+		if c == "x":
+			splitter = i;
+	i = 0;
+	for c in selectedSize:
+		i+= 1;
+		if i < splitter - 1:
 			firstInt += c;
-		elif i > 7:
+		elif i > splitter + 1:
 			secondInt += c;
 	size = Vector2(float(firstInt), float(secondInt));
 	OptionManager.setWindowSize(size)
