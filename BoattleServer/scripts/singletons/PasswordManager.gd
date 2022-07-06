@@ -2,8 +2,8 @@ extends Node
 
 func validatePassword(registration : bool, password : String, playerName : String) -> void:
 	var playerId : int;
-	for p in DataManager.connectedPlayersDictionnary:
-		if DataManager.connectedPlayersDictionnary[p] == playerName:
+	for p in DataManager.connectedPlayersDictionary:
+		if DataManager.connectedPlayersDictionary[p] == playerName:
 			playerId = p;
 	if registration == true:
 		var salt : String = generateSalt();
@@ -12,11 +12,11 @@ func validatePassword(registration : bool, password : String, playerName : Strin
 		var register = false;
 		validatePassword(register, password, playerName);
 	elif registration == false:
-		var retrievedSalt = DataManager.playersPasswords[playerName].salt;
+		var retrievedSalt = DataManager.playersPasswordsDictionary[playerName].salt;
 		var hashedPassword = generateHashedPassword(password, retrievedSalt);
-		if not hashedPassword == DataManager.playersPasswords[playerName].password:
+		if not hashedPassword == DataManager.playersPasswordsDictionary[playerName].password:
 			get_node("/root/Server").wrongPasswordEntered(playerId);
-		elif hashedPassword == DataManager.playersPasswords[playerName].password:
+		elif hashedPassword == DataManager.playersPasswordsDictionary[playerName].password:
 			get_node("/root/Server").logIn(playerId, playerName);
 
 

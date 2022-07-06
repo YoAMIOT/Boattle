@@ -3,10 +3,13 @@ extends Node2D
 export var ClientBoat : PackedScene;
 export var PuppetBoat : PackedScene;
 
-func spawnClientPlayer(spawnPosition : Vector2) -> void:
+func spawnClientPlayer(spawnPosition : Vector2, playerShipsDatas : Dictionary) -> void:
 	var instance = ClientBoat.instance();
 	self.add_child(instance);
 	instance.position = spawnPosition;
+	instance.setViewRangeMultiplier(playerShipsDatas["viewRange"]);
+	instance.setShootRangeMultiplier(playerShipsDatas["shootRange"]);
+	instance.setMoveRangeMultiplier(playerShipsDatas["moveRange"]);
 
 
 

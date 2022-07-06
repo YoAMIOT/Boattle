@@ -5,17 +5,16 @@ var turnMode : String = "move";
 var viewRangeMultiplier : float = 1;
 var moveRangeMultiplier : float = 1;
 var shootRangeMultiplier : float = 1;
-var moveRange : float = 384;
-var shootRange : float = 384;
+const RANGE : int = 384;
 
 
 
 func _physics_process(_delta) -> void:
 	if get_node("UI/PauseMenu").visible == false:
 		if Input.is_action_just_pressed("mouse_left") and turn:
-			if turnMode == "move" and self.position.distance_to(get_global_mouse_position()) < moveRange * moveRangeMultiplier:
+			if turnMode == "move" and self.position.distance_to(get_global_mouse_position()) < RANGE * moveRangeMultiplier:
 				Server.sendPosToServer(get_global_mouse_position());
-			if turnMode == "shoot":
+			if turnMode == "shoot" and self.position.distance_to(get_global_mouse_position()) < RANGE * shootRangeMultiplier:
 				print("SHOOOOOOTT");
 		if Input.is_action_just_pressed("1"):
 			var pressed : bool = true;

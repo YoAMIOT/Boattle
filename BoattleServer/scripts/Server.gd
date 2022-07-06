@@ -46,28 +46,29 @@ func _on_StartServer_pressed() -> void:
 
 func peerConnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " Connected -!");
-	if DataManager.connectedPlayersDictionnary.size() == maxPlayers - 1:
+	if DataManager.connectedPlayersDictionary.size() == maxPlayers - 1:
 		kickPlayer(playerId, "Server full");
 
 func peerDisconnected(playerId : int) -> void:
-	Log.logPrint("!- User" + str(playerId) + " Disconnected -!");
+	Log.logPrint("!- User" + str(playerId) + " connected as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
 	rpc_id(0, "killPuppet", playerId);
 
 remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
 	var registration : bool = false;
-	if not DataManager.playersDatas.has(playerName):
+	if not DataManager.playersDatasDictionary.has(playerName):
 		var position : Vector2 = Vector2(0 ,0);
 		DataManager.saveDatasOfAPlayer(playerName, position);
+		DataManager.createShipStatsForPlayer(playerName);
 		registration = true
 	var hasPlayerConnected : bool = false;
-	for p in DataManager.connectedPlayersDictionnary:
-		if DataManager.connectedPlayersDictionnary[p] == playerName:
+	for p in DataManager.connectedPlayersDictionary:
+		if DataManager.connectedPlayersDictionary[p] == playerName:
 			hasPlayerConnected = true;
 	if hasPlayerConnected:
 		kickPlayer(playerId, "Player already connected");
 	elif not hasPlayerConnected:
-		var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+		var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 		DataManager.playerConnected(playerId, playerName);
 		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
 		rpc_id(playerId, "authentication", registration);
@@ -76,9 +77,10 @@ remote func receivePasswordValidationRequest(registration : bool, password : Str
 	PasswordManager.validatePassword(registration, password, playerName);
 
 func logIn(playerId : int, playerName : String) -> void:
-	var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
-	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName));
-	rpc_id(playerId, "logIn", playerPosition);
+	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
+	var playerShipsDatas : Dictionary = DataManager.playerShipsStatsDictionary[playerName];
+	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName) + " -!");
+	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas);
 
 func wrongPasswordEntered(playerId : int) -> void:
 	rpc_id(playerId, "wrongPassword");
@@ -108,11 +110,11 @@ func _on_TurnCooldown_timeout() -> void:
 	rpc_id(0, "turnSwitch", turn);
 	if turn == false:
 		var worldState : Dictionary = {};
-		for p in DataManager.connectedPlayersDictionnary:
+		for p in DataManager.connectedPlayersDictionary:
 			worldState[p] = {
-				"playerName" : DataManager.connectedPlayersDictionnary[p],
-				"posX" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posX,
-				"posY" : DataManager.playersDatas[DataManager.connectedPlayersDictionnary[p]].posY
+				"playerName" : DataManager.connectedPlayersDictionary[p],
+				"posX" : DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posX,
+				"posY" : DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posY
 			};
 		rpc_id(0, "receiveWorldState", worldState);
 

@@ -58,8 +58,8 @@ remote func authentication(registration : bool) -> void:
 	elif not registration:
 		get_node("/root/MainMenu/PasswordPage/AlreadyRegistered").visible = true;
 
-remote func logIn(playerPosition : Vector2) -> void:
-	spawnClientPlayer(playerPosition);
+remote func logIn(playerPosition : Vector2, playerShipsDatas : Dictionary) -> void:
+	spawnClientPlayer(playerPosition, playerShipsDatas);
 	get_node("/root/MainMenu").enterGame();
 	get_node("/root/MainMenu/PasswordPage").reset();
 	get_node("/root/MainMenu/PasswordPage").visible = false;
@@ -72,8 +72,8 @@ remote func wrongPassword() -> void:
 remote func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2) -> void:
 	get_node("/root/MainMenu/Main").spawnPuppet(playerId, playerName, puppetPosition);
 
-remote func spawnClientPlayer(position : Vector2) -> void:
-	get_node("/root/MainMenu/Main").spawnClientPlayer(position);
+remote func spawnClientPlayer(position : Vector2, playerShipsDatas : Dictionary) -> void:
+	get_node("/root/MainMenu/Main").spawnClientPlayer(position, playerShipsDatas);
 
 remote func killPuppet(playerId : int) -> void:
 	get_node("/root/MainMenu/Main").killPuppet(playerId);
