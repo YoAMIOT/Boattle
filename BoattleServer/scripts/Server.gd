@@ -77,6 +77,7 @@ remote func receivePasswordValidationRequest(registration : bool, password : Str
 
 func logIn(playerId : int, playerName : String) -> void:
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatas[playerName].posX, DataManager.playersDatas[playerName].posY);
+	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName));
 	rpc_id(playerId, "logIn", playerPosition);
 
 func wrongPasswordEntered(playerId : int) -> void:
