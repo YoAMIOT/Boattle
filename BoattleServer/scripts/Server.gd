@@ -58,7 +58,7 @@ func peerDisconnected(playerId : int) -> void:
 
 remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
 	var registration : bool = false;
-	if not DataManager.playersDatasDictionary.has(playerName):
+	if not DataManager.playersPasswordsDictionary.has(playerName):
 		var position : Vector2 = Vector2(0 ,0);
 		DataManager.saveDatasOfAPlayer(playerName, position);
 		DataManager.createShipStatsForPlayer(playerName);
@@ -75,11 +75,20 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 		refreshPlayerCountLabel();
 		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
 		rpc_id(playerId, "authentication", registration);
+		var timeOutTimer : Timer = Timer.new();
+		get_node("PasswordTimers").add_child(timeOutTimer);
+		timeOutTimer.name = str(playerId);
+		timeOutTimer.wait_time = 60;
+		timeOutTimer.one_shot = true;
+		timeOutTimer.connect("timeout", self, "kickPlayer", [playerId, "You did not enter password int time, please retry"]);
+		timeOutTimer.start();
 
 remote func receivePasswordValidationRequest(registration : bool, password : String, playerName : String) -> void:
 	PasswordManager.validatePassword(registration, password, playerName);
 
 func logIn(playerId : int, playerName : String) -> void:
+	get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
+	get_node("PasswordTimers/" + str(playerId)).queue_free();
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 	var playerShipsDatas : Dictionary = DataManager.playerShipsStatsDictionary[playerName];
 	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName) + " -!");
@@ -90,6 +99,9 @@ func wrongPasswordEntered(playerId : int) -> void:
 
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
+	if get_node("PasswordTimers").has_node(str(playerId)):
+		get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
+		get_node("PasswordTimers/" + str(playerId)).queue_free();
 	network.disconnect_peer(playerId);
 
 

@@ -161,6 +161,8 @@ __meta__ = {
 [node name="TurnCooldown" type="Timer" parent="."]
 wait_time = 5.0
 
+[node name="PasswordTimers" type="Node" parent="."]
+
 [connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]

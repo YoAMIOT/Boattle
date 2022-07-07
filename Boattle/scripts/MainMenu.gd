@@ -24,9 +24,8 @@ func resetMenus() -> void:
 	get_node("Menus/Connecting/TimeOutTimer").wait_time = 30;
 	get_node("Menus/ServerMenu").visible = false;
 	get_node("Menus/OptionsMenu").visible = false;
-	get_node("PasswordPage/AlreadyRegistered/Password").text = "";
-	get_node("PasswordPage/Registration/NewPassword").text = "";
-	get_node("PasswordPage/Registration/ConfirmPassword").text = "";
+	get_node("PasswordPage").reset();
+	get_node("PasswordPage"). visible = false;
 	get_node("Menus").visible = true;
 	get_node("Menus/Menu").visible = true;
 
