@@ -2,8 +2,7 @@ extends Node
 
 var wrongPasswordDictionary : Dictionary = {};
 
-func _process(delta: float) -> void:
-	print(wrongPasswordDictionary);
+
 
 func validatePassword(registration : bool, password : String, playerName : String) -> void:
 	var playerId : int;

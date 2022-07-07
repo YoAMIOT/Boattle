@@ -91,7 +91,9 @@ func playerConnected(playerId : int, playerName : String) -> void:
 	connectedPlayersDictionary[playerId] = playerName;
 
 func playerDisconnected(playerId : int) -> void:
-	connectedPlayersDictionary.erase(playerId);
+	if PasswordManager.wrongPasswordDictionary.has(connectedPlayersDictionary[playerId]):
+		PasswordManager.wrongPasswordDictionary.erase(connectedPlayersDictionary[playerId]);
+	connectedPlayersDictionary.erase(playerId); 
 
 
 
