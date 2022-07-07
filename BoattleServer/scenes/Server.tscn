@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://scripts/Log.gd" type="Script" id=2]
+[ext_resource path="res://scripts/UI/Ui.gd" type="Script" id=1]
+[ext_resource path="res://scripts/UI/Log.gd" type="Script" id=2]
 [ext_resource path="res://ressources/font/TiwipiFontSmall.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scripts/Server.gd" type="Script" id=4]
 [ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=5]
@@ -11,6 +12,7 @@ script = ExtResource( 4 )
 [node name="Ui" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -22,7 +24,8 @@ color = Color( 0.466667, 0.529412, 0.431373, 1 )
 polygon = PoolVector2Array( 192, 546.133, 832, 546.133, 832, 640, 192, 640 )
 
 [node name="ActionBg" type="Polygon2D" parent="Ui"]
-scale = Vector2( 1, 0.9375 )
+position = Vector2( 0, 64 )
+scale = Vector2( 1, 0.8375 )
 color = Color( 0.682353, 0.439216, 0.439216, 1 )
 polygon = PoolVector2Array( 192, 0, 192, 640, 0, 640, 0, 0 )
 
@@ -71,10 +74,12 @@ __meta__ = {
 
 [node name="Log" type="RichTextLabel" parent="Ui"]
 anchor_left = 0.187
+anchor_top = 0.107
 anchor_right = 1.0
 anchor_bottom = 0.853
 margin_left = 0.511993
-margin_bottom = 0.199982
+margin_top = -0.200005
+margin_bottom = 0.200012
 custom_fonts/normal_font = ExtResource( 3 )
 bbcode_enabled = true
 scroll_following = true
@@ -84,8 +89,12 @@ __meta__ = {
 }
 
 [node name="ConnectedPeersLabel" type="Label" parent="Ui"]
-margin_right = 192.0
-margin_bottom = 128.0
+anchor_top = 0.107
+anchor_right = 0.187
+anchor_bottom = 0.32
+margin_top = -0.200005
+margin_right = 0.511993
+margin_bottom = -1.52588e-05
 theme = ExtResource( 5 )
 text = "Connected: 200/200"
 align = 1
@@ -94,6 +103,52 @@ autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ServerTabButton" type="Button" parent="Ui"]
+anchor_right = 0.5
+anchor_bottom = 0.107
+margin_bottom = -0.200005
+theme = ExtResource( 5 )
+disabled = true
+toggle_mode = true
+pressed = true
+text = "Server"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayersTabButton" type="Button" parent="Ui"]
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.107
+margin_bottom = -0.200005
+theme = ExtResource( 5 )
+toggle_mode = true
+text = "Players"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayersTab" type="Control" parent="Ui"]
+visible = false
+anchor_top = 0.107
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.200005
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="Ui/PlayersTab"]
+position = Vector2( 25.6, -3118.53 )
+scale = Vector2( 1.2, 5.71021 )
+color = Color( 0.466667, 0.529412, 0.431373, 1 )
+polygon = PoolVector2Array( 192, 546.133, 832, 546.133, 832, 640, 192, 640 )
+
+[node name="PlayersList" type="ItemList" parent="Ui/PlayersTab"]
+anchor_right = 0.25
+anchor_bottom = 1.0
+theme = ExtResource( 5 )
 
 [node name="MaxPlayerMenu" type="Control" parent="Ui"]
 anchor_right = 1.0
@@ -165,5 +220,7 @@ wait_time = 5.0
 
 [connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
+[connection signal="toggled" from="Ui/ServerTabButton" to="Ui" method="_on_ServerTabButton_toggled"]
+[connection signal="toggled" from="Ui/PlayersTabButton" to="Ui" method="_on_PlayersTabButton_toggled"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]
 [connection signal="timeout" from="TurnCooldown" to="." method="_on_TurnCooldown_timeout"]
