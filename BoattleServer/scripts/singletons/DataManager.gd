@@ -79,7 +79,7 @@ func loadPlayersShipsStats():
 	file.close();
 
 func createShipStatsForPlayer(playerName : String):
-	playerShipsStatsDictionary[playerName] = {"viewRange" : 1.5, "moveRange" : 1, "shootRange" : 1.5};
+	playerShipsStatsDictionary[playerName] = {"viewRange" : 2, "moveRange" : 1, "shootRange" : 2.2};
 	savePlayersShipsStats();
 
 func saveShipsStatsForPlayer(playerName : String, viewRange : float, moveRange : float, shootRange : float) -> void:
