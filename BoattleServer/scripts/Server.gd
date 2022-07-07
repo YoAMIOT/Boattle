@@ -54,6 +54,9 @@ func peerDisconnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " connected as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
 	refreshPlayerCountLabel();
+	if get_node("PasswordTimers").has_node(str(playerId)):
+		get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
+		get_node("PasswordTimers/" + str(playerId)).queue_free();
 	rpc_id(0, "killPuppet", playerId);
 
 remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
@@ -80,7 +83,7 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 		timeOutTimer.name = str(playerId);
 		timeOutTimer.wait_time = 60;
 		timeOutTimer.one_shot = true;
-		timeOutTimer.connect("timeout", self, "kickPlayer", [playerId, "You did not enter password int time, please retry"]);
+		timeOutTimer.connect("timeout", self, "kickPlayer", [playerId, "You did not enter password in time, please retry"]);
 		timeOutTimer.start();
 
 remote func receivePasswordValidationRequest(registration : bool, password : String, playerName : String) -> void:
@@ -99,9 +102,6 @@ func wrongPasswordEntered(playerId : int) -> void:
 
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
-	if get_node("PasswordTimers").has_node(str(playerId)):
-		get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
-		get_node("PasswordTimers/" + str(playerId)).queue_free();
 	network.disconnect_peer(playerId);
 
 
