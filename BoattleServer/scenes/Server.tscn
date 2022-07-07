@@ -83,6 +83,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="ConnectedPeersLabel" type="Label" parent="Ui"]
+margin_right = 192.0
+margin_bottom = 128.0
+theme = ExtResource( 5 )
+text = "Connected: 200/200"
+align = 1
+valign = 1
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="MaxPlayerMenu" type="Control" parent="Ui"]
 anchor_right = 1.0
 anchor_bottom = 1.0

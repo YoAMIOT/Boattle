@@ -25,6 +25,7 @@ func _ready() -> void:
 
 func _on_ValidateButton_pressed() -> void:
 	maxPlayers = get_node("Ui/MaxPlayerMenu/Selector").value + 1;
+	refreshPlayerCountLabel();
 	get_node("Ui/MaxPlayerMenu").visible = false;
 	get_node("Ui/StartServer").disabled = false;
 
@@ -52,6 +53,7 @@ func peerConnected(playerId : int) -> void:
 func peerDisconnected(playerId : int) -> void:
 	Log.logPrint("!- User" + str(playerId) + " connected as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
+	refreshPlayerCountLabel();
 	rpc_id(0, "killPuppet", playerId);
 
 remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
@@ -70,6 +72,7 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 	elif not hasPlayerConnected:
 		var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 		DataManager.playerConnected(playerId, playerName);
+		refreshPlayerCountLabel();
 		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
 		rpc_id(playerId, "authentication", registration);
 
@@ -88,6 +91,11 @@ func wrongPasswordEntered(playerId : int) -> void:
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
 	network.disconnect_peer(playerId);
+
+
+
+func refreshPlayerCountLabel():
+	get_node("Ui/ConnectedPeersLabel").text = "Connected: " + str(DataManager.connectedPlayersDictionary.size()) + "/" + str(maxPlayers - 1);
 
 
 
