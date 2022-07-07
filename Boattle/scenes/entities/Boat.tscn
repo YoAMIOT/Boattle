@@ -17,14 +17,14 @@ shape = SubResource( 1 )
 [node name="Ranges" type="Node2D" parent="."]
 
 [node name="MoveRange" type="Node2D" parent="Ranges"]
+scale = Vector2( 0.7, 0.7 )
 
 [node name="DrawnRange" type="Polygon2D" parent="Ranges/MoveRange"]
 color = Color( 0.337255, 1, 0, 0.368627 )
 polygon = PoolVector2Array( 0, -384, 99, -371, 192, -333, 272, -271, 333, -192, 371, -99, 384, 0, 371, 99, 333, 192, 271, 272, 192, 333, 99, 371, 0, 384, -99, 371, -192, 333, -271, 272, -333, 192, -371, 99, -384, 0, -371, -99, -333, -192, -271, -272, -192, -333, -99, -371 )
 
 [node name="ShootRange" type="Node2D" parent="Ranges"]
-visible = false
-scale = Vector2( 2.2, 2.2 )
+scale = Vector2( 1.6, 1.6 )
 
 [node name="DrawnRange" type="Polygon2D" parent="Ranges/ShootRange"]
 color = Color( 1, 0, 0, 0.368627 )
@@ -37,14 +37,14 @@ texture = ExtResource( 1 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
-zoom = Vector2( 2, 2 )
+zoom = Vector2( 1.5, 1.5 )
 
 [node name="UI" type="Control" parent="."]
 margin_left = -960.0
 margin_top = -544.0
 margin_right = 960.0
 margin_bottom = 540.0
-rect_scale = Vector2( 2, 2 )
+rect_scale = Vector2( 1.5, 1.5 )
 rect_pivot_offset = Vector2( 960, 544 )
 mouse_filter = 2
 __meta__ = {

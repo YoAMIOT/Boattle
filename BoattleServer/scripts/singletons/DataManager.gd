@@ -79,7 +79,7 @@ func loadPlayersShipsStats():
 	file.close();
 
 func createShipStatsForPlayer(playerName : String):
-	playerShipsStatsDictionary[playerName] = {"viewRange" : 2, "moveRange" : 1, "shootRange" : 2.2};
+	playerShipsStatsDictionary[playerName] = {"viewRange" : 1.5, "moveRange" : 0.7, "shootRange" : 1.6};
 	savePlayersShipsStats();
 
 func saveShipsStatsForPlayer(playerName : String, viewRange : float, moveRange : float, shootRange : float) -> void:
@@ -92,6 +92,8 @@ func playerConnected(playerId : int, playerName : String) -> void:
 
 func playerDisconnected(playerId : int) -> void:
 	connectedPlayersDictionary.erase(playerId);
+	if PasswordManager.wrongPasswordDictionary.has(DataManager.connectedPlayersDictionary[playerId]):
+		PasswordManager.wrongPasswordDictionary.erase(DataManager.connectedPlayersDictionary[playerId]);
 
 
 

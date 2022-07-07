@@ -1,5 +1,10 @@
 extends Node
 
+var wrongPasswordDictionary : Dictionary = {};
+
+func _process(delta: float) -> void:
+	print(wrongPasswordDictionary);
+
 func validatePassword(registration : bool, password : String, playerName : String) -> void:
 	var playerId : int;
 	for p in DataManager.connectedPlayersDictionary:
@@ -16,6 +21,13 @@ func validatePassword(registration : bool, password : String, playerName : Strin
 		var hashedPassword = generateHashedPassword(password, retrievedSalt);
 		if not hashedPassword == DataManager.playersPasswordsDictionary[playerName].password:
 			get_node("/root/Server").wrongPasswordEntered(playerId);
+			if wrongPasswordDictionary.has(playerName):
+				wrongPasswordDictionary[playerName] += 1;
+				if wrongPasswordDictionary[playerName] == 3:
+					get_node("/root/Server").kickPlayer(playerId, "You enterred 3 wrong passwords");
+					wrongPasswordDictionary.erase(playerName);
+			else:
+				wrongPasswordDictionary[playerName] = 1;
 		elif hashedPassword == DataManager.playersPasswordsDictionary[playerName].password:
 			get_node("/root/Server").logIn(playerId, playerName);
 
