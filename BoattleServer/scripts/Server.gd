@@ -78,8 +78,6 @@ remote func receivePasswordValidationRequest(registration : bool, password : Str
 
 func logIn(playerId : int, playerName : String) -> void:
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-	print(DataManager.playerShipsStatsDictionary)
-	print(DataManager.playerShipsStatsDictionary[playerName])
 	var playerShipsDatas : Dictionary = DataManager.playerShipsStatsDictionary[playerName];
 	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName) + " -!");
 	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas);
