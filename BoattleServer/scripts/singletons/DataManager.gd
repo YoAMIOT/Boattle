@@ -11,6 +11,7 @@ var playerShipsStatsDictionary : Dictionary;
 func _ready() -> void:
 	loadPlayersDatas();
 	loadPlayersPasswords();
+	loadPlayersShipsStats();
 
 
 
