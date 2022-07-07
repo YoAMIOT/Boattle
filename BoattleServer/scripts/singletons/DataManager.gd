@@ -89,11 +89,13 @@ func saveShipsStatsForPlayer(playerName : String, viewRange : float, moveRange :
 
 func playerConnected(playerId : int, playerName : String) -> void:
 	connectedPlayersDictionary[playerId] = playerName;
+	get_node("/root/Server/Ui").addPlayerToList(playerName);
 
 func playerDisconnected(playerId : int) -> void:
 	if PasswordManager.wrongPasswordDictionary.has(connectedPlayersDictionary[playerId]):
 		PasswordManager.wrongPasswordDictionary.erase(connectedPlayersDictionary[playerId]);
-	connectedPlayersDictionary.erase(playerId); 
+	get_node("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId]);
+	connectedPlayersDictionary.erase(playerId);
 
 
 
