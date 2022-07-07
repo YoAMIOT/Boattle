@@ -100,8 +100,11 @@ func _on_Close_pressed() -> void:
 
 
 
-remote func receivePos(position : Vector2, playerName : String) -> void:
-	DataManager.saveDatasOfAPlayer(playerName, position);
+remote func receivePos(newPosition : Vector2, playerName : String) -> void:
+	var generalRange : int = 384;
+	var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
+	if currentPosition.distance_to(newPosition) < generalRange * DataManager.playerShipsStatsDictionary[playerName].moveRange:
+		DataManager.saveDatasOfAPlayer(playerName, newPosition);
 
 
 
