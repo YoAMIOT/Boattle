@@ -149,6 +149,72 @@ polygon = PoolVector2Array( 192, 546.133, 832, 546.133, 832, 640, 192, 640 )
 anchor_right = 0.25
 anchor_bottom = 1.0
 theme = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerNameLabel" type="Label" parent="Ui/PlayersTab"]
+anchor_left = 0.266
+anchor_right = 0.984
+anchor_bottom = 0.09
+margin_left = -0.384003
+margin_right = 0.383972
+margin_bottom = -0.240002
+theme = ExtResource( 5 )
+text = "Player name:"
+valign = 1
+
+[node name="PlayerIdLabel" type="Label" parent="Ui/PlayersTab"]
+anchor_left = 0.266
+anchor_top = 0.09
+anchor_right = 0.984
+anchor_bottom = 0.179
+margin_left = -0.384003
+margin_top = -0.239994
+margin_right = 0.383972
+margin_bottom = 0.0560074
+theme = ExtResource( 5 )
+text = "Connection ID:"
+valign = 1
+
+[node name="PlayerViewRangeLabel" type="Label" parent="Ui/PlayersTab"]
+anchor_left = 0.266
+anchor_top = 0.179
+anchor_right = 0.984
+anchor_bottom = 0.269
+margin_left = -0.384003
+margin_top = 0.0560074
+margin_right = 0.383972
+margin_bottom = -0.184006
+theme = ExtResource( 5 )
+text = "View range:"
+valign = 1
+
+[node name="PlayerMoveRangeLabel" type="Label" parent="Ui/PlayersTab"]
+anchor_left = 0.266
+anchor_top = 0.269
+anchor_right = 0.984
+anchor_bottom = 0.358
+margin_left = -0.384003
+margin_top = -0.184006
+margin_right = 0.383972
+margin_bottom = 0.112
+theme = ExtResource( 5 )
+text = "Move range:"
+valign = 1
+
+[node name="PlayerShootRangeLabel" type="Label" parent="Ui/PlayersTab"]
+anchor_left = 0.266
+anchor_top = 0.358
+anchor_right = 0.984
+anchor_bottom = 0.448
+margin_left = -0.384003
+margin_top = 0.112
+margin_right = 0.383972
+margin_bottom = -0.128006
+theme = ExtResource( 5 )
+text = "Shoot range:"
+valign = 1
 
 [node name="MaxPlayerMenu" type="Control" parent="Ui"]
 anchor_right = 1.0
@@ -222,5 +288,6 @@ wait_time = 5.0
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
 [connection signal="toggled" from="Ui/ServerTabButton" to="Ui" method="_on_ServerTabButton_toggled"]
 [connection signal="toggled" from="Ui/PlayersTabButton" to="Ui" method="_on_PlayersTabButton_toggled"]
+[connection signal="item_selected" from="Ui/PlayersTab/PlayersList" to="Ui" method="_on_PlayersList_item_selected"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]
 [connection signal="timeout" from="TurnCooldown" to="." method="_on_TurnCooldown_timeout"]

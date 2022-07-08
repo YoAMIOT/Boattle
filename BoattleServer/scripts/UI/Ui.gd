@@ -27,5 +27,15 @@ func removePlayerFromList(playerName : String) -> void:
 
 
 
-func _on_PlayerList_item_selected(index : int) -> void:
-	var playerName : String = get_node("PlayersTab/PlayerList").get_item_text(index);
+func _on_PlayersList_item_selected(index: int) -> void:
+	var playerName : String = get_node("PlayersTab/PlayersList").get_item_text(index);
+	var playerId : String;
+	var generalRange : int = 384;
+	for p in DataManager.connectedPlayersDictionary:
+		if DataManager.connectedPlayersDictionary[p] == playerName:
+			playerId = str(p);
+	get_node("PlayersTab/PlayerNameLabel").text = "Player name: " + playerName;
+	get_node("PlayersTab/PlayerIdLabel").text = "Connection ID: " + playerId;
+	get_node("PlayersTab/PlayerViewRangeLabel").text = "View range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].viewRange);
+	get_node("PlayersTab/PlayerMoveRangeLabel").text = "Move range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].moveRange);
+	get_node("PlayersTab/PlayerShootRangeLabel").text = "Shoot range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].shootRange);

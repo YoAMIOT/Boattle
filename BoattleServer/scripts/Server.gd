@@ -51,7 +51,7 @@ func peerConnected(playerId : int) -> void:
 		kickPlayer(playerId, "Server full");
 
 func peerDisconnected(playerId : int) -> void:
-	Log.logPrint("!- User" + str(playerId) + " connected as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
+	Log.logPrint("!- User" + str(playerId) + " as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
 	refreshPlayerCountLabel();
 	if get_node("PasswordTimers").has_node(str(playerId)):
