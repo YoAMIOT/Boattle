@@ -24,3 +24,8 @@ func removePlayerFromList(playerName : String) -> void:
 	for i in range(get_node("PlayersTab/PlayersList").get_item_count()):
 		if get_node("PlayersTab/PlayersList").get_item_text(i) == playerName:
 			get_node("PlayersTab/PlayersList").remove_item(i);
+
+
+
+func _on_PlayerList_item_selected(index : int) -> void:
+	var playerName : String = get_node("PlayersTab/PlayerList").get_item_text(index);
