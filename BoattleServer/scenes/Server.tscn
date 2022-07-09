@@ -216,6 +216,84 @@ theme = ExtResource( 5 )
 text = "Shoot range:"
 valign = 1
 
+[node name="KickButton" type="Button" parent="Ui/PlayersTab"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 272.0
+margin_top = 464.0
+margin_right = -640.0
+margin_bottom = -16.0
+theme = ExtResource( 5 )
+disabled = true
+text = "Kick"
+
+[node name="KickWindow" type="Control" parent="Ui/PlayersTab"]
+visible = false
+anchor_top = -0.104
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -8.256
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bg" type="Polygon2D" parent="Ui/PlayersTab/KickWindow"]
+position = Vector2( 0, -7.62939e-06 )
+scale = Vector2( 5.33333, 0.9375 )
+color = Color( 0.682353, 0.439216, 0.439216, 1 )
+polygon = PoolVector2Array( 192, 0, 192, 640, 0, 640, 0, 0 )
+
+[node name="Label" type="Label" parent="Ui/PlayersTab/KickWindow"]
+anchor_left = 0.242
+anchor_top = 0.213
+anchor_right = 0.758
+anchor_bottom = 0.273
+margin_left = 0.191986
+margin_top = 0.199989
+margin_right = -0.192017
+margin_bottom = 0.199997
+theme = ExtResource( 5 )
+text = "Enter a reason for kicking the player:"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Reason" type="LineEdit" parent="Ui/PlayersTab/KickWindow"]
+anchor_left = 0.062
+anchor_top = 0.427
+anchor_right = 0.937
+anchor_bottom = 0.533
+margin_left = 0.511997
+margin_top = -0.200012
+margin_right = 0.511963
+margin_bottom = 0.199982
+theme = ExtResource( 5 )
+align = 1
+
+[node name="ValidateButton" type="Button" parent="Ui/PlayersTab/KickWindow"]
+anchor_left = 0.562
+anchor_top = 0.693
+anchor_right = 0.687
+anchor_bottom = 0.8
+margin_left = 0.511963
+margin_top = 0.199982
+margin_right = -0.488037
+theme = ExtResource( 5 )
+text = "Validate"
+
+[node name="CancelButton" type="Button" parent="Ui/PlayersTab/KickWindow"]
+anchor_left = 0.312
+anchor_top = 0.693
+anchor_right = 0.437
+anchor_bottom = 0.8
+margin_left = 0.511993
+margin_top = 0.199982
+margin_right = -0.488007
+theme = ExtResource( 5 )
+text = "Cancel"
+
 [node name="MaxPlayerMenu" type="Control" parent="Ui"]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -289,5 +367,8 @@ wait_time = 5.0
 [connection signal="toggled" from="Ui/ServerTabButton" to="Ui" method="_on_ServerTabButton_toggled"]
 [connection signal="toggled" from="Ui/PlayersTabButton" to="Ui" method="_on_PlayersTabButton_toggled"]
 [connection signal="item_selected" from="Ui/PlayersTab/PlayersList" to="Ui" method="_on_PlayersList_item_selected"]
+[connection signal="pressed" from="Ui/PlayersTab/KickButton" to="Ui" method="_on_KickButton_pressed"]
+[connection signal="pressed" from="Ui/PlayersTab/KickWindow/ValidateButton" to="Ui" method="_on_ValidateButton_pressed"]
+[connection signal="pressed" from="Ui/PlayersTab/KickWindow/CancelButton" to="Ui" method="_on_CancelButton_pressed"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]
 [connection signal="timeout" from="TurnCooldown" to="." method="_on_TurnCooldown_timeout"]

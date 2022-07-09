@@ -1,5 +1,7 @@
 extends Control
 
+var selectedPlayerId : int;
+
 func _on_ServerTabButton_toggled(pressed: bool) -> void:
 	if pressed:
 		get_node("ServerTabButton").disabled = true;
@@ -28,14 +30,31 @@ func removePlayerFromList(playerName : String) -> void:
 
 
 func _on_PlayersList_item_selected(index: int) -> void:
+	get_node("PlayersTab/KickButton").disabled = false;
 	var playerName : String = get_node("PlayersTab/PlayersList").get_item_text(index);
-	var playerId : String;
+	var playerId : int;
 	var generalRange : int = 384;
 	for p in DataManager.connectedPlayersDictionary:
 		if DataManager.connectedPlayersDictionary[p] == playerName:
-			playerId = str(p);
+			playerId = p;
+			selectedPlayerId = playerId;
 	get_node("PlayersTab/PlayerNameLabel").text = "Player name: " + playerName;
-	get_node("PlayersTab/PlayerIdLabel").text = "Connection ID: " + playerId;
+	get_node("PlayersTab/PlayerIdLabel").text = "Connection ID: " + str(playerId);
 	get_node("PlayersTab/PlayerViewRangeLabel").text = "View range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].viewRange);
 	get_node("PlayersTab/PlayerMoveRangeLabel").text = "Move range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].moveRange);
 	get_node("PlayersTab/PlayerShootRangeLabel").text = "Shoot range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].shootRange);
+
+
+
+func _on_KickButton_pressed() -> void:
+	get_node("PlayersTab/KickWindow").visible = true;
+
+func _on_ValidateButton_pressed() -> void:
+	if DataManager.connectedPlayersDictionary.has(selectedPlayerId):
+		get_parent().kickPlayer(selectedPlayerId, get_node("PlayersTab/KickWindow/Reason").text);
+	get_node("PlayersTab/KickWindow").visible = false;
+	get_node("PlayersTab/KickWindow/Reason").text = "";
+
+func _on_CancelButton_pressed() -> void:
+	get_node("PlayersTab/KickWindow").visible = false;
+	get_node("PlayersTab/KickWindow/Reason").text = "";
