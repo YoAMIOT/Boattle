@@ -13,6 +13,8 @@ func _physics_process(_delta) -> void:
 	if get_node("UI/PauseMenu").visible == false:
 		if Input.is_action_just_pressed("mouse_left") and turn:
 			if turnMode == "move" and self.position.distance_to(get_global_mouse_position()) < RANGE * moveRangeMultiplier:
+				get_node("MovePointer").global_position = get_global_mouse_position();
+				get_node("MovePointer").visible = true;
 				Server.sendPosToServer(get_global_mouse_position());
 			if turnMode == "shoot" and self.position.distance_to(get_global_mouse_position()) < RANGE * shootRangeMultiplier:
 				print("SHOOOOOOTT");
@@ -82,4 +84,5 @@ func setTurn(turnState : bool) -> void:
 	if turn:
 		get_node("Ranges").visible = true;
 	elif not turn:
+		get_node("MovePointer").visible = false;
 		get_node("Ranges").visible = false;
