@@ -1,12 +1,28 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://icon.png" type="Texture" id=1]
+[ext_resource path="res://ressources/animations/movePointer/movePointer1.png" type="Texture" id=1]
 [ext_resource path="res://scripts/entities/Boat.gd" type="Script" id=2]
 [ext_resource path="res://scenes/UI/PauseMenu.tscn" type="PackedScene" id=3]
 [ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=4]
+[ext_resource path="res://ressources/sprites/ships/default.png" type="Texture" id=5]
+[ext_resource path="res://ressources/animations/movePointer/movePointer5.png" type="Texture" id=6]
+[ext_resource path="res://ressources/animations/movePointer/movePointer3.png" type="Texture" id=7]
+[ext_resource path="res://ressources/animations/movePointer/movePointer6.png" type="Texture" id=8]
+[ext_resource path="res://ressources/animations/movePointer/movePointer8.png" type="Texture" id=9]
+[ext_resource path="res://ressources/animations/movePointer/movePointer7.png" type="Texture" id=10]
+[ext_resource path="res://ressources/animations/movePointer/movePointer2.png" type="Texture" id=11]
+[ext_resource path="res://ressources/animations/movePointer/movePointer4.png" type="Texture" id=12]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 16, 16 )
+extents = Vector2( 24, 24 )
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 11 ), ExtResource( 7 ), ExtResource( 12 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 10 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "default",
+"speed": 15.0
+} ]
 
 [node name="Boat" type="KinematicBody2D"]
 script = ExtResource( 2 )
@@ -31,17 +47,18 @@ scale = Vector2( 1.6, 1.6 )
 color = Color( 1, 0, 0, 0.368627 )
 polygon = PoolVector2Array( 0, -384, 99, -371, 192, -333, 272, -271, 333, -192, 371, -99, 384, 0, 371, 99, 333, 192, 271, 272, 192, 333, 99, 371, 0, 384, -99, 371, -192, 333, -271, 272, -333, 192, -371, 99, -384, 0, -371, -99, -333, -192, -271, -272, -192, -333, -99, -371 )
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( -2.38419e-07, 4.76837e-07 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 1 )
-
-[node name="MovePointer" type="Sprite" parent="."]
+[node name="MovePointer" type="AnimatedSprite" parent="."]
 visible = false
-modulate = Color( 0.968627, 1, 0, 1 )
-rotation = 0.785398
-scale = Vector2( 0.2, 0.2 )
-texture = ExtResource( 1 )
+position = Vector2( 0, -2.38419e-07 )
+scale = Vector2( 3, 2.75 )
+frames = SubResource( 2 )
+playing = true
+offset = Vector2( 0, -9 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 4.76837e-07, 4.76837e-07 )
+scale = Vector2( 2.5, 2.5 )
+texture = ExtResource( 5 )
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
@@ -66,6 +83,8 @@ mouse_filter = 2
 [node name="GameUI" type="Control" parent="UI"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_top = -0.000305176
+margin_bottom = -0.000244141
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
