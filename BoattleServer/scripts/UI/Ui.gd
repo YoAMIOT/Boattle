@@ -40,9 +40,9 @@ func _on_PlayersList_item_selected(index: int) -> void:
 			selectedPlayerId = playerId;
 	get_node("PlayersTab/PlayerNameLabel").text = "Player name: " + playerName;
 	get_node("PlayersTab/PlayerIdLabel").text = "Connection ID: " + str(playerId);
-	get_node("PlayersTab/PlayerViewRangeLabel").text = "View range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].viewRange);
-	get_node("PlayersTab/PlayerMoveRangeLabel").text = "Move range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].moveRange);
-	get_node("PlayersTab/PlayerShootRangeLabel").text = "Shoot range: " + str(generalRange * DataManager.playerShipsStatsDictionary[playerName].shootRange);
+	get_node("PlayersTab/PlayerViewRangeLabel").text = "View range: " + str(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange);
+	get_node("PlayersTab/PlayerMoveRangeLabel").text = "Move range: " + str(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange);
+	get_node("PlayersTab/PlayerShootRangeLabel").text = "Shoot range: " + str(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange);
 
 
 

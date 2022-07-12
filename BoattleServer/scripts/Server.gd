@@ -35,8 +35,7 @@ func _on_StartServer_pressed() -> void:
 	var error = network.create_server(port, maxPlayers);
 	DataManager.printError(error);
 	get_tree().set_network_peer(network);
-	Log.logPrint("===Server Started===");
-	Log.logPrint("=Currently running on " + ip + "=");
+	Log.logPrint("=== Server started and running on " + ip + " ===");
 	error = network.connect("peer_connected", self, "peerConnected");
 	DataManager.printError(error);
 	error = network.connect("peer_disconnected", self, "peerDisconnected");
@@ -46,12 +45,11 @@ func _on_StartServer_pressed() -> void:
 
 
 func peerConnected(playerId : int) -> void:
-	Log.logPrint("!- User" + str(playerId) + " Connected -!");
 	if DataManager.connectedPlayersDictionary.size() == maxPlayers - 1:
 		kickPlayer(playerId, "Server full");
 
 func peerDisconnected(playerId : int) -> void:
-	Log.logPrint("!- User" + str(playerId) + " as " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
+	Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + " Disconnected -!");
 	DataManager.playerDisconnected(playerId);
 	refreshPlayerCountLabel();
 	if get_node("PasswordTimers").has_node(str(playerId)):
@@ -61,6 +59,7 @@ func peerDisconnected(playerId : int) -> void:
 
 remote func newConnectionEstablished(playerName : String, playerId : int) -> void:
 	var registration : bool = false;
+	Log.logPrint("!- " + playerName + " Connected -!");
 	if not DataManager.playersPasswordsDictionary.has(playerName):
 		var position : Vector2 = Vector2(0 ,0);
 		DataManager.saveDatasOfAPlayer(playerName, position);
@@ -93,8 +92,8 @@ func logIn(playerId : int, playerName : String) -> void:
 	get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
 	get_node("PasswordTimers/" + str(playerId)).queue_free();
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-	var playerShipsDatas : Dictionary = DataManager.playerShipsStatsDictionary[playerName];
-	Log.logPrint("!- User" + str(playerId) + " has been authentified as " + str(playerName) + " -!");
+	var playerShipsDatas : Dictionary = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship];
+	Log.logPrint("!- " + playerName + " authentified -!");
 	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas);
 
 func wrongPasswordEntered(playerId : int) -> void:
@@ -102,6 +101,7 @@ func wrongPasswordEntered(playerId : int) -> void:
 
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
+	Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + " was kicked: " + reason + " -!");
 	network.disconnect_peer(playerId);
 
 
@@ -123,7 +123,7 @@ func _on_Close_pressed() -> void:
 remote func receivePos(newPosition : Vector2, playerName : String) -> void:
 	var generalRange : int = 384;
 	var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-	if currentPosition.distance_to(newPosition) < generalRange * DataManager.playerShipsStatsDictionary[playerName].moveRange:
+	if currentPosition.distance_to(newPosition) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange:
 		DataManager.saveDatasOfAPlayer(playerName, newPosition);
 
 

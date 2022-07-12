@@ -3,14 +3,17 @@ extends Node
 var playersDataFile : String = "res://data/playersData.json";
 var playersPasswordFile : String = "res://data/playersPasswords.json"
 var playersShipsStatsFile : String = "res://data/playersShipsStats.json"
+var shipsFile : String = "res://data/ships.json"
 var playersDatasDictionary : Dictionary;
 var connectedPlayersDictionary : Dictionary;
 var playersPasswordsDictionary : Dictionary;
 var playerShipsStatsDictionary : Dictionary;
+var shipsDictionary : Dictionary;
 
 func _ready() -> void:
 	loadPlayersDatas();
 	loadPlayersPasswords();
+	loadShipsStats();
 	loadPlayersShipsStats();
 
 
@@ -78,13 +81,24 @@ func loadPlayersShipsStats():
 	playerShipsStatsDictionary = JSON.parse(file.get_as_text()).result;
 	file.close();
 
+func loadShipsStats():
+	var file : File = File.new();
+	if not file.file_exists(shipsFile):
+		savePlayersShipsStats();
+		return;
+	var error = file.open(shipsFile, File.READ);
+	printError(error);
+	shipsDictionary = JSON.parse(file.get_as_text()).result;
+	file.close();
+
 func createShipStatsForPlayer(playerName : String):
-	playerShipsStatsDictionary[playerName] = {"viewRange" : 1.5, "moveRange" : 0.7, "shootRange" : 1.6};
+	playerShipsStatsDictionary[playerName] = {"ship" : "default"};
 	savePlayersShipsStats();
 
-func saveShipsStatsForPlayer(playerName : String, viewRange : float, moveRange : float, shootRange : float) -> void:
-	playerShipsStatsDictionary[playerName] = {"viewRange" : viewRange, "moveRange" : moveRange, "shootRange" : shootRange};
+func saveShipsStatsForPlayer(playerName : String, ship : String) -> void:
+	playerShipsStatsDictionary[playerName] = {"ship" : ship};
 	savePlayersShipsStats();
+
 
 
 func playerConnected(playerId : int, playerName : String) -> void:
