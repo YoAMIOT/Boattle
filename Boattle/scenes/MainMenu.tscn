@@ -327,7 +327,6 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 4
 playing = true
 
 [node name="FailureTimer" type="Timer" parent="Menus/Connecting"]
@@ -469,7 +468,6 @@ __meta__ = {
 }
 
 [node name="Registration" type="Control" parent="PasswordPage"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 __meta__ = {

@@ -48,14 +48,14 @@ __meta__ = {
 }
 
 [node name="VSyncSwitch" type="CheckButton" parent="."]
-anchor_left = 0.433
-anchor_top = 0.178
-anchor_right = 0.567
-anchor_bottom = 0.237
-margin_left = 28.64
-margin_top = 63.76
-margin_right = -28.6399
-margin_bottom = 64.04
+anchor_left = 0.448
+anchor_top = 0.237
+anchor_right = 0.552
+anchor_bottom = 0.296
+margin_left = -0.160034
+margin_top = 0.039978
+margin_right = 0.159912
+margin_bottom = 0.320007
 theme = ExtResource( 1 )
 pressed = true
 text = "Vsync:"
