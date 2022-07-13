@@ -9,6 +9,7 @@ var connectedPlayersDictionary : Dictionary;
 var playersPasswordsDictionary : Dictionary;
 var playerShipsStatsDictionary : Dictionary;
 var shipsDictionary : Dictionary;
+var turnDictionary : Dictionary;
 
 func _ready() -> void:
 	loadPlayersDatas();

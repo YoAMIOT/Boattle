@@ -118,26 +118,29 @@ func _on_Close_pressed() -> void:
 
 
 
-remote func receiveTurnData(action : String, newPosition : Vector2, playerName : String) -> void:
-	var generalRange : int = 384;
-	var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-	if action == "move":
-		if currentPosition.distance_to(newPosition) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange:
-			DataManager.saveDatasOfAPlayer(playerName, newPosition);
-	elif action == "shoot":
-		Log.logPrint(playerName + " shot at " + str(newPosition));
+remote func receiveTurnData(action : String, position : Vector2, playerName : String) -> void:
+	DataManager.turnDictionary[playerName] = {"action" : action, "position" : position};
+#	elif action == "shoot":
+#		Log.logPrint(playerName + " shot at " + str(newPosition));
 
 
 func _on_TurnCooldown_timeout() -> void:
 	turn = !turn;
 	rpc_id(0, "turnSwitch", turn);
 	if turn == false:
+		var generalRange : int = 384;
 		var worldState : Dictionary = {};
 		for p in DataManager.connectedPlayersDictionary:
-			worldState[p] = {
-				"playerName" : DataManager.connectedPlayersDictionary[p],
-				"posX" : DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posX,
-				"posY" : DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posY
-			};
+			var playerName : String = DataManager.connectedPlayersDictionary[p];
+			var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
+			worldState[p] = {"playerName" : playerName, "posX" : currentPosition.x, "posY" : currentPosition.y};
+			if DataManager.turnDictionary.has(playerName):
+				if DataManager.turnDictionary[playerName].action == "move":
+					if currentPosition.distance_to(DataManager.turnDictionary[playerName].position) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange:
+						DataManager.saveDatasOfAPlayer(playerName, DataManager.turnDictionary[playerName].position);
+						worldState[p].posX = DataManager.turnDictionary[playerName].position.x;
+						worldState[p].posY = DataManager.turnDictionary[playerName].position.y;
+				elif DataManager.turnDictionary[playerName].action =="shoot":
+					Log.logPrint(playerName + " shot at " + str(DataManager.turnDictionary[playerName].position));
 		rpc_id(0, "receiveWorldState", worldState);
 
