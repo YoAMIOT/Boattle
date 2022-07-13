@@ -119,7 +119,7 @@ func _on_Close_pressed() -> void:
 
 
 
-remote func receiveTurnData(action : String, position : Vector2, playerName : String, radius : float = 0.1) -> void:
+remote func receiveTurnData(action : String, position : Vector2, playerName : String = "", radius : float = 0.1) -> void:
 	DataManager.turnDictionary[playerName] = {"action" : action, "position" : position, "radius" : radius};
 
 func _on_TurnCooldown_timeout() -> void:

@@ -25,7 +25,7 @@ func _physics_process(_delta) -> void:
 				get_node("Pointer/ShootPointerStatic").global_position = get_global_mouse_position();
 				get_node("Pointer/ShootPointerStatic").scale = Vector2(currentRadius, currentRadius);
 				get_node("Pointer/ShootPointerStatic").visible = true;
-				Server.sendTurnDataToServer(turnMode, get_global_mouse_position());
+				Server.sendTurnDataToServer(turnMode, get_global_mouse_position(), DataManager.datas["playerName"], currentRadius);
 		if turnMode == "shoot":
 			if Input.is_action_just_released("scrollUp") and currentRadius < maxShootRadius - 0.01:
 				currentRadius += SROLL_STEP;
