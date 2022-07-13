@@ -65,10 +65,7 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 		DataManager.saveDatasOfAPlayer(playerName, position);
 		DataManager.createShipStatsForPlayer(playerName);
 		registration = true
-	var hasPlayerConnected : bool = false;
-	for p in DataManager.connectedPlayersDictionary:
-		if DataManager.connectedPlayersDictionary[p] == playerName:
-			hasPlayerConnected = true;
+	var hasPlayerConnected : bool = DataManager.isPlayerConnected(playerName);
 	if hasPlayerConnected:
 		kickPlayer(playerId, "Player already connected");
 	elif not hasPlayerConnected:

@@ -5,10 +5,7 @@ var wrongPasswordDictionary : Dictionary = {};
 
 
 func validatePassword(registration : bool, password : String, playerName : String) -> void:
-	var playerId : int;
-	for p in DataManager.connectedPlayersDictionary:
-		if DataManager.connectedPlayersDictionary[p] == playerName:
-			playerId = p;
+	var playerId : int = DataManager.getIdFromName(playerName);
 	if registration == true:
 		var salt : String = generateSalt();
 		var hashedPassword : String = generateHashedPassword(password, salt);

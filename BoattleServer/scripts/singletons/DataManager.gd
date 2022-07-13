@@ -111,6 +111,22 @@ func playerDisconnected(playerId : int) -> void:
 	get_node("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId]);
 	connectedPlayersDictionary.erase(playerId);
 
+func isPlayerConnected(playerName : String) -> bool:
+	var connected : bool = false;
+	for p in connectedPlayersDictionary:
+		if connectedPlayersDictionary[p] == playerName:
+			connected = true;
+	return connected;
+
+
+
+func getIdFromName(playerName : String) -> int:
+	var playerId : int;
+	for p in connectedPlayersDictionary:
+		if connectedPlayersDictionary[p] == playerName:
+			playerId = p;
+	return playerId;
+
 
 
 func printError(error) -> void:

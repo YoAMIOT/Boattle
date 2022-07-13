@@ -32,12 +32,9 @@ func removePlayerFromList(playerName : String) -> void:
 func _on_PlayersList_item_selected(index: int) -> void:
 	get_node("PlayersTab/KickButton").disabled = false;
 	var playerName : String = get_node("PlayersTab/PlayersList").get_item_text(index);
-	var playerId : int;
+	var playerId : int = DataManager.getIdFromName(playerName);
+	selectedPlayerId = playerId;
 	var generalRange : int = 384;
-	for p in DataManager.connectedPlayersDictionary:
-		if DataManager.connectedPlayersDictionary[p] == playerName:
-			playerId = p;
-			selectedPlayerId = playerId;
 	get_node("PlayersTab/PlayerNameLabel").text = "Player name: " + playerName;
 	get_node("PlayersTab/PlayerIdLabel").text = "Connection ID: " + str(playerId);
 	get_node("PlayersTab/PlayerViewRangeLabel").text = "View range: " + str(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange);
