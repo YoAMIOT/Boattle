@@ -15,9 +15,9 @@ func _physics_process(_delta) -> void:
 			if turnMode == "move" and self.position.distance_to(get_global_mouse_position()) < RANGE * moveRangeMultiplier:
 				get_node("MovePointer").global_position = get_global_mouse_position();
 				get_node("MovePointer").visible = true;
-				Server.sendPosToServer(get_global_mouse_position());
+				Server.sendTurnDataToServer(turnMode, get_global_mouse_position());
 			if turnMode == "shoot" and self.position.distance_to(get_global_mouse_position()) < RANGE * shootRangeMultiplier:
-				print("SHOOOOOOTT");
+				Server.sendTurnDataToServer(turnMode, get_global_mouse_position());
 		if Input.is_action_just_pressed("1"):
 			var pressed : bool = true;
 			_on_MoveButton_toggled(pressed);

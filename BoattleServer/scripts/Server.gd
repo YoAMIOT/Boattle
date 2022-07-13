@@ -79,7 +79,8 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 		timeOutTimer.name = str(playerId);
 		timeOutTimer.wait_time = 60;
 		timeOutTimer.one_shot = true;
-		timeOutTimer.connect("timeout", self, "kickPlayer", [playerId, "You did not enter password in time, please retry"]);
+		var error = timeOutTimer.connect("timeout", self, "kickPlayer", [playerId, "You did not enter password in time, please retry"]);
+		DataManager.printError(error);
 		timeOutTimer.start();
 
 remote func receivePasswordValidationRequest(registration : bool, password : String, playerName : String) -> void:
@@ -87,11 +88,11 @@ remote func receivePasswordValidationRequest(registration : bool, password : Str
 
 func logIn(playerId : int, playerName : String) -> void:
 	get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
-	get_node("PasswordTimers/" + str(playerId)).queue_free();
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 	var playerShipsDatas : Dictionary = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship];
 	Log.logPrint("!- " + playerName + " authentified -!");
 	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas);
+	get_node("PasswordTimers/" + str(playerId)).queue_free();
 
 func wrongPasswordEntered(playerId : int) -> void:
 	rpc_id(playerId, "wrongPassword");
@@ -117,12 +118,14 @@ func _on_Close_pressed() -> void:
 
 
 
-remote func receivePos(newPosition : Vector2, playerName : String) -> void:
+remote func receiveTurnData(action : String, newPosition : Vector2, playerName : String) -> void:
 	var generalRange : int = 384;
 	var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-	if currentPosition.distance_to(newPosition) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange:
-		DataManager.saveDatasOfAPlayer(playerName, newPosition);
-
+	if action == "move":
+		if currentPosition.distance_to(newPosition) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange:
+			DataManager.saveDatasOfAPlayer(playerName, newPosition);
+	elif action == "shoot":
+		Log.logPrint(playerName + " shot at " + str(newPosition));
 
 
 func _on_TurnCooldown_timeout() -> void:

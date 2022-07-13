@@ -80,8 +80,8 @@ remote func killPuppet(playerId : int) -> void:
 
 
 
-func sendPosToServer(position : Vector2) -> void:
-	rpc_id(1, "receivePos", position, DataManager.datas["playerName"]);
+func sendTurnDataToServer(action : String, position : Vector2) -> void:
+	rpc_id(1, "receiveTurnData", action, position, DataManager.datas["playerName"]);
 
 remote func receiveWorldState(worldState : Dictionary) -> void:
 	for p in worldState:
