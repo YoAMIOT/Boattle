@@ -100,7 +100,8 @@ func wrongPasswordEntered(playerId : int) -> void:
 func kickPlayer(playerId : int, reason : String) -> void:
 	rpc_id(playerId, "kickedFromServer", reason);
 	Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + " was kicked: " + reason + " -!");
-	network.disconnect_peer(playerId);
+	yield(get_tree().create_timer(0.1),"timeout")
+	network.disconnect_peer(playerId, true);
 
 
 
