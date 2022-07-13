@@ -95,6 +95,8 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 				spawnPuppet(p, worldState[p].playerName, newPosition);
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
 
+remote func shootOnPos(playerName : String, position : Vector2) -> void:
+	pass
 
 
 remote func turnSwitch(turnState : bool) -> void:

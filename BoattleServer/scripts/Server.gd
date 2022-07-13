@@ -119,11 +119,8 @@ func _on_Close_pressed() -> void:
 
 
 
-remote func receiveTurnData(action : String, position : Vector2, playerName : String) -> void:
-	DataManager.turnDictionary[playerName] = {"action" : action, "position" : position};
-#	elif action == "shoot":
-#		Log.logPrint(playerName + " shot at " + str(newPosition));
-
+remote func receiveTurnData(action : String, position : Vector2, playerName : String, radius : float = 0.1) -> void:
+	DataManager.turnDictionary[playerName] = {"action" : action, "position" : position, "radius" : radius};
 
 func _on_TurnCooldown_timeout() -> void:
 	turn = !turn;
@@ -142,6 +139,9 @@ func _on_TurnCooldown_timeout() -> void:
 						worldState[p].posX = DataManager.turnDictionary[playerName].position.x;
 						worldState[p].posY = DataManager.turnDictionary[playerName].position.y;
 				elif DataManager.turnDictionary[playerName].action =="shoot":
-					Log.logPrint(playerName + " shot at " + str(DataManager.turnDictionary[playerName].position));
+					var shotRadius : float = DataManager.turnDictionary[playerName].radius;
+					if currentPosition.distance_to(DataManager.turnDictionary[playerName].position) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange:
+						if shotRadius < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxRadius and shotRadius > generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].minRadius:
+							rpc_id(0, "shootOnPos", playerName, Vector2(DataManager.turnDictionary[playerName].position.x, DataManager.turnDictionary[playerName].position.y), shotRadius);
 		rpc_id(0, "receiveWorldState", worldState);
 

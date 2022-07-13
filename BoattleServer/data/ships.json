@@ -3,6 +3,8 @@
     {
         "viewRange" : 1.5,
         "moveRange" : 0.7, 
-        "shootRange" : 1.6
+        "shootRange" : 1.6,
+        "minRadius" : 0.1,
+        "maxRadius" : 0.4
     }
 }

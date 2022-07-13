@@ -10,6 +10,7 @@ func spawnClientPlayer(spawnPosition : Vector2, playerShipsDatas : Dictionary) -
 	instance.setViewRangeMultiplier(playerShipsDatas["viewRange"]);
 	instance.setShootRangeMultiplier(playerShipsDatas["shootRange"]);
 	instance.setMoveRangeMultiplier(playerShipsDatas["moveRange"]);
+	instance.setShootRadiusMultiplier(playerShipsDatas["minRadius"], playerShipsDatas["maxRadius"]);
 
 
 
