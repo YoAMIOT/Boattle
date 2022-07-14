@@ -84,9 +84,6 @@ func loadPlayersShipsStats():
 
 func loadShipsStats():
 	var file : File = File.new();
-	if not file.file_exists(shipsFile):
-		savePlayersShipsStats();
-		return;
 	var error = file.open(shipsFile, File.READ);
 	printError(error);
 	shipsDictionary = JSON.parse(file.get_as_text()).result;

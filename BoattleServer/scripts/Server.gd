@@ -98,8 +98,8 @@ func wrongPasswordEntered(playerId : int) -> void:
 	rpc_id(playerId, "wrongPassword");
 
 func kickPlayer(playerId : int, reason : String) -> void:
-	rpc_id(playerId, "kickedFromServer", reason);
 	Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + " was kicked: " + reason + " -!");
+	rpc_id(playerId, "kickedFromServer", reason);
 	yield(get_tree().create_timer(0.1),"timeout")
 	network.disconnect_peer(playerId, true);
 
@@ -128,6 +128,7 @@ func _on_TurnCooldown_timeout() -> void:
 	if turn == false:
 		var generalRange : int = 384;
 		var worldState : Dictionary = {};
+		var registeredShots : Dictionary = {};
 		for p in DataManager.connectedPlayersDictionary:
 			var playerName : String = DataManager.connectedPlayersDictionary[p];
 			var currentPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
@@ -142,6 +143,12 @@ func _on_TurnCooldown_timeout() -> void:
 					var shotRadius : float = DataManager.turnDictionary[playerName].radius;
 					if currentPosition.distance_to(DataManager.turnDictionary[playerName].position) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange:
 						if shotRadius < DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxRadius and shotRadius > DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].minRadius:
-							rpc_id(0, "shootOnPos", playerName, Vector2(DataManager.turnDictionary[playerName].position.x, DataManager.turnDictionary[playerName].position.y), shotRadius);
+							registeredShots[playerName] = {"position" : Vector2(DataManager.turnDictionary[playerName].position.x, DataManager.turnDictionary[playerName].position.y), "radius" : shotRadius};
+		for s in registeredShots:
+			var targets : Dictionary = {};
+			for p in DataManager.connectedPlayersDictionary:
+				if registeredShots[s].position.distance_to(Vector2(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posX, DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posY)) < generalRange * registeredShots[s].radius:
+					targets[DataManager.connectedPlayersDictionary[p]] = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[s].ship].damage - (registeredShots[s].radius * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[s].ship].damage);
+			#rpc_id(0, "shootOnPos", registeredShots[s], registeredShots[s].position, registeredShots[s].radius, targets);
 		rpc_id(0, "receiveWorldState", worldState);
 		DataManager.turnDictionary = {};
