@@ -18,6 +18,7 @@ func _physics_process(_delta) -> void:
 		if Input.is_action_just_pressed("mouse_left") and turn:
 			if turnMode == "move" and self.position.distance_to(get_global_mouse_position()) < RANGE * moveRangeMultiplier:
 				get_node("Pointer/MovePointer").global_position = get_global_mouse_position();
+				get_node("Pointer/ShootPointerStatic").visible = false;
 				get_node("Pointer/MovePointer").visible = true;
 				Server.sendTurnDataToServer(turnMode, get_global_mouse_position());
 			if turnMode == "shoot" and self.position.distance_to(get_global_mouse_position()) < RANGE * shootRangeMultiplier:
@@ -25,7 +26,7 @@ func _physics_process(_delta) -> void:
 				get_node("Pointer/ShootPointerStatic").global_position = get_global_mouse_position();
 				get_node("Pointer/ShootPointerStatic").scale = Vector2(currentRadius, currentRadius);
 				get_node("Pointer/ShootPointerStatic").visible = true;
-				Server.sendTurnDataToServer(turnMode, get_global_mouse_position(), DataManager.datas["playerName"], currentRadius);
+				Server.sendTurnDataToServer(turnMode, get_global_mouse_position(), currentRadius);
 		if turnMode == "shoot":
 			if Input.is_action_just_released("scrollUp") and currentRadius < maxShootRadius - 0.01:
 				currentRadius += SROLL_STEP;

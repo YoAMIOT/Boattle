@@ -80,8 +80,8 @@ remote func killPuppet(playerId : int) -> void:
 
 
 
-func sendTurnDataToServer(action : String, position : Vector2) -> void:
-	rpc_id(1, "receiveTurnData", action, position, DataManager.datas["playerName"]);
+func sendTurnDataToServer(action : String, position : Vector2, radius : float = 0.1) -> void:
+	rpc_id(1, "receiveTurnData", action, position, DataManager.datas["playerName"], radius);
 
 remote func receiveWorldState(worldState : Dictionary) -> void:
 	for p in worldState:
@@ -95,8 +95,9 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 				spawnPuppet(p, worldState[p].playerName, newPosition);
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
 
-remote func shootOnPos(playerName : String, position : Vector2) -> void:
-	pass
+remote func shootOnPos(playerName : String, position : Vector2, radiusMultiplier : float) -> void:
+	print("shot performed by " + playerName + " at " + str(position) + " with a radius multiplier of " + str(radiusMultiplier));
+
 
 
 remote func turnSwitch(turnState : bool) -> void:
