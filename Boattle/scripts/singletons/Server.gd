@@ -95,7 +95,7 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 				spawnPuppet(p, worldState[p].playerName, newPosition);
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
 
-remote func shootOnPos(playerName : String, position : Vector2, radiusMultiplier : float, hit : bool) -> void:
+remote func shootOnPos(playerName : String, position : Vector2, radiusMultiplier : float, targets : Dictionary) -> void:
 	print("shot performed by " + playerName + " at " + str(position) + " with a radius multiplier of " + str(radiusMultiplier));
 
 
