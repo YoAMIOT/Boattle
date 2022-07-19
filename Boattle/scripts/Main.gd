@@ -1,7 +1,8 @@
 extends Node2D
 
-export var ClientBoat : PackedScene;
-export var PuppetBoat : PackedScene;
+var ClientBoat : PackedScene = preload("res://scenes/entities/Boat.tscn");
+var PuppetBoat : PackedScene = preload("res://scenes/entities/Puppet.tscn");
+var ShotRadius : PackedScene = preload("res://scenes/entities/ShotRadius.tscn");
 
 func spawnClientPlayer(spawnPosition : Vector2, playerShipsDatas : Dictionary) -> void:
 	var instance = ClientBoat.instance();
@@ -29,3 +30,16 @@ func killPuppet(playerId : int) -> void:
 	yield(get_tree().create_timer(0.2), "timeout");
 	if get_node("Players").has_node(str(playerId)):
 		get_node("Players/" + str(playerId)).queue_free();
+
+
+
+func shootOnPos(playerName : String, shotPosition : Vector2, radiusMultiplier : float) -> void:
+	var instance = ShotRadius.instance();
+	get_node("Shots").add_child(instance);
+	instance.name = playerName;
+	instance.position = shotPosition;
+	instance.scale = Vector2(radiusMultiplier, radiusMultiplier);
+	if playerName == DataManager.datas["playerName"]:
+		instance.color = Color(0, 1, 0, 0.6);
+	yield(get_tree().create_timer(2), "timeout");
+	instance.queue_free();

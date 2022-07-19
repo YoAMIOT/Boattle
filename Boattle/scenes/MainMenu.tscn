@@ -327,7 +327,7 @@ __meta__ = {
 position = Vector2( 960, 576 )
 scale = Vector2( 85.3333, 85.3333 )
 frames = SubResource( 1 )
-frame = 4
+frame = 1
 playing = true
 
 [node name="FailureTimer" type="Timer" parent="Menus/Connecting"]

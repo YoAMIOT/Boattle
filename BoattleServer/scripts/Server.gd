@@ -149,6 +149,6 @@ func _on_TurnCooldown_timeout() -> void:
 			for p in DataManager.connectedPlayersDictionary:
 				if registeredShots[s].position.distance_to(Vector2(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posX, DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]].posY)) < generalRange * registeredShots[s].radius:
 					targets[DataManager.connectedPlayersDictionary[p]] = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[s].ship].damage - (registeredShots[s].radius * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[s].ship].damage);
-			#rpc_id(0, "shootOnPos", registeredShots[s], registeredShots[s].position, registeredShots[s].radius, targets);
+			rpc_id(0, "shootOnPos", s, registeredShots[s].position, registeredShots[s].radius, targets);
 		rpc_id(0, "receiveWorldState", worldState);
 		DataManager.turnDictionary = {};

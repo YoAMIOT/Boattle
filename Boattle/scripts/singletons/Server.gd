@@ -96,7 +96,7 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
 
 remote func shootOnPos(playerName : String, position : Vector2, radiusMultiplier : float, targets : Dictionary) -> void:
-	print("shot performed by " + playerName + " at " + str(position) + " with a radius multiplier of " + str(radiusMultiplier));
+	get_node("/root/MainMenu/Main").shootOnPos(playerName, position, radiusMultiplier);
 
 
 

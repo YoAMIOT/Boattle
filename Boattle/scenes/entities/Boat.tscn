@@ -53,7 +53,7 @@ visible = false
 position = Vector2( 0, -4.76837e-07 )
 scale = Vector2( 3.5, 3.29687 )
 frames = SubResource( 2 )
-frame = 1
+frame = 5
 playing = true
 offset = Vector2( 0, -9 )
 
