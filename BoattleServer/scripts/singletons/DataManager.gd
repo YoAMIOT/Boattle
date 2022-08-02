@@ -90,7 +90,7 @@ func loadShipsStats():
 	file.close();
 
 func createShipStatsForPlayer(playerName : String):
-	playerShipsStatsDictionary[playerName] = {"ship" : "default"};
+	playerShipsStatsDictionary[playerName] = {"ship" : "default", "health" : 200};
 	savePlayersShipsStats();
 
 func saveShipsStatsForPlayer(playerName : String, ship : String) -> void:
