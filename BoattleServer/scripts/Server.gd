@@ -144,7 +144,7 @@ func _on_TurnCooldown_timeout() -> void:
 				elif DataManager.turnDictionary[playerName].action =="shoot":
 					var shotRadius : float = DataManager.turnDictionary[playerName].radius;
 					if currentPosition.distance_to(DataManager.turnDictionary[playerName].position) < generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange:
-						if shotRadius < DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxRadius and shotRadius > DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].minRadius:
+						if shotRadius <= DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxRadius and shotRadius >= DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].minRadius:
 							registeredShots[playerName] = {"position" : Vector2(DataManager.turnDictionary[playerName].position.x, DataManager.turnDictionary[playerName].position.y), "radius" : shotRadius};
 		for s in registeredShots:
 			var targets : Dictionary = {};
