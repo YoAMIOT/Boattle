@@ -45,7 +45,10 @@ func shootOnPos(playerName : String, shotPosition : Vector2, radiusMultiplier : 
 	if playerName == DataManager.datas["playerName"]:
 		instance.color = Color(0, 1, 0, 0.6);
 	for t in targets:
-		if get_node("Players").has_node(str(t)):
-			get_node("Players/" + str(t)).setHealth(targets[t]);
+		if t == get_tree().get_network_unique_id():
+			get_node("Boat").setHealth(targets[t]);
+		else:
+			if get_node("Players").has_node(str(t)):
+				get_node("Players/" + str(t)).setHealth(targets[t]);
 	yield(get_tree().create_timer(2), "timeout");
 	instance.queue_free();

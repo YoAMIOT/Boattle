@@ -107,10 +107,12 @@ func setShootRadiusMultiplier(minRadius : float, maxRadius : float) -> void:
 	get_node("Pointer/ShootPointerStatic").scale = Vector2(minShootRadius, minShootRadius);
 
 func setMaxHealth(newMaxHealth : int) -> void:
-	maxHealth = newMaxHealth;
+	maxHealth = newMaxHealth
+	get_node("UI/GameUI/HealthBar").max_value = maxHealth;
 
 func setHealth(newHealth : int) -> void:
 	health = newHealth;
+	get_node("UI/GameUI/HealthBar").value = health;
 
 
 

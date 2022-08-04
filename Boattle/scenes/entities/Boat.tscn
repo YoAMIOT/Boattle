@@ -53,7 +53,6 @@ visible = false
 position = Vector2( 0, -4.76837e-07 )
 scale = Vector2( 3.5, 3.29687 )
 frames = SubResource( 2 )
-frame = 5
 playing = true
 offset = Vector2( 0, -9 )
 
@@ -131,6 +130,19 @@ text = "Shoot"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="HealthBar" type="ProgressBar" parent="UI/GameUI"]
+anchor_left = 0.004
+anchor_top = 0.007
+anchor_right = 0.2
+anchor_bottom = 0.041
+margin_left = 0.32
+margin_top = 0.411999
+margin_bottom = -0.444008
+theme = ExtResource( 4 )
+max_value = 200.0
+step = 1.0
+value = 200.0
 
 [connection signal="toggled" from="UI/GameUI/MoveButton" to="." method="_on_MoveButton_toggled"]
 [connection signal="toggled" from="UI/GameUI/ShootButton" to="." method="_on_ShootButton_toggled"]
