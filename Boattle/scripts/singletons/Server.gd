@@ -58,8 +58,8 @@ remote func authentication(registration : bool) -> void:
 	elif not registration:
 		get_node("/root/MainMenu/PasswordPage/AlreadyRegistered").visible = true;
 
-remote func logIn(playerPosition : Vector2, playerShipsDatas : Dictionary) -> void:
-	spawnClientPlayer(playerPosition, playerShipsDatas);
+remote func logIn(playerPosition : Vector2, playerShipsDatas : Dictionary, currentHealth : int) -> void:
+	get_node("/root/MainMenu/Main").spawnClientPlayer(playerPosition, playerShipsDatas, currentHealth);
 	get_node("/root/MainMenu").enterGame();
 	get_node("/root/MainMenu/PasswordPage").reset();
 	get_node("/root/MainMenu/PasswordPage").visible = false;
@@ -69,11 +69,8 @@ remote func wrongPassword() -> void:
 
 
 
-remote func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2) -> void:
-	get_node("/root/MainMenu/Main").spawnPuppet(playerId, playerName, puppetPosition);
-
-remote func spawnClientPlayer(position : Vector2, playerShipsDatas : Dictionary) -> void:
-	get_node("/root/MainMenu/Main").spawnClientPlayer(position, playerShipsDatas);
+remote func spawnPuppet(playerId : int, playerName : String, puppetPosition : Vector2, maxHealth : int, health : int) -> void:
+	get_node("/root/MainMenu/Main").spawnPuppet(playerId, playerName, puppetPosition, maxHealth, health);
 
 remote func killPuppet(playerId : int) -> void:
 	get_node("/root/MainMenu/Main").killPuppet(playerId);
@@ -92,12 +89,11 @@ remote func receiveWorldState(worldState : Dictionary) -> void:
 		elif get_tree().get_network_unique_id() != p:
 			var newPosition : Vector2 = Vector2(worldState[p].posX, worldState[p].posY);
 			if !get_node("/root/MainMenu/Main/Players/").has_node(str(p)):
-				spawnPuppet(p, worldState[p].playerName, newPosition);
+				spawnPuppet(p, worldState[p].playerName, newPosition, 200, 200);
 			get_node("/root/MainMenu/Main/Players/" + str(p)).move(newPosition);
 
 remote func shootOnPos(playerName : String, position : Vector2, radiusMultiplier : float, targets : Dictionary) -> void:
-	get_node("/root/MainMenu/Main").shootOnPos(playerName, position, radiusMultiplier);
-	print(targets);
+	get_node("/root/MainMenu/Main").shootOnPos(playerName, position, radiusMultiplier, targets);
 
 
 

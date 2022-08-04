@@ -6,6 +6,7 @@
         "shootRange" : 1.6,
         "minRadius" : 0.1,
         "maxRadius" : 0.4,
-        "damage" : 100
+        "damage" : 100,
+        "maxHealth" : 200
     }
 }

@@ -10,6 +10,8 @@ var maxShootRadius : float = 1;
 var currentRadius : float = 1;
 const SROLL_STEP : float = 0.05;
 const RANGE : int = 384;
+var maxHealth : int;
+var health : int;
 
 
 
@@ -103,6 +105,13 @@ func setShootRadiusMultiplier(minRadius : float, maxRadius : float) -> void:
 	currentRadius = minRadius;
 	get_node("Pointer/ShootPointer").scale = Vector2(minShootRadius, minShootRadius);
 	get_node("Pointer/ShootPointerStatic").scale = Vector2(minShootRadius, minShootRadius);
+
+func setMaxHealth(newMaxHealth : int) -> void:
+	maxHealth = newMaxHealth;
+
+func setHealth(newHealth : int) -> void:
+	health = newHealth;
+
 
 
 

@@ -72,7 +72,6 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 		var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 		DataManager.playerConnected(playerId, playerName);
 		refreshPlayerCountLabel();
-		rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition);
 		rpc_id(playerId, "authentication", registration);
 		var timeOutTimer : Timer = Timer.new();
 		get_node("PasswordTimers").add_child(timeOutTimer);
@@ -90,8 +89,11 @@ func logIn(playerId : int, playerName : String) -> void:
 	get_node("PasswordTimers/" + str(playerId)).disconnect("timeout", self, "kickPlayer");
 	var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 	var playerShipsDatas : Dictionary = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship];
+	var currentHealth : int = DataManager.playerShipsStatsDictionary[playerName].health;
+	var maxHealth : int = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxHealth;
 	Log.logPrint("!- " + playerName + " authentified -!");
-	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas);
+	rpc_id(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
+	rpc_id(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
 	get_node("PasswordTimers/" + str(playerId)).queue_free();
 
 func wrongPasswordEntered(playerId : int) -> void:
