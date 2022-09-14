@@ -69,7 +69,6 @@ remote func newConnectionEstablished(playerName : String, playerId : int) -> voi
 	if hasPlayerConnected:
 		kickPlayer(playerId, "Player already connected");
 	elif not hasPlayerConnected:
-		var playerPosition : Vector2 = Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
 		DataManager.playerConnected(playerId, playerName);
 		refreshPlayerCountLabel();
 		rpc_id(playerId, "authentication", registration);
