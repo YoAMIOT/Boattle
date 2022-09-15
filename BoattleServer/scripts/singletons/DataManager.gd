@@ -33,7 +33,8 @@ func loadPlayersDatas() -> void:
 		return;
 	var error = file.open(playersDataFile, File.READ);
 	printError(error);
-	playersDatasDictionary = JSON.parse(file.get_as_text()).result;
+	if file.get_as_text() != "":
+		playersDatasDictionary = JSON.parse(file.get_as_text()).result;
 	file.close();
 
 func saveDatasOfAPlayer(playerName : String, position : Vector2) -> void:
@@ -56,7 +57,8 @@ func loadPlayersPasswords():
 		return;
 	var error = file.open(playersPasswordFile, File.READ);
 	printError(error);
-	playersPasswordsDictionary = JSON.parse(file.get_as_text()).result;
+	if file.get_as_text() != "":
+		playersPasswordsDictionary = JSON.parse(file.get_as_text()).result;
 	file.close();
 
 func savePasswordsForPlayer(password : String, salt : String, playerName : String) -> void:
@@ -79,7 +81,8 @@ func loadPlayersShipsStats():
 		return;
 	var error = file.open(playersShipsStatsFile, File.READ);
 	printError(error);
-	playerShipsStatsDictionary = JSON.parse(file.get_as_text()).result;
+	if file.get_as_text() != "":
+		playerShipsStatsDictionary = JSON.parse(file.get_as_text()).result;
 	file.close();
 
 func loadShipsStats():
