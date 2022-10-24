@@ -2,7 +2,7 @@
 
 [ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=1]
 [ext_resource path="res://ressources/sprites/ships/default.png" type="Texture" id=2]
-[ext_resource path="res://scripts/entities/Puppet.gd" type="Script" id=3]
+[ext_resource path="res://scripts/entities/Puppet.cs" type="Script" id=3]
 [ext_resource path="res://ressources/font/TiwipiFont.tres" type="DynamicFont" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
