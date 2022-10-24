@@ -1,16 +1,18 @@
 using Godot;
 using System;
 
-public class PauseMenu : Node{
+public class PauseMenu : Control{
 
     private Button ResumeBtn;
     private Button OptionsBtn;
     private Button LeaveBtn;
+    private Server Server;
 
     public override void _Ready(){
-        ResumeBtn = this.GetNode("MainPauseMenu/ResumeButton");
-        OptionsBtn = this.GetNode("MainPauseMenu/OptionsButton");
-        LeaveBtn = this.GetNode("MainPauseMenu/LeaveButton");
+        ResumeBtn = this.GetNode<Button>("MainPauseMenu/ResumeButton");
+        OptionsBtn = this.GetNode<Button>("MainPauseMenu/OptionsButton");
+        LeaveBtn = this.GetNode<Button>("MainPauseMenu/LeaveButton");
+        Server = this.GetNode<Server>("/root/Server");
         ResumeBtn.Connect("pressed", this, "resumeBtnPressed");
         OptionsBtn.Connect("pressed", this, "optionsBtnPressed");
         LeaveBtn.Connect("pressed", this, "leaveBtnPressed");
@@ -18,19 +20,21 @@ public class PauseMenu : Node{
 
     private void resumeBtnPressed(){
         this.Visible = false;
-        this.GetParent().GetNode("GameUI").Visible = true;
+        this.GetParent().GetNode<Control>("GameUI").Visible = true;
     }
 
     private void optionsBtnPressed(){
-
+        this.GetNode<Control>("MainPauseMenu").Visible = false;
+        this.GetNode<Control>("OptionsMenu").refresh();
+        this.GetNode<Control>("OptionsMenu").Visible = true;
     }
 
     public void backOptions(){
-        this.GetNode("OptionsMenu").Visible = false;
-        this.GetNode("MainPauseMenu").Visible = true;
+        this.GetNode<Control>("OptionsMenu").Visible = false;
+        this.GetNode<Control>("MainPauseMenu").Visible = true;
     }
 
     private void leaveBtnPressed(){
-
+        Server.disconnectFromServer();
     }
 }
