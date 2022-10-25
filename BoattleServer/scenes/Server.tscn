@@ -364,11 +364,5 @@ wait_time = 5.0
 
 [connection signal="pressed" from="Ui/StartServer" to="." method="_on_StartServer_pressed"]
 [connection signal="pressed" from="Ui/Close" to="." method="_on_Close_pressed"]
-[connection signal="toggled" from="Ui/ServerTabButton" to="Ui" method="_on_ServerTabButton_toggled"]
-[connection signal="toggled" from="Ui/PlayersTabButton" to="Ui" method="_on_PlayersTabButton_toggled"]
-[connection signal="item_selected" from="Ui/PlayersTab/PlayersList" to="Ui" method="_on_PlayersList_item_selected"]
-[connection signal="pressed" from="Ui/PlayersTab/KickButton" to="Ui" method="_on_KickButton_pressed"]
-[connection signal="pressed" from="Ui/PlayersTab/KickWindow/ValidateButton" to="Ui" method="_on_ValidateButton_pressed"]
-[connection signal="pressed" from="Ui/PlayersTab/KickWindow/CancelButton" to="Ui" method="_on_CancelButton_pressed"]
 [connection signal="pressed" from="Ui/MaxPlayerMenu/ValidateButton" to="." method="_on_ValidateButton_pressed"]
 [connection signal="timeout" from="TurnCooldown" to="." method="_on_TurnCooldown_timeout"]

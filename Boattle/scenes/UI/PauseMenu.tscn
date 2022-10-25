@@ -70,7 +70,3 @@ __meta__ = {
 
 [node name="OptionsMenu" parent="." instance=ExtResource( 3 )]
 visible = false
-
-[connection signal="pressed" from="MainPauseMenu/ResumeButton" to="." method="_on_ResumeButton_pressed"]
-[connection signal="pressed" from="MainPauseMenu/OptionsButton" to="." method="_on_OptionsButton_pressed"]
-[connection signal="pressed" from="MainPauseMenu/LeaveButton" to="." method="_on_LeaveButton_pressed"]
