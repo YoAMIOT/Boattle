@@ -51,6 +51,23 @@ public class UI : Control{
     }
 
     public void removePlayerFromList(string playerName){
-        
+        for (int i = 0; i < PlayerList.GetItemCount(); i++){
+            if (PlayerList.GetItemText(i) == playerName){
+                PlayerList.RemoveItem(i);
+            }
+        }
+    }
+
+    private void PlayersListItemSelected (int index){
+        KickBtn.Disabled = false;
+        private string playerName = PlayerList.GetItemText(index);
+        private int playerId = DataManager.getIdFromName(playerName);
+        selectedPlayerId = playerId;
+        private int generalRange = 384;
+        this.GetNode<>("PlayersTab/PlayerNameLabel").Text = "Player name: " + playerName; 
+        this.GetNode<>("PlayersTab/PlayerIdLabel").Text = "Connection ID: " + <string>playerId; 
+        this.GetNode<>("PlayersTab/PlayerViewRangeLabel").Text = "View range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange); 
+        this.GetNode<>("PlayersTab/PlayerMoveRangeLabel").Text = "Move range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange); 
+        this.GetNode<>("PlayersTab/PlayerShootRangeLabel").Text = "Shoot range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange);
     }
 }
