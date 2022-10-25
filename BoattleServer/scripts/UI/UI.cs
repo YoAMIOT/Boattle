@@ -1,8 +1,7 @@
 using Godot;
 using System;
 
-public class UI : Control
-{
+public class UI : Control{
     private Button ServerTabBtn;
     private Button PlayersTabBtn;
     private Button KickBtn;
@@ -37,11 +36,21 @@ public class UI : Control
     }
   
     private void PlayersTabBtnToggled(bool pressed){
-      if (pressed){
-        PlayersTabBtn.Disabled = true;
-        ServerTabBtn.Disabled = false;
-        ServerTabBtn.Pressed = false;
-        this.GetNode<Control>("PlayersTab").Visible = true;
-      }
+        if (pressed){
+            PlayersTabBtn.Disabled = true;
+            ServerTabBtn.Disabled = false;
+            ServerTabBtn.Pressed = false;
+            this.GetNode<Control>("PlayersTab").Visible = true;
+        }
+    }
+
+    public void addPlayerToList(string playerName){
+        if (!PlayerList.Items.Has(playerName)){
+            PlayeList.AddItem(playerName);
+        }
+    }
+
+    public void removePlayerFromList(string playerName){
+        
     }
 }
