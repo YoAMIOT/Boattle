@@ -35,4 +35,5 @@ public class UI : Control
             this.GetNode<Control>("PlayersTab").Visible = false;
         }
     }
+  #lol
 }
