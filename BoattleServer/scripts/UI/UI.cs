@@ -9,6 +9,7 @@ public class UI : Control{
     private Button CancelBtn;
     private ItemList PlayersList;
     private int selectedPlayerId;
+    private DataManager DataManager;
 
     public override void _Ready(){
         ServerTabBtn = this.GetNode<Button>("ServerTabButton");
@@ -17,6 +18,7 @@ public class UI : Control{
         ValidateBtn = this.GetNode<Button>("PlayersTab/KickWindow/ValidateButton");
         CancelBtn = this.GetNode<Button>("PlayersTab/KickWindow/CancelButton");
         PlayersList = this.GetNode<ItemList>("PlayersTab/PlayersList");
+        DataManager = this.GetNode<DataManager>("root/DataManager");
 
         ServerTabBtn.Connect("toggled", this, "ServerTabBtnToggled", pressed);
         PlayersTabBtn.Connect("toggled", this, "PlayersTabBtnToggled", pressed);
@@ -58,16 +60,28 @@ public class UI : Control{
         }
     }
 
-    private void PlayersListItemSelected (int index){
+    private void PlayersListItemSelected(int index){
         KickBtn.Disabled = false;
         private string playerName = PlayerList.GetItemText(index);
         private int playerId = DataManager.getIdFromName(playerName);
         selectedPlayerId = playerId;
         private int generalRange = 384;
-        this.GetNode<>("PlayersTab/PlayerNameLabel").Text = "Player name: " + playerName; 
-        this.GetNode<>("PlayersTab/PlayerIdLabel").Text = "Connection ID: " + <string>playerId; 
-        this.GetNode<>("PlayersTab/PlayerViewRangeLabel").Text = "View range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange); 
-        this.GetNode<>("PlayersTab/PlayerMoveRangeLabel").Text = "Move range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange); 
-        this.GetNode<>("PlayersTab/PlayerShootRangeLabel").Text = "Shoot range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange);
+        this.GetNode<Label>("PlayersTab/PlayerNameLabel").Text = "Player name: " + playerName; 
+        this.GetNode<Label>("PlayersTab/PlayerIdLabel").Text = "Connection ID: " + <string>playerId; 
+        this.GetNode<Label>("PlayersTab/PlayerViewRangeLabel").Text = "View range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange); 
+        this.GetNode<Label>("PlayersTab/PlayerMoveRangeLabel").Text = "Move range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange); 
+        this.GetNode<Label>("PlayersTab/PlayerShootRangeLabel").Text = "Shoot range: " + <string>(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange);
+    }
+
+    private void KickBtnPressed(){
+        this.GetNode<Control>("PlayersTab/KickWindow").Visible = true;
+    }
+
+    private void ValidateBtnPressed(){
+        if (DataManager.connectedPlayersDictionary.Has(selectedPlayerId)){
+            this.GetParent().kickPlayer(selectedPlayerId, this.GetNode<Label>("PlayersTab/KickWindow/reason").text);
+        }
+        this.GetNode<Control>("PlayersTab/KickWindow").Visible = false;
+        this.GetNode<Label>("PlayersTab/KickWindow/reason").text = "";
     }
 }
