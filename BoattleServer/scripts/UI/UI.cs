@@ -31,9 +31,17 @@ public class UI : Control
         if (pressed){
             ServerTabBtn.Disabled = true;
             PlayersTabBtn.Disabled = false;
-            PlayersTabBtn.pressed = false;
+            PlayersTabBtn.Pressed = false;
             this.GetNode<Control>("PlayersTab").Visible = false;
         }
     }
-  #lol
+  
+    private void PlayersTabBtnToggled(bool pressed){
+      if (pressed){
+        PlayersTabBtn.Disabled = true;
+        ServerTabBtn.Disabled = false;
+        ServerTabBtn.Pressed = false;
+        this.GetNode<Control>("PlayersTab").Visible = true;
+      }
+    }
 }
