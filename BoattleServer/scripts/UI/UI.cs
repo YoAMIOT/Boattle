@@ -81,6 +81,10 @@ public class UI : Control{
         if (DataManager.connectedPlayersDictionary.Has(selectedPlayerId)){
             this.GetParent().kickPlayer(selectedPlayerId, this.GetNode<Label>("PlayersTab/KickWindow/reason").text);
         }
+        CancelBtnPressed();
+    }
+    
+    private void CancelBtnPressed(){
         this.GetNode<Control>("PlayersTab/KickWindow").Visible = false;
         this.GetNode<Label>("PlayersTab/KickWindow/reason").text = "";
     }
