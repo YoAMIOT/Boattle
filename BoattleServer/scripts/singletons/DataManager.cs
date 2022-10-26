@@ -13,7 +13,7 @@ public class DataManager: Node {
     public Godot.Collections.Dictionary shipsDictionary;
     public Godot.Collections.Dictionary turnDictionary;
 
-    private override void _Ready(){
+    private override void _Ready() {
         loadPlayerDatas();
         loadPlayersPasswords();
         loadShipsStats();
@@ -22,83 +22,72 @@ public class DataManager: Node {
 
 
 
-    public void savePlayersDatas(){
+    public void savePlayersDatas() {
         private File file = new File();
         file.Open(playersDataFile, File.WRITE);
         file.StoreLine(ToJson(playersDataDictionary));
         file.Close();
     }
 
-    public void loadPlayerDatas(){
+    public void loadPlayerDatas() {
         private File file = new File();
-        if (!file.FileExists(playersDataFile)){
+        if (!file.FileExists(playersDataFile)) {
             savePlayersDatas();
             return;
         }
         file.Open(playersDataFile, File.READ);
-        if (file.GetAsText() != ""){
+        if (file.GetAsText() != "") {
             playersDataDictionary = JSON.Parse(file.GetAsText()).result;
             file.Close();
         }
     }
 
-    public void saveDatasOfAPlayer(string playerName, Vector2 position){
-
+    public void saveDatasOfAPlayer(string playerName, Vector2 position) {
+        playersDataDictionary[playerName] = {"posX" : position.X, "posY" : position.Y};
+        savePlayersDatas;
     }
 
 
 
-    public void savePlayersPasswords(){
+    public void savePlayersPasswords() {
         private File file = new File();
     }
 
-    public void loadPlayersPasswords(){
+    public void loadPlayersPasswords() {
         private File file = new File();
     }
 
-    public void savePasswordForAPlayer(string password, string salt, string playerName){
-
-    }
+    public void savePasswordForAPlayer(string password, string salt, string playerName) {}
 
 
 
-    public void savePlayersShipsStats(){
+    public void savePlayersShipsStats() {
         private File file = new File();
     }
 
-    public void loadPlayersShipsStats(){
+    public void loadPlayersShipsStats() {
         private File file = new File();
     }
 
-    public void saveShipsStatsForAPlayer(string playerName, string ship){
+    public void saveShipsStatsForAPlayer(string playerName, string ship) {}
 
-    }
-
-    public void loadShipsStats(){
-
-    }
-    public void createShipStatsForAPlayer(string playerName){
-
-    }
+    public void loadShipsStats() {}
+    public void createShipStatsForAPlayer(string playerName) {}
 
 
 
-    public void playerConnected(int playerId, string playerName){
+    public void playerConnected(int playerId, string playerName) {}
 
-    }
+    public void playerDisconnected(int playerId) {}
 
-    public void playerDisconnected(int playerId){
-
-    }
-
-    public bool isPlayerConnected(string playerName){
+    public bool isPlayerConnected(string playerName) {
         private bool connected = false;
         return connected;
     }
 
 
 
-    public int getIdFromName(string playerName){
+    public int getIdFromName(string playerName) {
         private int playerId;
         return playerId;
     }
