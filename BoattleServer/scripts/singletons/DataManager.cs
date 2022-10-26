@@ -2,122 +2,112 @@ using Godot;
 using System;
 
 public class DataManager: Node {
-    private string playersDataFile = "res://data/playersData.json";
-    private string playersPasswordFile = "res://data/playersPasswords.json";
+    private string playersDatasFile = "res://data/playersData.json";
+    private string playersPasswordsFile = "res://data/playersPasswords.json";
     private string playersShipsStatsFile = "res://data/playersShipsStats.json";
     private string shipsFile = "res://data/ships.json";
-    public Godot.Collections.Dictionary playersDataDictionary;
-    public Godot.Collections.Dictionary connectedPlayersDictionary;
-    public Godot.Collections.Dictionary playersPasswordsDictionary;
-    public Godot.Collections.Dictionary playersShipsStatsDictionary;
-    public Godot.Collections.Dictionary shipsDictionary;
-    public Godot.Collections.Dictionary turnDictionary;
+    public Godot.Collections.Dictionary playersDatasDictionary = new Godot.Collections.Dictionary();
+    public Godot.Collections.Dictionary connectedPlayersDictionary = new Godot.Collections.Dictionary();
+    public Godot.Collections.Dictionary playersPasswordsDictionary = new Godot.Collections.Dictionary();
+    public Godot.Collections.Dictionary playersShipsStatsDictionary = new Godot.Collections.Dictionary();
+    public Godot.Collections.Dictionary shipsDictionary = new Godot.Collections.Dictionary();
+    public Godot.Collections.Dictionary turnDictionary = new Godot.Collections.Dictionary();
 
-    private override void _Ready() {
-        loadPlayerDatas();
+    public override void _Ready(){
+        loadPlayersDatas();
         loadPlayersPasswords();
         loadShipsStats();
         loadPlayersShipsStats();
     }
 
-
-
-    public void savePlayersDatas() {
-        private File file = new File();
-        file.Open(playersDataFile, File.WRITE);
-        file.StoreLine(ToJson(playersDataDictionary));
+    public void savePlayersDatas(){
+        File file = new File();
+        file.Open(playersDatasFile, File.ModeFlags.Write);
+        file.StoreLine(JSON.Print(playersDatasDictionary));
         file.Close();
     }
 
-    public void loadPlayerDatas() {
-        private File file = new File();
-        if (!file.FileExists(playersDataFile)) {
+    public void loadPlayersDatas() {
+        File file = new File();
+        if (!file.FileExists(playersDatasFile)) {
             savePlayersDatas();
             return;
         }
-        file.Open(playersDataFile, File.READ);
+        file.Open(playersDatasFile, File.ModeFlags.Read);
         if (file.GetAsText() != "") {
-            playersDataDictionary = JSON.Parse(file.GetAsText()).result;
+            playersDatasDictionary = (Godot.Collections.Dictionary)JSON.Parse(file.GetAsText()).Result;
             file.Close();
         }
     }
 
     public void saveDatasOfAPlayer(string playerName, Vector2 position) {
-        playersDataDictionary[playerName] = {
-            "posX": position.X,
-            "posY": position.Y
-        };
-        savePlayersDatas;
+        playersDatasDictionary[playerName] = {{"posX", position.x}, {"posY", position.y}};
+        savePlayersDatas();
     }
 
 
 
     public void savePlayersPasswords() {
-        private File file = new File();
-        file.Open(playersPasswordFile, File.WRITE);
-        file.StoreLine(ToJson(playersPasswordsDictionary));
-        file.Close()
+        File file = new File();
+        file.Open(playersPasswordsFile, File.ModeFlags.Write);
+        file.StoreLine(JSON.Print(playersPasswordsDictionary));
+        file.Close();
     }
 
     public void loadPlayersPasswords() {
-        private File file = new File();
-        if (!file.FileExists(playersPasswordFile)) {
+        File file = new File();
+        if (!file.FileExists(playersPasswordsFile)) {
             savePlayersPasswords();
             return;
         }
-        file.Open(playersPasswordFile, File.READ);
+        file.Open(playersPasswordsFile, File.ModeFlags.Read);
         if (file.GetAsText() != "") {
-            playersPasswordsDictionary = JSON.Parse(file.GetAsText()).result;
+            playersPasswordsDictionary = (Godot.Collections.Dictionary)JSON.Parse(file.GetAsText()).Result;
         }
         file.Close();
     }
 
     public void savePasswordForAPlayer(string password, string salt, string playerName) {
-        playersPasswordsDictionary[playerName] = {
-            "password": password,
-            "salt": salt
-        };
+        playersPasswordsDictionary[playerName] = {{"password", password}, {"salt": salt}};
         savePlayersPasswords();
     }
 
 
 
     public void savePlayersShipsStats() {
-        private File file = new File();
-        file.Open(playersShipsStatsFile, File.WRITE);
-        file.StoreLine(ToJson(playersShipsStatsDictionary));
+        File file = new File();
+        file.Open(playersShipsStatsFile, File.ModeFlags.Write);
+        file.StoreLine(JSON.Print(playersShipsStatsDictionary));
         file.Close();
     }
 
     public void loadPlayersShipsStats() {
-        private File file = new File();
+        File file = new File();
         if (!file.FileExists(playersShipsStatsFile)) {
             savePlayersShipsStats();
             return;
         }
-        file.Open(playersShipsStatsFile, READ);
+        file.Open(playersShipsStatsFile, File.ModeFlags.Read);
         if (file.GetAsText() != "") {
-            playersShipsStatsDictionary = JSON.Parse(file.GetAsText()).result;
+            playersShipsStatsDictionary = (Godot.Collections.Dictionary)JSON.Parse(file.GetAsText()).Result;
         }
         file.Close();
     }
 
     public void saveShipsStatsForAPlayer(string playerName, string ship) {
-        playersShipsStatsDictionary[playerName] = {
-            "ship": ship
-        };
+        playersShipsStatsDictionary[playerName] = {{"ship": ship}};
         savePlayersShipsStats();
     }
 
     public void loadShipsStats() {
-        private File file = new File();
-        file.Open(shipsFile, File.READ);
-        shipsDictionary = JSON.Parse(file.GetAsText()).result;
+        File file = new File();
+        file.Open(shipsFile, File.ModeFlags.Read);
+        shipsDictionary = (Godot.Collections.Dictionary)JSON.Parse(file.GetAsText()).Result;
         file.Close();
     }
     
     public void createShipStatsForAPlayer(string playerName) {
-        playersShipsStatsDictionary[playerName] = {"ship" : "default", "health" : 200};
+        playersShipsStatsDictionary[playerName] = {{"ship" : "default"}, {"health" : 200}};
         savePlayersShipsStats();
     }
 
@@ -128,14 +118,14 @@ public class DataManager: Node {
     public void playerDisconnected(int playerId) {}
 
     public bool isPlayerConnected(string playerName) {
-        private bool connected = false;
+        bool connected = false;
         return connected;
     }
 
 
 
     public int getIdFromName(string playerName) {
-        private int playerId;
+        int playerId = 0;
         return playerId;
     }
 }
