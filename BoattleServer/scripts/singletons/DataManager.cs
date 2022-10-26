@@ -73,7 +73,10 @@ public class DataManager: Node {
     }
 
     public void savePasswordForAPlayer(string password, string salt, string playerName) {
-        playersPasswordsDictionary[playerName] = {"password" : password, "salt" : salt};
+        playersPasswordsDictionary[playerName] = {
+            "password": password,
+            "salt": salt
+        };
         savePlayersPasswords();
     }
 
@@ -88,24 +91,35 @@ public class DataManager: Node {
 
     public void loadPlayersShipsStats() {
         private File file = new File();
-        if (!file.FileExists(playersShipsStatsFile)){
+        if (!file.FileExists(playersShipsStatsFile)) {
             savePlayersShipsStats();
             return;
         }
         file.Open(playersShipsStatsFile, READ);
-        if (file.GetAsText() != ""){
+        if (file.GetAsText() != "") {
             playersShipsStatsDictionary = JSON.Parse(file.GetAsText()).result;
         }
         file.Close();
     }
 
     public void saveShipsStatsForAPlayer(string playerName, string ship) {
-        playersShipsStatsDictionary[playerName] = {"ship" : ship};
+        playersShipsStatsDictionary[playerName] = {
+            "ship": ship
+        };
         savePlayersShipsStats();
     }
 
-    public void loadShipsStats() {}
-    public void createShipStatsForAPlayer(string playerName) {}
+    public void loadShipsStats() {
+        private File file = new File();
+        file.Open(shipsFile, File.READ);
+        shipsDictionary = JSON.Parse(file.GetAsText()).result;
+        file.Close();
+    }
+    
+    public void createShipStatsForAPlayer(string playerName) {
+        playersShipsStatsDictionary[playerName] = {"ship" : "default", "health" : 200};
+        savePlayersShipsStats();
+    }
 
 
 
