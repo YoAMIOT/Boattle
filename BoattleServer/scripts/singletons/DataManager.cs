@@ -61,30 +61,48 @@ public class DataManager: Node {
 
     public void loadPlayersPasswords() {
         private File file = new File();
-        if (!file.FileExists(playersPasswordFile)){
+        if (!file.FileExists(playersPasswordFile)) {
             savePlayersPasswords();
             return;
         }
         file.Open(playersPasswordFile, File.READ);
-        if (file.GetAsText() != ""){
+        if (file.GetAsText() != "") {
             playersPasswordsDictionary = JSON.Parse(file.GetAsText()).result;
         }
         file.Close();
     }
 
-    public void savePasswordForAPlayer(string password, string salt, string playerName) {}
+    public void savePasswordForAPlayer(string password, string salt, string playerName) {
+        playersPasswordsDictionary[playerName] = {"password" : password, "salt" : salt};
+        savePlayersPasswords();
+    }
 
 
 
     public void savePlayersShipsStats() {
         private File file = new File();
+        file.Open(playersShipsStatsFile, File.WRITE);
+        file.StoreLine(ToJson(playersShipsStatsDictionary));
+        file.Close();
     }
 
     public void loadPlayersShipsStats() {
         private File file = new File();
+        if (!file.FileExists(playersShipsStatsFile)){
+            savePlayersShipsStats();
+            return;
+        }
+        file.Open(playersShipsStatsFile, READ);
+        if (file.GetAsText() != ""){
+            playersShipsStatsDictionary = JSON.Parse(file.GetAsText()).result;
+        }
+        file.Close();
     }
 
-    public void saveShipsStatsForAPlayer(string playerName, string ship) {}
+    public void saveShipsStatsForAPlayer(string playerName, string ship) {
+        playersShipsStatsDictionary[playerName] = {"ship" : ship};
+        savePlayersShipsStats();
+    }
 
     public void loadShipsStats() {}
     public void createShipStatsForAPlayer(string playerName) {}
