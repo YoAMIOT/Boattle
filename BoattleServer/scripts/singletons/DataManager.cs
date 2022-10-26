@@ -23,11 +23,23 @@ public class DataManager: Node {
 
 
     public void savePlayersDatas(){
-
+        private File file = new File();
+        file.Open(playersDataFile, File.WRITE);
+        file.StoreLine(ToJson(playersDataDictionary));
+        file.Close();
     }
 
     public void loadPlayerDatas(){
-
+        private File file = new File();
+        if (!file.FileExists(playersDataFile)){
+            savePlayersDatas();
+            return;
+        }
+        file.Open(playersDataFile, File.READ);
+        if (file.GetAsText() != ""){
+            playersDataDictionary = JSON.Parse(file.GetAsText()).result;
+            file.Close();
+        }
     }
 
     public void saveDatasOfAPlayer(string playerName, Vector2 position){
@@ -37,11 +49,11 @@ public class DataManager: Node {
 
 
     public void savePlayersPasswords(){
-
+        private File file = new File();
     }
 
     public void loadPlayersPasswords(){
-
+        private File file = new File();
     }
 
     public void savePasswordForAPlayer(string password, string salt, string playerName){
@@ -51,11 +63,11 @@ public class DataManager: Node {
 
 
     public void savePlayersShipsStats(){
-
+        private File file = new File();
     }
 
     public void loadPlayersShipsStats(){
-
+        private File file = new File();
     }
 
     public void saveShipsStatsForAPlayer(string playerName, string ship){
@@ -89,13 +101,5 @@ public class DataManager: Node {
     public int getIdFromName(string playerName){
         private int playerId;
         return playerId;
-    }
-
-
-
-    public void printError(int error){
-        if (error != 0){
-            GD.Print("Error", error);
-        }
     }
 }
