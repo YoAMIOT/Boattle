@@ -43,7 +43,10 @@ public class DataManager: Node {
     }
 
     public void saveDatasOfAPlayer(string playerName, Vector2 position) {
-        playersDataDictionary[playerName] = {"posX" : position.X, "posY" : position.Y};
+        playersDataDictionary[playerName] = {
+            "posX": position.X,
+            "posY": position.Y
+        };
         savePlayersDatas;
     }
 
@@ -51,10 +54,22 @@ public class DataManager: Node {
 
     public void savePlayersPasswords() {
         private File file = new File();
+        file.Open(playersPasswordFile, File.WRITE);
+        file.StoreLine(ToJson(playersPasswordsDictionary));
+        file.Close()
     }
 
     public void loadPlayersPasswords() {
         private File file = new File();
+        if (!file.FileExists(playersPasswordFile)){
+            savePlayersPasswords();
+            return;
+        }
+        file.Open(playersPasswordFile, File.READ);
+        if (file.GetAsText() != ""){
+            playersPasswordsDictionary = JSON.Parse(file.GetAsText()).result;
+        }
+        file.Close();
     }
 
     public void savePasswordForAPlayer(string password, string salt, string playerName) {}
