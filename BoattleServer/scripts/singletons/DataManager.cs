@@ -113,12 +113,26 @@ public class DataManager: Node {
 
 
 
-    public void playerConnected(int playerId, string playerName) {}
+    public void playerConnected(int playerId, string playerName) {
+        connectedPlayersDictionary[playerId] = playerName;
+        this.GetNode<Control>(/root/Server/Ui).addPlayerToList(playerName);
+    }
 
-    public void playerDisconnected(int playerId) {}
+    public void playerDisconnected(int playerId) {
+        if (PasswordManager.wrongPasswordDictionnary.Contains(connectedPlayersDictionary[playerId])){
+            PasswordManager.wrongPasswordDictionnary.Erase(connectedPlayersDictionary[playerId]);
+        }
+        this.GetNode<Control>("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId]);
+        connectedPlayersDictionary.Erase(playerId);
+    }
 
     public bool isPlayerConnected(string playerName) {
         bool connected = false;
+        foreach (int i in connectedPlayersDictionary){
+            if connectedPlayersDictionary[i] == playerName{
+                connected = true;
+            }
+        }
         return connected;
     }
 
@@ -126,6 +140,11 @@ public class DataManager: Node {
 
     public int getIdFromName(string playerName) {
         int playerId = 0;
+        foreach (int i in connectedPlayersDictionary){
+            if connectedPlayersDictionary[p] == playerName{
+                playerId = p
+            }
+        }
         return playerId;
     }
 }
