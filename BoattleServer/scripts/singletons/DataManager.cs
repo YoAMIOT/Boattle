@@ -12,12 +12,14 @@ public class DataManager: Node {
     public Godot.Collections.Dictionary playersShipsStatsDictionary = new Godot.Collections.Dictionary();
     public Godot.Collections.Dictionary shipsDictionary = new Godot.Collections.Dictionary();
     public Godot.Collections.Dictionary turnDictionary = new Godot.Collections.Dictionary();
+    private PasswordManager PasswordManager;
 
     public override void _Ready(){
         loadPlayersDatas();
         loadPlayersPasswords();
         loadShipsStats();
         loadPlayersShipsStats();
+        PasswordManager = GetNode<PasswordManager>("/root/PasswordManager");
     }
 
     public void savePlayersDatas(){
@@ -41,7 +43,10 @@ public class DataManager: Node {
     }
 
     public void saveDatasOfAPlayer(string playerName, Vector2 position) {
-        playersDatasDictionary[playerName] = {{"posX", position.x}, {"posY", position.y}};
+        playersDatasDictionary[playerName] = new Godot.Collections.Dictionary(){
+            {"posX", position.x},
+            {"posY", position.y}
+        };
         savePlayersDatas();
     }
 
@@ -68,7 +73,10 @@ public class DataManager: Node {
     }
 
     public void savePasswordForAPlayer(string password, string salt, string playerName) {
-        playersPasswordsDictionary[playerName] = {{"password", password}, {"salt": salt}};
+        playersPasswordsDictionary[playerName] = new Godot.Collections.Dictionary(){
+            {"password", password},
+            {"salt", salt}
+        };
         savePlayersPasswords();
     }
 
@@ -95,7 +103,9 @@ public class DataManager: Node {
     }
 
     public void saveShipsStatsForAPlayer(string playerName, string ship) {
-        playersShipsStatsDictionary[playerName] = {{"ship": ship}};
+        playersShipsStatsDictionary[playerName] = new Godot.Collections.Dictionary(){
+            {"ship" , ship}
+        };
         savePlayersShipsStats();
     }
 
@@ -107,7 +117,10 @@ public class DataManager: Node {
     }
     
     public void createShipStatsForAPlayer(string playerName) {
-        playersShipsStatsDictionary[playerName] = {{"ship" : "default"}, {"health" : 200}};
+        playersShipsStatsDictionary[playerName] = new Godot.Collections.Dictionary(){
+            {"ship" , "default"},
+            {"health" , 200}
+        };
         savePlayersShipsStats();
     }
 
@@ -115,15 +128,15 @@ public class DataManager: Node {
 
     public void playerConnected(int playerId, string playerName) {
         connectedPlayersDictionary[playerId] = playerName;
-        this.GetNode<Control>(/root/Server/Ui).addPlayerToList(playerName);
+        this.GetNode<UI>("/root/Server/Ui").addPlayerToList(playerName);
     }
 
     public void playerDisconnected(int playerId) {
-        if (PasswordManager.wrongPasswordDictionnary.Contains(connectedPlayersDictionary[playerId])){
-            PasswordManager.wrongPasswordDictionnary.Erase(connectedPlayersDictionary[playerId]);
+        if (PasswordManager.wrongPasswordDictionary.Contains(connectedPlayersDictionary[playerId])){
+            PasswordManager.wrongPasswordDictionary.Remove(connectedPlayersDictionary[playerId]);
         }
-        this.GetNode<Control>("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId]);
-        connectedPlayersDictionary.Erase(playerId);
+        this.GetNode<UI>("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId].ToString());
+        connectedPlayersDictionary.Remove(playerId);
     }
 
     public bool isPlayerConnected(string playerName) {

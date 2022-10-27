@@ -10,6 +10,7 @@ public class UI : Control{
     private ItemList PlayersList;
     private int selectedPlayerId;
     private DataManager DataManager;
+    private Server Server;
 
     public override void _Ready(){
         ServerTabBtn = this.GetNode<Button>("ServerTabButton");
@@ -19,6 +20,7 @@ public class UI : Control{
         CancelBtn = this.GetNode<Button>("PlayersTab/KickWindow/CancelButton");
         PlayersList = this.GetNode<ItemList>("PlayersTab/PlayersList");
         DataManager = this.GetNode<DataManager>("root/DataManager");
+        Server = this.GetNode<Server>("/root/Server");
 
         ServerTabBtn.Connect("toggled", this, "ServerTabBtnToggled");
         PlayersTabBtn.Connect("toggled", this, "PlayersTabBtnToggled");
@@ -65,12 +67,8 @@ public class UI : Control{
         string playerName = PlayersList.GetItemText(index);
         int playerId = DataManager.getIdFromName(playerName);
         selectedPlayerId = playerId;
-        int generalRange = 384;
         this.GetNode<Label>("PlayersTab/PlayerNameLabel").Text = "Player name: " + playerName;
         this.GetNode<Label>("PlayersTab/PlayerIdLabel").Text = "Connection ID: " + playerId.ToString();
-        this.GetNode<Label>("PlayersTab/PlayerViewRangeLabel").Text = "View range: " + (string)(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].viewRange);
-        this.GetNode<Label>("PlayersTab/PlayerMoveRangeLabel").Text = "Move range: " + (string)(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].moveRange);
-        this.GetNode<Label>("PlayersTab/PlayerShootRangeLabel").Text = "Shoot range: " + (string)(generalRange * DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].shootRange);
     }
 
     private void KickBtnPressed(){
@@ -79,7 +77,7 @@ public class UI : Control{
 
     private void ValidateBtnPressed(){
         if (DataManager.connectedPlayersDictionary.Contains(selectedPlayerId)){
-            this.GetParent<Node>().kickPlayer(selectedPlayerId, this.GetNode<LineEdit>("PlayersTab/KickWindow/Reason").Text);
+            Server.kickPlayer(selectedPlayerId, this.GetNode<LineEdit>("PlayersTab/KickWindow/Reason").Text);
             CancelBtnPressed();
         }
     }

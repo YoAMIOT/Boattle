@@ -2,11 +2,15 @@ using Godot;
 using System;
 
 public class PasswordManager: Node {
-    Godot.Collections.Dictionary wrongPasswordDictionary = {};
+    public Godot.Collections.Dictionary wrongPasswordDictionary;
 
     public void validatePassword(bool registration, string password, string playerName) {}
 
-    private string generateSalt() {}
+    private string generateSalt(){
+        return "";
+    }
 
-    private string generateHashedPassword(string password, string salt) {}
+    private string generateHashedPassword(string password, string salt) {
+        return "";
+    }
 }

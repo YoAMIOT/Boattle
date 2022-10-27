@@ -177,45 +177,6 @@ theme = ExtResource( 5 )
 text = "Connection ID:"
 valign = 1
 
-[node name="PlayerViewRangeLabel" type="Label" parent="Ui/PlayersTab"]
-anchor_left = 0.266
-anchor_top = 0.179
-anchor_right = 0.984
-anchor_bottom = 0.269
-margin_left = -0.384003
-margin_top = 0.0560074
-margin_right = 0.383972
-margin_bottom = -0.184006
-theme = ExtResource( 5 )
-text = "View range:"
-valign = 1
-
-[node name="PlayerMoveRangeLabel" type="Label" parent="Ui/PlayersTab"]
-anchor_left = 0.266
-anchor_top = 0.269
-anchor_right = 0.984
-anchor_bottom = 0.358
-margin_left = -0.384003
-margin_top = -0.184006
-margin_right = 0.383972
-margin_bottom = 0.112
-theme = ExtResource( 5 )
-text = "Move range:"
-valign = 1
-
-[node name="PlayerShootRangeLabel" type="Label" parent="Ui/PlayersTab"]
-anchor_left = 0.266
-anchor_top = 0.358
-anchor_right = 0.984
-anchor_bottom = 0.448
-margin_left = -0.384003
-margin_top = 0.112
-margin_right = 0.383972
-margin_bottom = -0.128006
-theme = ExtResource( 5 )
-text = "Shoot range:"
-valign = 1
-
 [node name="KickButton" type="Button" parent="Ui/PlayersTab"]
 anchor_right = 1.0
 anchor_bottom = 1.0
