@@ -142,7 +142,7 @@ public class DataManager: Node {
     public bool isPlayerConnected(string playerName) {
         bool connected = false;
         foreach (int i in connectedPlayersDictionary){
-            if connectedPlayersDictionary[i] == playerName{
+            if(connectedPlayersDictionary[i].ToString() == playerName){
                 connected = true;
             }
         }
@@ -154,8 +154,8 @@ public class DataManager: Node {
     public int getIdFromName(string playerName) {
         int playerId = 0;
         foreach (int i in connectedPlayersDictionary){
-            if connectedPlayersDictionary[p] == playerName{
-                playerId = p
+            if (connectedPlayersDictionary[i].ToString() == playerName){
+                playerId = i;
             }
         }
         return playerId;

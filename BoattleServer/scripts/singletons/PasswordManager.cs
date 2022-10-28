@@ -19,20 +19,22 @@ public class PasswordManager: Node {
             DataManager.savePasswordForAPlayer(hashedPassword, salt, playerName);
             validatePassword(false, password, playerName);
         } else if (!registration) {
-            string retrievedSalt = DataManager.playersPasswordsDictionary[playerName].salt;
+            string retrievedSalt = (string)(DataManager.playersPasswordsDictionary[playerName] as Godot.Collections.Dictionary)["salt"];
             string hashedPassword = generateHashedPassword(password, retrievedSalt);
-            if (!hashedPassword == DataManager.playersPasswordsDictionary[playerName].password) {
+            if (hashedPassword != (string)(DataManager.playersPasswordsDictionary[playerName] as Godot.Collections.Dictionary)["password"]) {
                 Server.wrongPasswordEntered(playerId);
                 if (wrongPasswordDictionary.Contains(playerName)) {
-                    wrongPasswordDictionary[playerName] += 1;
-                    if (wrongPasswordDictionary[playerName] == 3) {
+                    int failedPasswords = (int)wrongPasswordDictionary[playerName];
+                    failedPasswords += 1;
+                    wrongPasswordDictionary[playerName] = failedPasswords;
+                    if (failedPasswords == 3) {
                         Server.kickPlayer(playerId, "You entered 3 wrong passwords");
                         wrongPasswordDictionary.Remove(playerName);
                     }
                 } else {
                     wrongPasswordDictionary[playerName] = 1;
                 }
-            } else if (hashedPassword == DataManager.playersPasswordsDictionary[playerName].password){
+            } else if (hashedPassword == (string)(DataManager.playersPasswordsDictionary[playerName] as Godot.Collections.Dictionary)["password"]){
                 Server.logIn(playerId, playerName);
             }
         }
@@ -40,12 +42,12 @@ public class PasswordManager: Node {
 
     private string generateSalt() {
         GD.Randomize();
-        string salt = GD.Randi().SHA256Text();
+        string salt = GD.Randi().ToString().SHA256Text();
         return salt;
     }
 
     private string generateHashedPassword(string password, string salt) {
-        int rounds = Math.Pow(2, 18);
+        int rounds = (int)Math.Pow(2, 18);
         while (rounds > 0) {
             password = (password + salt).SHA256Text();
             rounds -= 1;
