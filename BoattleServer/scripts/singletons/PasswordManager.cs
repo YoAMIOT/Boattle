@@ -4,9 +4,11 @@ using System;
 public class PasswordManager: Node {
     public Godot.Collections.Dictionary wrongPasswordDictionary;
     private DataManager DataManager;
+    private Server Server;
 
     public override void _Ready(){
         DataManager = this.GetNode<DataManager>("/root/DataManager");
+        Server = this.GetNode<Server>("/root/Server");
     }
 
     public void validatePassword(bool registration, string password, string playerName) {
@@ -18,6 +20,19 @@ public class PasswordManager: Node {
             validatePassword(false, password, playerName);
         } else if (!registration){
             string retrievedSalt = DataManager.playersPasswordsDictionary[playerName].salt;
+            string hashedPassword = generateHashedPassword(password, retrievedSalt);
+            if (!hashedPassword == DataManager.playersPasswordsDictionary[playerName].password){
+                Server.wrongPasswordEntered(playerId);
+                if (wrongPasswordDictionary.Contains(playerName)){
+                    wrongPasswordDictionary[playerName] += 1;
+                    if (wrongPasswordDictionary[playerName] == 3){
+                        Server.kickPlayer(playerId, "You entered 3 wrong passwords");
+                        wrongPasswordDictionary.Remove(playerName);
+                    }
+                } else {
+                    wrongPasswordDictionary[playerName] = 1;
+                }
+            }
         }
     }
 
