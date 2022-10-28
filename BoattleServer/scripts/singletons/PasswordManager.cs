@@ -7,7 +7,9 @@ public class PasswordManager: Node {
     public void validatePassword(bool registration, string password, string playerName) {}
 
     private string generateSalt(){
-        return "";
+        GD.Randomize();
+        string salt = GD.Randi().SHA256Text();
+        return salt;
     }
 
     private string generateHashedPassword(string password, string salt) {
