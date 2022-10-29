@@ -20,5 +20,15 @@ public class Server: Node {
         UPNP.AddPortMapping(port, port, "BoattleServer", "UDP");
         UPNP.AddPortMapping(port, port, "BoattleServer", "TCP");
         this.GetNode<Label>("UI/IpLabel").Text = ip;
+        
+        #this.GetNode<Button>("").Connect("pressed", this, "ValidateButtonPressed");
+        this.GetNode<Button>("Ui/StartServer").Connect("pressed", this, "StartServerPressed");
+    }
+    
+    private void ValidateButtonPressed(){
+        maxPlayers = this.GetNode<LineEdit>("Ui/MaxPlayerMenu/Selector").Value + 1;
+        refreshPlayerCountLabel();
+        this.GetNode<Control>("Ui/MaxPlayerMenu").Visible = false;
+        this.GetNode<Button>("Ui/StartServer").Disabled = false;
     }
 }
