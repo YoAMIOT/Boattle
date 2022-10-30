@@ -10,6 +10,7 @@ public class Server: Node {
     private bool serverStarted = false;
     private bool turn = false;
     private RichTextLabel Log;
+    private DataManager DataManager;
 
     public override void _Ready() {
         Log = this.GetNode < RichTextLabel > ("Ui/Log");
@@ -37,5 +38,18 @@ public class Server: Node {
         this.GetNode < Button > ("Ui/StartServer").Disabled = true;
         Network.CreateServer(port, maxPlayers);
         GetTree().SetNetworkPeer(Network);
+        Network.Connect("peer_connected", this, "PeerConnected");
+        Network.Connect("peer_disconnected", this, "PeerDisconnected");
+        this.GetNode<Timer>("TurnCooldown").Start();
+    }
+    
+    private void PeerConnected(int PlayerId) {
+        if (DataManager.connectedPlayersDictionnary.Size() == maxPlayers - 1){
+            kickPlayer(PlayerId, "This server is full");
+        }
+    }
+    
+    private void PeerDisconnected(int PlayerId) {
+        
     }
 }
