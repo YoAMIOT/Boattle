@@ -50,6 +50,13 @@ public class Server: Node {
     }
     
     private void PeerDisconnected(int PlayerId) {
-        
+        Log.LogPrint("!- " + (string)DataManager.connectedPlayersDictionnary[PlayerId] + " disconnected -!");
+        DataManager.playerDisconnected(PlayerId);
+        refreshPlayerCountLabel();
+        if this.GetNode<Node>("PasswordTimers").HasNode(PlayerId.ToString()){
+            this.GetNode<Node>("PasswordTimers" + PlayerId.ToString()).Disconnect("timeout", this, "kickPlayer");
+            this.GetNode<Node>("PasswordTimers" + PlayerId.ToString()).QueuFree();
+        }
+        RpcId(0, "killPuppet", PlayerId);
     }
 }
