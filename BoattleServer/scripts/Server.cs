@@ -66,6 +66,12 @@ public class Server: Node {
         if (!DataManager.playersPasswordDictionary.Contains(playerName)){
             Vector2 position = Vector2(0,0);
             DataManager.saveDatasOfAPlayer(playerName, position);
+            DataManager.createShipStatsForAPlayer(playerName);
+            registration = true;
+        }
+        bool hasPlayerConnected = DataManager.isPlayerConnected(playerName);
+        if (hasPlayerConnected){
+            kickPlayer(playerId, "Player already connected");
         }
     }
 }
