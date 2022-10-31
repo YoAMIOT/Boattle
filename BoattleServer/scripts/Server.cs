@@ -9,24 +9,29 @@ public class Server: Node {
     private UPNP UPNP = new UPNP();
     private bool serverStarted = false;
     private bool turn = false;
-    private RichTextLabel Log;
+    private Log Log;
     private DataManager DataManager;
+    private PasswordManager PasswordManager;
 
     public override void _Ready() {
-        Log = this.GetNode < RichTextLabel > ("Ui/Log");
-        Os.SetWindowFullscreen(false);
+        Log = this.GetNode < Log > ("Ui/Log");
+        DataManager = this.GetNode<DataManager>("/root/DataManager");
+        PasswordManager = this.GetNode<PasswordManager>("/root/PasswordManager");
+        OS.WindowFullscreen = false;
         GetTree().SetAutoAcceptQuit(false);
         UPNP.Discover(2000, 2, "InternetGatewayDevice");
         ip = UPNP.QueryExternalAddress();
         UPNP.AddPortMapping(port, port, "BoattleServer", "UDP");
         UPNP.AddPortMapping(port, port, "BoattleServer", "TCP");
-        this.GetNode<Label>("UI/IpLabel").Text = ip;
+        this.GetNode<Label>("Ui/IpLabel").Text = ip;
         this.GetNode<Button>("Ui/MaxPlayerMenu/ValidateButton").Connect("pressed", this, "ValidateButtonPressed");
         this.GetNode<Button>("Ui/StartServer").Connect("pressed", this, "StartServerPressed");
+        this.GetNode<Button>("Ui/Close").Connect("pressed", this, "closeButtonPressed");
+        this.GetNode<Timer>("TurnCooldown").Connect("timeout", this, "turnCooldownTimeOut");
     }
 
     private void ValidateButtonPressed() {
-        maxPlayers = this.GetNode<LineEdit>("Ui/MaxPlayerMenu/Selector").Value + 1;
+        maxPlayers = (int) this.GetNode<SpinBox>("Ui/MaxPlayerMenu/Selector").Value + 1;
         refreshPlayerCountLabel();
         this.GetNode<Control>("Ui/MaxPlayerMenu").Visible = false;
         this.GetNode<Button>("Ui/StartServer").Disabled = false;
@@ -43,18 +48,18 @@ public class Server: Node {
     }
     
     private void PeerConnected(int playerId) {
-        if (DataManager.connectedPlayersDictionnary.Size() == maxPlayers - 1){
+        if (DataManager.connectedPlayersDictionary.Count == maxPlayers - 1){
             kickPlayer(playerId, "This server is full");
         }
     }
     
     private void PeerDisconnected(int playerId) {
-        Log.logPrint("!- " + (string)DataManager.connectedPlayersDictionnary[playerId] + " disconnected -!");
+        Log.logPrint("!- " + (string)DataManager.connectedPlayersDictionary[playerId] + " disconnected -!");
         DataManager.playerDisconnected(playerId);
         refreshPlayerCountLabel();
-        if (this.GetNode<Node>("PasswordTimers").HasNode(playerId).ToString()){
+        if (this.GetNode<Node>("PasswordTimers").HasNode(playerId.ToString())){
             this.GetNode<Node>("PasswordTimers" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
-            this.GetNode<Node>("PasswordTimers" + playerId.ToString()).QueuFree();
+            this.GetNode<Node>("PasswordTimers" + playerId.ToString()).QueueFree();
         }
         RpcId(0, "killPuppet", playerId);
     }
@@ -63,8 +68,8 @@ public class Server: Node {
     public void newConnectionEstablished(string playerName, int playerId){
         bool registration = false;
         Log.logPrint("!- " + playerName + " connected -!");
-        if (!DataManager.playersPasswordDictionary.Contains(playerName)){
-            Vector2 position = Vector2(0,0);
+        if (!DataManager.playersPasswordsDictionary.Contains(playerName)){
+            Vector2 position = Vector2.Zero;
             DataManager.saveDatasOfAPlayer(playerName, position);
             DataManager.createShipStatsForAPlayer(playerName);
             registration = true;
@@ -72,6 +77,62 @@ public class Server: Node {
         bool hasPlayerConnected = DataManager.isPlayerConnected(playerName);
         if (hasPlayerConnected){
             kickPlayer(playerId, "Player already connected");
+        } else if(!hasPlayerConnected){
+            DataManager.playerConnected(playerId, playerName);
+            refreshPlayerCountLabel();
+            RpcId(playerId, "authentication", registration);
+            Timer TimeOutTimer = new Timer();
+            this.GetNode<Node>("PasswordTimers").AddChild(TimeOutTimer);
+            TimeOutTimer.Name = playerId.ToString();
+            TimeOutTimer.WaitTime = 60;
+            TimeOutTimer.OneShot = true;
+            Godot.Collections.Array arr = new Godot.Collections.Array();
+            arr.Add(playerId);
+            TimeOutTimer.Connect("timeout", this, "kickForTimeOut", arr);
+            TimeOutTimer.Start();
         }
+    }
+
+    [Remote]
+    public void receivePasswordValidationRequest(bool registration, string password, string playerName){
+        PasswordManager.validatePassword(registration, password, playerName);
+    }
+
+    public void logIn(int playerId, string playerName){
+
+    }
+
+    public void wrongPasswordEntered(int playerId){
+        RpcId(playerId, "wrongPassword");
+    }
+
+    public void kickForTimeOut(int playerId){
+        kickPlayer(playerId, "You did not enter password in time, please retry");
+    }
+    public void kickPlayer(int playerId, string reason){
+
+    }
+
+    private void refreshPlayerCountLabel(){
+        this.GetNode<Label>("Ui/ConnectedPeersLabel").Text = "Connected: " + DataManager.connectedPlayersDictionary.Count.ToString() + "/" + (maxPlayers - 1).ToString();
+    }
+
+    public override void _Notification(int what){
+        if (what == MainLoop.NotificationWmQuitRequest){
+            GetTree().Quit();
+        }
+    }
+
+    private void closeButtonPressed(){
+        _Notification(MainLoop.NotificationWmQuitRequest);
+    }
+
+    [Remote]
+    private void receiveTurnData(string action, Vector2 position, string playerName = "", double radius = 0.1){
+
+    }
+
+    private void turnCooldownTimeOut(){
+
     }
 }

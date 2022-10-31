@@ -7,8 +7,8 @@ public class PasswordManager: Node {
     private Server Server;
 
     public override void _Ready() {
-        DataManager = this.GetNode < DataManager > ("/root/DataManager");
-        Server = this.GetNode < Server > ("/root/Server");
+        DataManager = this.GetNode<DataManager>("/root/DataManager");
+        Server = this.GetNode<Server>("/root/Server");
     }
 
     public void validatePassword(bool registration, string password, string playerName) {
