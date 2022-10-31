@@ -50,7 +50,7 @@ public class Server: Node {
     }
     
     private void PeerDisconnected(int PlayerId) {
-        Log.LogPrint("!- " + (string)DataManager.connectedPlayersDictionnary[PlayerId] + " disconnected -!");
+        Log.logPrint("!- " + (string)DataManager.connectedPlayersDictionnary[PlayerId] + " disconnected -!");
         DataManager.playerDisconnected(PlayerId);
         refreshPlayerCountLabel();
         if this.GetNode<Node>("PasswordTimers").HasNode(PlayerId.ToString()){
@@ -58,5 +58,12 @@ public class Server: Node {
             this.GetNode<Node>("PasswordTimers" + PlayerId.ToString()).QueuFree();
         }
         RpcId(0, "killPuppet", PlayerId);
+    }
+    
+    [Remote]
+    public void newConnectionEstablished(string PlayerName, int PlayerId){
+        bool registration = false;
+        Log.logPrint("!- " + PlayerName + " connected -!");
+        
     }
 }
