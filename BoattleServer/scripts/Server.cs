@@ -105,6 +105,9 @@ public class Server: Node {
         int currentHealth = DataManager.playerShipsStatsDictionary[playerName].health;
         int maxHealth = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxHealth;
         Log.logPrint("!- " + playerName + " authentified -!");
+        RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
+        RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
+        this.GetNode<Timer>("PasswordTimers/" + playerId.ToString()).QueueFree();
     }
 
     public void wrongPasswordEntered(int playerId) {
