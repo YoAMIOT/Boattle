@@ -101,6 +101,10 @@ public class Server: Node {
     public void logIn(int playerId, string playerName) {
         this.GetNode < Timer > ("PasswordTimers" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
         Vector2 playerPosition = new Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
+        Godot.Collections.Dictionary playerShipsDatas = DataManager.shipsDictionary[(string)DataManager.playerShipsStatsDictionary[playerName].ship];
+        int currentHealth = DataManager.playerShipsStatsDictionary[playerName].health;
+        int maxHealth = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxHealth;
+        Log.logPrint("!- " + playerName + " authentified -!");
     }
 
     public void wrongPasswordEntered(int playerId) {
