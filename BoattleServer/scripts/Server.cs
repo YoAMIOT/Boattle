@@ -107,7 +107,7 @@ public class Server: Node {
         Log.logPrint("!- " + playerName + " authentified -!");
         RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
         RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
-        this.GetNode<Timer>("PasswordTimers/" + playerId.ToString()).QueueFree();
+        this.GetNode < Timer > ("PasswordTimers/" + playerId.ToString()).QueueFree();
     }
 
     public void wrongPasswordEntered(int playerId) {
@@ -138,11 +138,32 @@ public class Server: Node {
     [Remote]
     private void receiveTurnData(string action, Vector2 position, string playerName = "", double radius = 0.1) {
         DataManager.turnDictionary[playerName] = {
-            {"action" , action},
-            {"position", position},
-            {"radius", radius}
+            {
+                "action",
+                action
+            },
+            {
+                "position",
+                position
+            },
+            {
+                "radius",
+                radius
+            }
         };
     }
 
-    private void turnCooldownTimeOut() {}
+    private void turnCooldownTimeOut() {
+        turn = !turn;
+        RpcId(0, "turnSwitch", turn);
+        if (turn == false){
+            int generalRange = 384;
+            Godot.Collections.Dictionary worldState = new Dictionary();
+            Godot.Collections.Dictionary registeredShots = new Dictionary();
+            foreach (p in DataManager.turnDictionary){
+                string playerName = DataManager.connectedPlayersDictionary[p];
+                
+            }
+        }
+    }
 }
