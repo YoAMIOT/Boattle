@@ -100,10 +100,10 @@ public class Server: Node {
 
     public void logIn(int playerId, string playerName) {
         this.GetNode < Timer > ("PasswordTimers" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
-        Vector2 playerPosition = new Vector2(DataManager.playersDatasDictionary[playerName].posX, DataManager.playersDatasDictionary[playerName].posY);
-        Godot.Collections.Dictionary playerShipsDatas = DataManager.shipsDictionary[(string)DataManager.playerShipsStatsDictionary[playerName].ship];
-        int currentHealth = DataManager.playerShipsStatsDictionary[playerName].health;
-        int maxHealth = DataManager.shipsDictionary[DataManager.playerShipsStatsDictionary[playerName].ship].maxHealth;
+        Vector2 playerPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"]);
+        Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName]as Godot.Collections.Dictionary)] as Godot.Collections.Dictionary)["ship"];
+        int currentHealth = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
+        int maxHealth = (int)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["maxHealth"];
         Log.logPrint("!- " + playerName + " authentified -!");
         RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
         RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
@@ -114,10 +114,15 @@ public class Server: Node {
         RpcId(playerId, "wrongPassword");
     }
 
-    public void kickPlayer(int playerId, string reason = "You did not enter your password in time, please retry.") {
+    public async void kickPlayer(int playerId, string reason = "You did not enter your password in time, please retry.") {
         Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + "was kicked: " + reason + " -!");
         RpcId(playerId, "kickedFromServer", reason);
-        Yield(GetTree().CreateTimer(0.1), "timeout");
+        Timer Timer = new Timer();
+        Timer.WaitTime = 0.1F;
+        Timer.OneShot = true;
+        Timer.Start();
+        await ToSignal(Timer, "timeout");
+        Timer.QueueFree();
         Network.DisconnectPeer(playerId, true);
     }
 
@@ -137,19 +142,10 @@ public class Server: Node {
 
     [Remote]
     private void receiveTurnData(string action, Vector2 position, string playerName = "", double radius = 0.1) {
-        DataManager.turnDictionary[playerName] = {
-            {
-                "action",
-                action
-            },
-            {
-                "position",
-                position
-            },
-            {
-                "radius",
-                radius
-            }
+        DataManager.turnDictionary[playerName] = new Godot.Collections.Dictionary{
+            {"action", action},
+            {"position", position},
+            {"radius",radius}
         };
     }
 
@@ -158,10 +154,10 @@ public class Server: Node {
         RpcId(0, "turnSwitch", turn);
         if (turn == false){
             int generalRange = 384;
-            Godot.Collections.Dictionary worldState = new Dictionary();
-            Godot.Collections.Dictionary registeredShots = new Dictionary();
-            foreach (p in DataManager.turnDictionary){
-                string playerName = DataManager.connectedPlayersDictionary[p];
+            Godot.Collections.Dictionary worldState = new Godot.Collections.Dictionary();
+            Godot.Collections.Dictionary registeredShots = new Godot.Collections.Dictionary();
+            foreach (int p in DataManager.turnDictionary){
+                string playerName = DataManager.connectedPlayersDictionary[p].ToString();
                 
             }
         }

@@ -1,0 +1,9 @@
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.csproj.AssemblyReference.cache
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.AssemblyInfoInputs.cache
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.AssemblyInfo.cs
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.csproj.CoreCompileInputs.cache
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\bin\Debug\BoattleServer.dll
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\bin\Debug\BoattleServer.pdb
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.dll
+C:\Users\Arcad\Documents\GodotProjects\Boattle\BoattleServer\.mono\temp\obj\Debug\BoattleServer.pdb
