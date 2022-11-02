@@ -114,7 +114,12 @@ public class Server: Node {
         RpcId(playerId, "wrongPassword");
     }
 
-    public void kickPlayer(int playerId, string reason = "You did not enter your password in time, please retry.") {}
+    public void kickPlayer(int playerId, string reason = "You did not enter your password in time, please retry.") {
+        Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + "was kicked: " + reason + " -!");
+        RpcId(playerId, "kickedFromServer", reason);
+        Yield(GetTree().CreateTimer(0.1), "timeout");
+        Network.DisconnectPeer(playerId, true);
+    }
 
     private void refreshPlayerCountLabel() {
         this.GetNode < Label > ("Ui/ConnectedPeersLabel").Text = "Connected: " + DataManager.connectedPlayersDictionary.Count.ToString() + "/" + (maxPlayers - 1).ToString();
@@ -131,7 +136,13 @@ public class Server: Node {
     }
 
     [Remote]
-    private void receiveTurnData(string action, Vector2 position, string playerName = "", double radius = 0.1) {}
+    private void receiveTurnData(string action, Vector2 position, string playerName = "", double radius = 0.1) {
+        DataManager.turnDictionary[playerName] = {
+            {"action" , action},
+            {"position", position},
+            {"radius", radius}
+        };
+    }
 
     private void turnCooldownTimeOut() {}
 }
