@@ -158,6 +158,11 @@ public class Server: Node {
             Godot.Collections.Dictionary registeredShots = new Godot.Collections.Dictionary();
             foreach (int p in DataManager.turnDictionary){
                 string playerName = DataManager.connectedPlayersDictionary[p].ToString();
+                Vector2 currentPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"]);
+                worldState[p] = new Godot.Collections.Dictionary{
+                    {"playerName", playerName},
+                    {"currentPosition", currentPosition}
+                };
                 
             }
         }
