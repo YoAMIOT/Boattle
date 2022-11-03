@@ -163,7 +163,14 @@ public class Server: Node {
                     {"playerName", playerName},
                     {"currentPosition", currentPosition}
                 };
-                
+                if (DataManager.turnDictionary.Contains(playerName)){
+                    if ((string)(DataManager.turnDictionary[playerName]as Godot.Collections.Dictionary)["action"] == "move"){
+                        if(currentPosition.DistanceTo((Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"] < (generalRange * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)]["ship"] as Godot.Collections.Dictionary)["moveRange"]){
+
+                        }
+                    } else if ((string)(DataManager.turnDictionary[playerName]as Godot.Collections.Dictionary)["action"] == "shoot"){
+
+                }
             }
         }
     }
