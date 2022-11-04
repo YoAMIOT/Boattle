@@ -102,11 +102,14 @@ public class DataManager: Node {
         file.Close();
     }
 
-    public void saveShipsStatsForAPlayer(string playerName, string ship) {
+    public void setHealthForAPlayer(string playerName, bool damage, int amount){
+        if (damage){
+            amount = amount * -1;
+        }
         playersShipsStatsDictionary[playerName] = new Godot.Collections.Dictionary(){
-            {"ship" , ship}
+            {"ship", (playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]},
+            {"health", (int)(playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"] + amount}
         };
-        savePlayersShipsStats();
     }
 
     public void loadShipsStats() {
@@ -132,10 +135,11 @@ public class DataManager: Node {
     }
 
     public void playerDisconnected(int playerId) {
-        if (PasswordManager.wrongPasswordDictionary.Contains(connectedPlayersDictionary[playerId])){
-            PasswordManager.wrongPasswordDictionary.Remove(connectedPlayersDictionary[playerId]);
+        string playerName = (string)connectedPlayersDictionary[playerId];
+        if (PasswordManager.wrongPasswordDictionary.Contains(playerName)){
+            PasswordManager.wrongPasswordDictionary.Remove(playerName);
         }
-        this.GetNode<UI>("/root/Server/Ui").removePlayerFromList(connectedPlayersDictionary[playerId].ToString());
+        this.GetNode<UI>("/root/Server/Ui").removePlayerFromList(playerName);
         connectedPlayersDictionary.Remove(playerId);
     }
 
@@ -153,7 +157,7 @@ public class DataManager: Node {
 
     public int getIdFromName(string playerName) {
         int playerId = 0;
-        foreach (int i in connectedPlayersDictionary){
+        foreach (int i in connectedPlayersDictionary.Keys){
             if (connectedPlayersDictionary[i].ToString() == playerName){
                 playerId = i;
             }

@@ -19,7 +19,7 @@ public class UI : Control{
         ValidateBtn = this.GetNode<Button>("PlayersTab/KickWindow/ValidateButton");
         CancelBtn = this.GetNode<Button>("PlayersTab/KickWindow/CancelButton");
         PlayersList = this.GetNode<ItemList>("PlayersTab/PlayersList");
-        DataManager = this.GetNode<DataManager>("root/DataManager");
+        DataManager = this.GetNode<DataManager>("/root/DataManager");
         Server = this.GetNode<Server>("/root/Server");
 
         ServerTabBtn.Connect("toggled", this, "ServerTabBtnToggled");
@@ -65,7 +65,7 @@ public class UI : Control{
     private void PlayersListItemSelected(int index){
         KickBtn.Disabled = false;
         string playerName = PlayersList.GetItemText(index);
-        int playerId = DataManager.getIdFromName(playerName);
+        int playerId = (int)DataManager.getIdFromName(playerName);
         selectedPlayerId = playerId;
         this.GetNode<Label>("PlayersTab/PlayerNameLabel").Text = "Player name: " + playerName;
         this.GetNode<Label>("PlayersTab/PlayerIdLabel").Text = "Connection ID: " + playerId.ToString();

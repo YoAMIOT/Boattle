@@ -1,11 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "s6/RxjvyzWsQkcSAVg81+BFIF8uC5XIrR/vDRuY2LWpxqoHogH1YydvX3yj6grIG9WxhPvk3EK4RlAO6EM7RNA==",
+  "dgSpecHash": "NLJCpDui5DoNOAB0R3x6IHV1QVgJT/fJsIlb712ammz7OmCB83CXKdel8ebYCiOyLgP2i9GC1MepNCvOp//2bg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Arcad\\Documents\\GodotProjects\\Boattle\\BoattleServer\\BoattleServer.csproj",
-  "expectedPackageFiles": [
-    "C:\\Users\\Arcad\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.2\\microsoft.netframework.referenceassemblies.1.0.2.nupkg.sha512",
-    "C:\\Users\\Arcad\\.nuget\\packages\\microsoft.netframework.referenceassemblies.net472\\1.0.2\\microsoft.netframework.referenceassemblies.net472.1.0.2.nupkg.sha512"
-  ],
+  "expectedPackageFiles": [],
   "logs": []
 }

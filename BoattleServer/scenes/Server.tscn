@@ -3,7 +3,7 @@
 [ext_resource path="res://scripts/UI/UI.cs" type="Script" id=1]
 [ext_resource path="res://scripts/UI/Log.cs" type="Script" id=2]
 [ext_resource path="res://ressources/font/TiwipiFontSmall.tres" type="DynamicFont" id=3]
-[ext_resource path="res://scripts/Server.gd" type="Script" id=4]
+[ext_resource path="res://scripts/Server.cs" type="Script" id=4]
 [ext_resource path="res://ressources/theme/buttonTheme.tres" type="Theme" id=5]
 
 [node name="Server" type="Node"]

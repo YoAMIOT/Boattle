@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public class PasswordManager: Node {
-    public Godot.Collections.Dictionary wrongPasswordDictionary;
+    public Godot.Collections.Dictionary wrongPasswordDictionary = new Godot.Collections.Dictionary();
     private DataManager DataManager;
     private Server Server;
 

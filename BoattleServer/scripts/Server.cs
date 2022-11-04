@@ -14,37 +14,38 @@ public class Server: Node {
     private PasswordManager PasswordManager;
 
     public override void _Ready() {
-        Log = this.GetNode < Log > ("Ui/Log");
-        DataManager = this.GetNode < DataManager > ("/root/DataManager");
-        PasswordManager = this.GetNode < PasswordManager > ("/root/PasswordManager");
+        Log = this.GetNode <Log> ("Ui/Log");
+        DataManager = this.GetNode <DataManager> ("/root/DataManager");
+        PasswordManager = this.GetNode <PasswordManager> ("/root/PasswordManager");
         OS.WindowFullscreen = false;
         GetTree().SetAutoAcceptQuit(false);
         UPNP.Discover(2000, 2, "InternetGatewayDevice");
         ip = UPNP.QueryExternalAddress();
         UPNP.AddPortMapping(port, port, "BoattleServer", "UDP");
         UPNP.AddPortMapping(port, port, "BoattleServer", "TCP");
-        this.GetNode < Label > ("Ui/IpLabel").Text = ip;
-        this.GetNode < Button > ("Ui/MaxPlayerMenu/ValidateButton").Connect("pressed", this, "ValidateButtonPressed");
-        this.GetNode < Button > ("Ui/StartServer").Connect("pressed", this, "StartServerPressed");
-        this.GetNode < Button > ("Ui/Close").Connect("pressed", this, "closeButtonPressed");
-        this.GetNode < Timer > ("TurnCooldown").Connect("timeout", this, "turnCooldownTimeOut");
+        this.GetNode <Label> ("Ui/IpLabel").Text = ip;
+        this.GetNode <Button> ("Ui/MaxPlayerMenu/ValidateButton").Connect("pressed", this, "ValidateButtonPressed");
+        this.GetNode <Button> ("Ui/StartServer").Connect("pressed", this, "StartServerPressed");
+        this.GetNode <Button> ("Ui/Close").Connect("pressed", this, "closeButtonPressed");
+        this.GetNode <Timer> ("TurnCooldown").Connect("timeout", this, "turnCooldownTimeOut");
     }
 
     private void ValidateButtonPressed() {
-        maxPlayers = (int) this.GetNode < SpinBox > ("Ui/MaxPlayerMenu/Selector").Value + 1;
+        maxPlayers = (int) this.GetNode <SpinBox> ("Ui/MaxPlayerMenu/Selector").Value + 1;
         refreshPlayerCountLabel();
-        this.GetNode < Control > ("Ui/MaxPlayerMenu").Visible = false;
-        this.GetNode < Button > ("Ui/StartServer").Disabled = false;
+        this.GetNode <Control> ("Ui/MaxPlayerMenu").Visible = false;
+        this.GetNode <Button> ("Ui/StartServer").Disabled = false;
     }
 
     private void StartServerPressed() {
         serverStarted = true;
-        this.GetNode < Button > ("Ui/StartServer").Disabled = true;
+        this.GetNode <Button> ("Ui/StartServer").Disabled = true;
         Network.CreateServer(port, maxPlayers);
-        GetTree().SetNetworkPeer(Network);
+        GetTree().NetworkPeer = Network;
+        Log.logPrint("!- SERVER STARTED -!");
         Network.Connect("peer_connected", this, "PeerConnected");
         Network.Connect("peer_disconnected", this, "PeerDisconnected");
-        this.GetNode < Timer > ("TurnCooldown").Start();
+        this.GetNode <Timer> ("TurnCooldown").Start();
     }
 
     private void PeerConnected(int playerId) {
@@ -57,9 +58,9 @@ public class Server: Node {
         Log.logPrint("!- " + (string)DataManager.connectedPlayersDictionary[playerId] + " disconnected -!");
         DataManager.playerDisconnected(playerId);
         refreshPlayerCountLabel();
-        if (this.GetNode < Node > ("PasswordTimers").HasNode(playerId.ToString())) {
-            this.GetNode < Node > ("PasswordTimers" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
-            this.GetNode < Node > ("PasswordTimers" + playerId.ToString()).QueueFree();
+        if (this.GetNode <Node> ("PasswordTimers").HasNode(playerId.ToString())) {
+            this.GetNode <Node> ("PasswordTimers/" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
+            this.GetNode <Node> ("PasswordTimers/" + playerId.ToString()).QueueFree();
         }
         RpcId(0, "killPuppet", playerId);
     }
@@ -82,7 +83,7 @@ public class Server: Node {
             refreshPlayerCountLabel();
             RpcId(playerId, "authentication", registration);
             Timer TimeOutTimer = new Timer();
-            this.GetNode < Node > ("PasswordTimers").AddChild(TimeOutTimer);
+            this.GetNode <Node> ("PasswordTimers").AddChild(TimeOutTimer);
             TimeOutTimer.Name = playerId.ToString();
             TimeOutTimer.WaitTime = 60;
             TimeOutTimer.OneShot = true;
@@ -99,7 +100,8 @@ public class Server: Node {
     }
 
     public void logIn(int playerId, string playerName) {
-        this.GetNode < Timer > ("PasswordTimers" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
+        this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
+        this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).QueueFree();
         Vector2 playerPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"]);
         Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName]as Godot.Collections.Dictionary)] as Godot.Collections.Dictionary)["ship"];
         int currentHealth = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
@@ -107,7 +109,6 @@ public class Server: Node {
         Log.logPrint("!- " + playerName + " authentified -!");
         RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
         RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
-        this.GetNode < Timer > ("PasswordTimers/" + playerId.ToString()).QueueFree();
     }
 
     public void wrongPasswordEntered(int playerId) {
@@ -115,19 +116,20 @@ public class Server: Node {
     }
 
     public async void kickPlayer(int playerId, string reason = "You did not enter your password in time, please retry.") {
-        Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + "was kicked: " + reason + " -!");
+        Log.logPrint("!- " + DataManager.connectedPlayersDictionary[playerId] + " was kicked: " + reason + " -!");
         RpcId(playerId, "kickedFromServer", reason);
         Timer Timer = new Timer();
+        Timer.Autostart = true;
         Timer.WaitTime = 0.1F;
         Timer.OneShot = true;
-        Timer.Start();
+        this.AddChild(Timer);
         await ToSignal(Timer, "timeout");
         Timer.QueueFree();
         Network.DisconnectPeer(playerId, true);
     }
 
     private void refreshPlayerCountLabel() {
-        this.GetNode < Label > ("Ui/ConnectedPeersLabel").Text = "Connected: " + DataManager.connectedPlayersDictionary.Count.ToString() + "/" + (maxPlayers - 1).ToString();
+        this.GetNode <Label> ("Ui/ConnectedPeersLabel").Text = "Connected: " + DataManager.connectedPlayersDictionary.Count.ToString() + "/" + (maxPlayers - 1).ToString();
     }
 
     public override void _Notification(int what) {
@@ -185,12 +187,21 @@ public class Server: Node {
             foreach(var s in registeredShots){
                 Godot.Collections.Dictionary targets = new Godot.Collections.Dictionary();
                 foreach(int p in DataManager.connectedPlayersDictionary){
+                    string playerName = (string)DataManager.connectedPlayersDictionary[p];
                     Vector2 registeredShotPos = (Vector2)(registeredShots[s] as Godot.Collections.Dictionary)["position"];
-                    if (registeredShotPos.DistanceTo(new Vector2((float)(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]] as Godot.Collections.Dictionary)["posX"] , (float)(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]] as Godot.Collections.Dictionary)["posY"])) < (generalRange * (float)(registeredShots[s] as Godot.Collections.Dictionary)["radius"])){
-                        
+                    if (registeredShotPos.DistanceTo(new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"] , (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posY"])) < (generalRange * (float)(registeredShots[s] as Godot.Collections.Dictionary)["radius"])){
+                        int appliedDamage = (int)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[s] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["damage"] - (int)((float)(registeredShots[s] as Godot.Collections.Dictionary)["radius"] * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[s] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["damage"]);
+                        if ((int)(DataManager.playersShipsStatsDictionary[playerName]as Godot.Collections.Dictionary)["health"] > 0){
+                            DataManager.setHealthForAPlayer(playerName, true, appliedDamage);
+                        }
+                        targets[p] = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
                     }
                 }
+                RpcId(0, "shootOnPos", s, (Vector2)(registeredShots[s]as Godot.Collections.Dictionary)["position"], (float)(registeredShots[s]as Godot.Collections.Dictionary)["radius"], targets);
             }
+            RpcId(0, "receiveWorldState", worldState);
+            DataManager.savePlayersShipsStats();
+            DataManager.turnDictionary = new Godot.Collections.Dictionary();
         }
     }
 }
