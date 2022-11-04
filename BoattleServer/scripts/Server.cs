@@ -156,20 +156,39 @@ public class Server: Node {
             int generalRange = 384;
             Godot.Collections.Dictionary worldState = new Godot.Collections.Dictionary();
             Godot.Collections.Dictionary registeredShots = new Godot.Collections.Dictionary();
-            foreach (int p in DataManager.turnDictionary){
+            foreach (var p in DataManager.turnDictionary){
                 string playerName = DataManager.connectedPlayersDictionary[p].ToString();
                 Vector2 currentPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"]);
                 worldState[p] = new Godot.Collections.Dictionary{
                     {"playerName", playerName},
-                    {"currentPosition", currentPosition}
+                    {"position", currentPosition}
                 };
                 if (DataManager.turnDictionary.Contains(playerName)){
                     if ((string)(DataManager.turnDictionary[playerName]as Godot.Collections.Dictionary)["action"] == "move"){
-                        if(currentPosition.DistanceTo((Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"] < (generalRange * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)]["ship"] as Godot.Collections.Dictionary)["moveRange"]){
-
+                        if(currentPosition.DistanceTo((Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]) < (generalRange * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["moveRange"])){
+                            DataManager.saveDatasOfAPlayer(playerName, (Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]);
+                            (worldState[p] as Godot.Collections.Dictionary)["position"] = (Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"];
                         }
-                    } else if ((string)(DataManager.turnDictionary[playerName]as Godot.Collections.Dictionary)["action"] == "shoot"){
-
+                    } else if ((string)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["action"] == "shoot"){
+                        float shotRadius = (float)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["radius"];
+                        if (currentPosition.DistanceTo((Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]) < (generalRange * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["shootRange"])){
+                            if (shotRadius <= (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["maxRadius"] && shotRadius >= (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["minRadius"]){
+                                registeredShots[playerName] = new Godot.Collections.Dictionary{
+                                    {"position",(Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]},
+                                    {"radius", shotRadius}
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            foreach(var s in registeredShots){
+                Godot.Collections.Dictionary targets = new Godot.Collections.Dictionary();
+                foreach(int p in DataManager.connectedPlayersDictionary){
+                    Vector2 registeredShotPos = (Vector2)(registeredShots[s] as Godot.Collections.Dictionary)["position"];
+                    if (registeredShotPos.DistanceTo(new Vector2((float)(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]] as Godot.Collections.Dictionary)["posX"] , (float)(DataManager.playersDatasDictionary[DataManager.connectedPlayersDictionary[p]] as Godot.Collections.Dictionary)["posY"])) < (generalRange * (float)(registeredShots[s] as Godot.Collections.Dictionary)["radius"])){
+                        
+                    }
                 }
             }
         }
