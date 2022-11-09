@@ -103,12 +103,10 @@ public class Server: Node {
         this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
         this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).QueueFree();
         Vector2 playerPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posY"]);
-        //CHECK HERE the lines beneath
-        Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)DataManager.shipsDictionary["default"];
-        //Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName]as Godot.Collections.Dictionary)] as Godot.Collections.Dictionary)["ship"];
+        Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)DataManager.shipsDictionary[(string)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]];
         //CHECK HERE the line beneath has a bad cast
-        int currentHealth = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
-        int maxHealth = (int)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["maxHealth"];
+        //int currentHealth = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
+        //int maxHealth = (int)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["maxHealth"];
         Log.logPrint("!- " + playerName + " authentified -!");
         RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
         RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
