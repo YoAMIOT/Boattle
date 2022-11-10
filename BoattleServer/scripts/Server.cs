@@ -103,13 +103,13 @@ public class Server: Node {
         this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).Disconnect("timeout", this, "kickPlayer");
         this.GetNode <Timer> ("PasswordTimers/" + playerId.ToString()).QueueFree();
         Vector2 playerPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posY"]);
-        Godot.Collections.Dictionary playerShipsDatas = (Godot.Collections.Dictionary)DataManager.shipsDictionary[(string)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]];
-        //CHECK HERE the line beneath has a bad cast
-        //int currentHealth = (int)(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["health"];
-        //int maxHealth = (int)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["maxHealth"];
+        Godot.Collections.Dictionary playerShipsStats = DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary;
+        Godot.Collections.Dictionary shipsDatas = (Godot.Collections.Dictionary)DataManager.shipsDictionary[(string)playerShipsStats["ship"]];
+        int currentHealth = Convert.ToInt32(playerShipsStats["health"]);
+        int maxHealth = Convert.ToInt32(shipsDatas["maxHealth"]);
         Log.logPrint("!- " + playerName + " authentified -!");
         RpcId(0, "spawnPuppet", playerId, playerName, playerPosition, maxHealth, currentHealth);
-        RpcId(playerId, "logIn", playerPosition, playerShipsDatas, currentHealth);
+        RpcId(playerId, "logIn", playerPosition, shipsDatas, currentHealth);
     }
 
     public void wrongPasswordEntered(int playerId) {
@@ -159,11 +159,10 @@ public class Server: Node {
             int generalRange = 384;
             Godot.Collections.Dictionary worldState = new Godot.Collections.Dictionary();
             Godot.Collections.Dictionary registeredShots = new Godot.Collections.Dictionary();
-            foreach (var p in DataManager.turnDictionary){
-                string playerName = DataManager.connectedPlayersDictionary[p].ToString();
-                Vector2 currentPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"]);
+            foreach (var p in DataManager.turnDictionary.Keys){
+                string playerName = p.ToString();
+                Vector2 currentPosition = new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"], (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posY"]);
                 worldState[p] = new Godot.Collections.Dictionary{
-                    {"playerName", playerName},
                     {"position", currentPosition}
                 };
                 if (DataManager.turnDictionary.Contains(playerName)){
@@ -171,6 +170,9 @@ public class Server: Node {
                         if(currentPosition.DistanceTo((Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]) < (generalRange * (float)(DataManager.shipsDictionary[(DataManager.playersShipsStatsDictionary[playerName] as Godot.Collections.Dictionary)["ship"]] as Godot.Collections.Dictionary)["moveRange"])){
                             DataManager.saveDatasOfAPlayer(playerName, (Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"]);
                             (worldState[p] as Godot.Collections.Dictionary)["position"] = (Vector2)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["position"];
+                            GD.Print(currentPosition);
+                            GD.Print(DataManager.turnDictionary);
+                            GD.Print(worldState);
                         }
                     } else if ((string)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["action"] == "shoot"){
                         float shotRadius = (float)(DataManager.turnDictionary[playerName] as Godot.Collections.Dictionary)["radius"];
@@ -185,9 +187,9 @@ public class Server: Node {
                     }
                 }
             }
-            foreach(var s in registeredShots){
+            foreach(var s in registeredShots.Keys){
                 Godot.Collections.Dictionary targets = new Godot.Collections.Dictionary();
-                foreach(int p in DataManager.connectedPlayersDictionary){
+                foreach(int p in DataManager.connectedPlayersDictionary.Keys){
                     string playerName = (string)DataManager.connectedPlayersDictionary[p];
                     Vector2 registeredShotPos = (Vector2)(registeredShots[s] as Godot.Collections.Dictionary)["position"];
                     if (registeredShotPos.DistanceTo(new Vector2((float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posX"] , (float)(DataManager.playersDatasDictionary[playerName] as Godot.Collections.Dictionary)["posY"])) < (generalRange * (float)(registeredShots[s] as Godot.Collections.Dictionary)["radius"])){

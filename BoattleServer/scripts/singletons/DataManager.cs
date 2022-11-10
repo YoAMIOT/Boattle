@@ -145,7 +145,7 @@ public class DataManager: Node {
 
     public bool isPlayerConnected(string playerName) {
         bool connected = false;
-        foreach (int i in connectedPlayersDictionary){
+        foreach (int i in connectedPlayersDictionary.Keys){
             if(connectedPlayersDictionary[i].ToString() == playerName){
                 connected = true;
             }
